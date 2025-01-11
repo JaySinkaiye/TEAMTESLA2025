@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.LimelightHelpers;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
@@ -57,11 +58,16 @@ public class SwerveDrive extends Command {
     }
 
     @Override
+    public void initialize(){
+
+    }
+
+    @Override
     public void execute(){
 
         xVal = MathUtil.applyDeadband(driverController.getLeftX() * m_speedChooser.getSelected(),0.1);
         yVal = MathUtil.applyDeadband(-driverController.getLeftY() * m_speedChooser.getSelected(), 0.1);
-        rotationVal = MathUtil.applyDeadband(driverController.getRightX() * m_speedChooser.getSelected(), MaxAngularRate * 0.1);
+        rotationVal = MathUtil.applyDeadband(-driverController.getRightX() * m_speedChooser.getSelected(), MaxAngularRate * 0.1);
 
         driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
         driverController.b().whileTrue(drivetrain.applyRequest(() ->
@@ -74,5 +80,40 @@ public class SwerveDrive extends Command {
         .withRotationalRate(rotationVal * MaxSpeed);
 
         swerve.setControl(m_Request);
+
+        //limelight stuff
+        double tx = LimelightHelpers.getTX("limelight-front");
+        SmartDashboard.putNumber("TX: ", tx);
+        SmartDashboard.putNumber("Distance to limelight: ", getDistance());
+    }
+
+    public static double getDistance(){
+        double targetOffsetAngle_Vertical = LimelightHelpers.getTY("limelight-front");
+
+        //how many degrees back the limelight is from being vertical
+        double limilightMountAngleDegrees = 30;
+
+        //distance from the center of the limelight lens to the floor
+        double limelightLensHeightInches = 6;
+
+        // distance from april tag to floor
+        double goalHeightInches = 22;
+
+        double angleToGoalDegrees = limilightMountAngleDegrees + targetOffsetAngle_Vertical;
+        double angleToGoalRadians = angleToGoalDegrees * (Math.PI/180);
+
+        //calculate distance
+        double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches)/ Math.tan(angleToGoalRadians);
+
+        return distanceFromLimelightToGoalInches;
+
+    }
+
+    @Override
+    public void end(boolean interrupted) {}
+
+    @Override
+    public boolean isFinished() {
+        return false;
     }
 }
