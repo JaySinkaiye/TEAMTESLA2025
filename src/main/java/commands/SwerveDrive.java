@@ -20,17 +20,14 @@ public class SwerveDrive extends Command {
     private CommandSwerveDrivetrain swerve;
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    
+    private SendableChooser<Double> m_speedChooser;
 
     private SwerveRequest m_Request;
-    /* Setting up bindings for necessary control of the swerve drive platform */
-    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-        .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    // Use open-loop control for drive motors
+    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); 
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-
-    private SendableChooser<Double> m_speedChooser;
 
     private CommandXboxController driverController;
 
@@ -69,21 +66,19 @@ public class SwerveDrive extends Command {
         yVal = MathUtil.applyDeadband(-driverController.getLeftY() * m_speedChooser.getSelected(), 0.1);
         rotationVal = MathUtil.applyDeadband(-driverController.getRightX() * m_speedChooser.getSelected(), MaxAngularRate * 0.1);
 
-        driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        driverController.b().whileTrue(drivetrain.applyRequest(() ->
+        driverController.a().whileTrue(swerve.applyRequest(() -> brake));
+        driverController.b().whileTrue(swerve.applyRequest(() ->
         point.withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))
         ));  
-        driverController.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        driverController.leftBumper().onTrue(swerve.runOnce(() -> swerve.seedFieldCentric()));
 
         m_Request = drive.withVelocityX(yVal * MaxSpeed)
-        .withVelocityX(xVal * MaxSpeed)
+        .withVelocityY(xVal * MaxSpeed)
         .withRotationalRate(rotationVal * MaxSpeed);
 
         swerve.setControl(m_Request);
 
         //limelight stuff
-        double tx = LimelightHelpers.getTX("limelight-front");
-        SmartDashboard.putNumber("TX: ", tx);
         SmartDashboard.putNumber("Distance to limelight: ", getDistance());
     }
 
