@@ -1,4 +1,4 @@
-package commands;
+package frc.robot.commands;
 
 import static edu.wpi.first.units.Units.*;
 
@@ -24,6 +24,7 @@ public class SwerveDrive extends Command {
     private SendableChooser<Double> m_speedChooser;
 
     private SwerveRequest m_Request;
+
     // Use open-loop control for drive motors
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); 
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
@@ -62,8 +63,8 @@ public class SwerveDrive extends Command {
     @Override
     public void execute(){
 
-        xVal = MathUtil.applyDeadband(driverController.getLeftX() * m_speedChooser.getSelected(),0.1);
-        yVal = MathUtil.applyDeadband(-driverController.getLeftY() * m_speedChooser.getSelected(), 0.1);
+        xVal = MathUtil.applyDeadband(-driverController.getLeftX() * m_speedChooser.getSelected(),0.2);
+        yVal = MathUtil.applyDeadband(-driverController.getLeftY() * m_speedChooser.getSelected(), 0.2);
         rotationVal = MathUtil.applyDeadband(-driverController.getRightX() * m_speedChooser.getSelected(), MaxAngularRate * 0.1);
 
         driverController.a().whileTrue(swerve.applyRequest(() -> brake));
@@ -92,7 +93,7 @@ public class SwerveDrive extends Command {
         double limelightLensHeightInches = 6;
 
         // distance from april tag to floor
-        double goalHeightInches = 22;
+        double goalHeightInches = 23;
 
         double angleToGoalDegrees = limilightMountAngleDegrees + targetOffsetAngle_Vertical;
         double angleToGoalRadians = angleToGoalDegrees * (Math.PI/180);
@@ -101,7 +102,6 @@ public class SwerveDrive extends Command {
         double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches)/ Math.tan(angleToGoalRadians);
 
         return distanceFromLimelightToGoalInches;
-
     }
 
     @Override
