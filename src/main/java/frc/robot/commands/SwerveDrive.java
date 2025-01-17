@@ -2,6 +2,8 @@ package frc.robot.commands;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
@@ -33,11 +35,16 @@ public class SwerveDrive extends Command {
     private CommandXboxController driverController;
 
     private double rotationVal, xVal, yVal;
+    private BooleanSupplier m_x;
 
-    public SwerveDrive(CommandSwerveDrivetrain swerve, CommandXboxController driver){
+    private double targetTY;
+    private double 
+
+    public SwerveDrive(CommandSwerveDrivetrain swerve, CommandXboxController driver, BooleanSupplier x){
 
         this.swerve = swerve;
         this.driverController = driver;
+        m_x = x;
         addRequirements(swerve);
 
         m_speedChooser = new SendableChooser<Double>();
@@ -66,21 +73,49 @@ public class SwerveDrive extends Command {
         xVal = MathUtil.applyDeadband(-driverController.getLeftX() * m_speedChooser.getSelected(),0.2);
         yVal = MathUtil.applyDeadband(-driverController.getLeftY() * m_speedChooser.getSelected(), 0.2);
         rotationVal = MathUtil.applyDeadband(-driverController.getRightX() * m_speedChooser.getSelected(), MaxAngularRate * 0.1);
+        boolean range = m_x.getAsBoolean();
 
         driverController.a().whileTrue(swerve.applyRequest(() -> brake));
         driverController.b().whileTrue(swerve.applyRequest(() ->
         point.withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))
         ));  
         driverController.leftBumper().onTrue(swerve.runOnce(() -> swerve.seedFieldCentric()));
-
+        
         m_Request = drive.withVelocityX(yVal * MaxSpeed)
         .withVelocityY(xVal * MaxSpeed)
         .withRotationalRate(rotationVal * MaxSpeed);
+
+        // limelight stuff
+        double forwardSpeed = limelight_range_proportional(-3);
+        double turnSpeed = limelight_aim_proportional();
+
+        if(range){
+            m_Request = drive.withVelocityX(forwardSpeed)
+            .withVelocityY(0)
+            .withRotationalRate(turnSpeed);
+        } else{
+            m_Request = drive.withVelocityX(yVal * MaxSpeed)
+            .withVelocityY(xVal * MaxSpeed)
+            .withRotationalRate(rotationVal * MaxSpeed);
+        }
 
         swerve.setControl(m_Request);
 
         //limelight stuff
         SmartDashboard.putNumber("Distance to limelight: ", getDistance());
+        SmartDashboard.putNumber("TY: ", LimelightHelpers.getTY("limelight-front"));
+        SmartDashboard.putNumber("TX: ", LimelightHelpers.getTX("limelight-front"));
+        SmartDashboard.putNumber("Forward speed", forwardSpeed);
+        SmartDashboard.putNumber("Turn speed", turnSpeed);
+        
+    }
+
+    @Override
+    public void end(boolean interrupted) {}
+
+    @Override
+    public boolean isFinished() {
+        return false;
     }
 
     public static double getDistance(){
@@ -93,7 +128,7 @@ public class SwerveDrive extends Command {
         double limelightLensHeightInches = 6;
 
         // distance from april tag to floor
-        double goalHeightInches = 23;
+        double goalHeightInches = 21.5;
 
         double angleToGoalDegrees = limilightMountAngleDegrees + targetOffsetAngle_Vertical;
         double angleToGoalRadians = angleToGoalDegrees * (Math.PI/180);
@@ -104,11 +139,40 @@ public class SwerveDrive extends Command {
         return distanceFromLimelightToGoalInches;
     }
 
-    @Override
-    public void end(boolean interrupted) {}
+    public double limelight_range_proportional(double targetTY){    
+        this.targetTY = targetTY;
 
-    @Override
-    public boolean isFinished() {
-        return false;
+        double kP = .01;
+        double targetingForwardSpeed =  (LimelightHelpers.getTY("limelight-front") + targetTY) * kP;
+        targetingForwardSpeed *= MaxSpeed;
+        targetingForwardSpeed *= -1.0;
+
+        return targetingForwardSpeed;
+    }
+
+    public double lockIn(double distance){
+
+    }
+
+    double limelight_aim_proportional()
+    {    
+      // kP (constant of proportionality)
+      // this is a hand-tuned number that determines the aggressiveness of our proportional control loop
+      // if it is too high, the robot will oscillate.
+      // if it is too low, the robot will never reach its target
+      // if the robot never turns in the correct direction, kP should be inverted.
+      double kP = .01;
+  
+      // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
+      // your limelight 3 feed, tx should return roughly 31 degrees.
+      double targetingAngularVelocity = LimelightHelpers.getTX("limelight-front") * kP;
+  
+      // convert to radians per second for our drive method
+      targetingAngularVelocity *= MaxAngularRate;
+  
+      //invert since tx is positive when the target is to the right of the crosshair
+      targetingAngularVelocity *= -1.0;
+  
+      return targetingAngularVelocity;
     }
 }

@@ -23,7 +23,7 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController));
+        drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController, driverController.x()));
     }
 
     public Command getAutonomousCommand() {
