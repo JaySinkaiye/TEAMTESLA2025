@@ -29,6 +29,7 @@ public class SwerveDrive extends Command {
 
     // Use open-loop control for drive motors
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); 
+    private final SwerveRequest.RobotCentric lDrive = new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.Velocity);
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
@@ -36,9 +37,6 @@ public class SwerveDrive extends Command {
 
     private double rotationVal, xVal, yVal;
     private BooleanSupplier m_x;
-
-    private double targetTY;
-    private double 
 
     public SwerveDrive(CommandSwerveDrivetrain swerve, CommandXboxController driver, BooleanSupplier x){
 
@@ -72,7 +70,7 @@ public class SwerveDrive extends Command {
 
         xVal = MathUtil.applyDeadband(-driverController.getLeftX() * m_speedChooser.getSelected(),0.2);
         yVal = MathUtil.applyDeadband(-driverController.getLeftY() * m_speedChooser.getSelected(), 0.2);
-        rotationVal = MathUtil.applyDeadband(-driverController.getRightX() * m_speedChooser.getSelected(), MaxAngularRate * 0.1);
+        rotationVal = MathUtil.applyDeadband(-driverController.getRightX() * m_speedChooser.getSelected(), 0.1);
         boolean range = m_x.getAsBoolean();
 
         driverController.a().whileTrue(swerve.applyRequest(() -> brake));
@@ -86,11 +84,11 @@ public class SwerveDrive extends Command {
         .withRotationalRate(rotationVal * MaxSpeed);
 
         // limelight stuff
-        double forwardSpeed = limelight_range_proportional(-3);
+        double forwardSpeed = lockIn(50);
         double turnSpeed = limelight_aim_proportional();
 
         if(range){
-            m_Request = drive.withVelocityX(forwardSpeed)
+            m_Request = lDrive.withVelocityX(forwardSpeed)
             .withVelocityY(0)
             .withRotationalRate(turnSpeed);
         } else{
@@ -128,7 +126,7 @@ public class SwerveDrive extends Command {
         double limelightLensHeightInches = 6;
 
         // distance from april tag to floor
-        double goalHeightInches = 21.5;
+        double goalHeightInches = 58.5;
 
         double angleToGoalDegrees = limilightMountAngleDegrees + targetOffsetAngle_Vertical;
         double angleToGoalRadians = angleToGoalDegrees * (Math.PI/180);
@@ -140,9 +138,7 @@ public class SwerveDrive extends Command {
     }
 
     public double limelight_range_proportional(double targetTY){    
-        this.targetTY = targetTY;
-
-        double kP = .01;
+        double kP = .1;
         double targetingForwardSpeed =  (LimelightHelpers.getTY("limelight-front") + targetTY) * kP;
         targetingForwardSpeed *= MaxSpeed;
         targetingForwardSpeed *= -1.0;
@@ -150,27 +146,20 @@ public class SwerveDrive extends Command {
         return targetingForwardSpeed;
     }
 
-    public double lockIn(double distance){
-
+    // does the same thing as above but using inches
+    public double lockIn(double targetDistance){
+        double kP = 0.01;
+        double targetingForwardSpeed = (getDistance() - targetDistance) * kP;
+        targetingForwardSpeed *= MaxSpeed;
+        return targetingForwardSpeed;
     }
 
     double limelight_aim_proportional()
     {    
-      // kP (constant of proportionality)
-      // this is a hand-tuned number that determines the aggressiveness of our proportional control loop
-      // if it is too high, the robot will oscillate.
-      // if it is too low, the robot will never reach its target
-      // if the robot never turns in the correct direction, kP should be inverted.
       double kP = .01;
   
-      // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
-      // your limelight 3 feed, tx should return roughly 31 degrees.
       double targetingAngularVelocity = LimelightHelpers.getTX("limelight-front") * kP;
-  
-      // convert to radians per second for our drive method
       targetingAngularVelocity *= MaxAngularRate;
-  
-      //invert since tx is positive when the target is to the right of the crosshair
       targetingAngularVelocity *= -1.0;
   
       return targetingAngularVelocity;
