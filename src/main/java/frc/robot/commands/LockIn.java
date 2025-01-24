@@ -46,6 +46,13 @@ public class LockIn extends Command {
 
     }
 
+    @Override
+    public void end(boolean interrupted) {}
+
+    @Override
+    public boolean isFinished() {
+        return (getDistance() >= desiredDistance - 1 && getDistance() <= desiredDistance + 1) && ((LimelightHelpers.getTX("limelight-front") < 0.1) && (LimelightHelpers.getTX("limelight-front")  > -0.9));
+    }
 
     public static double getDistance(){
         double targetOffsetAngle_Vertical = LimelightHelpers.getTY("limelight-front");

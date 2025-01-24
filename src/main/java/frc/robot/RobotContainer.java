@@ -28,7 +28,7 @@ public class RobotContainer {
 
     public RobotContainer() {
 
-        NamedCommands.registerCommand("Align to April Tag 1", new LockIn(drivetrain, 30));
+        NamedCommands.registerCommand("Align to April Tag 12", new LockIn(drivetrain, 50));
         configureBindings();
 
         SmartDashboard.putData("AutonChooser", AutonChooser);
@@ -41,7 +41,7 @@ public class RobotContainer {
 
     private void configureBindings() {
         drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController));
-        operatorController.x().onTrue(new LockIn(drivetrain, 50));
+        driverController.x().onTrue(new LockIn(drivetrain, 50));
     }
 
     public CommandXboxController getOperatorJoystick(){

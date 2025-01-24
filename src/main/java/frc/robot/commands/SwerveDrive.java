@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.LimelightHelpers;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
@@ -77,6 +78,8 @@ public class SwerveDrive extends Command {
         .withRotationalRate(rotationVal * MaxSpeed);
 
         swerve.setControl(m_Request);
+
+        SmartDashboard.putNumber("Distance to limelight: ", getDistance());
         
     }
 
@@ -86,5 +89,26 @@ public class SwerveDrive extends Command {
     @Override
     public boolean isFinished() {
         return false;
+    }
+
+        public static double getDistance(){
+        double targetOffsetAngle_Vertical = LimelightHelpers.getTY("limelight-front");
+
+        //how many degrees back the limelight is from being vertical
+        double limilightMountAngleDegrees = 30;
+
+        //distance from the center of the limelight lens to the floor
+        double limelightLensHeightInches = 6;
+
+        // distance from april tag to floor
+        double goalHeightInches = 58.5;
+
+        double angleToGoalDegrees = limilightMountAngleDegrees + targetOffsetAngle_Vertical;
+        double angleToGoalRadians = angleToGoalDegrees * (Math.PI/180);
+
+        //calculate distance
+        double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches)/ Math.tan(angleToGoalRadians);
+
+        return distanceFromLimelightToGoalInches;
     }
 }
