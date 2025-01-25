@@ -11,13 +11,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.Climb;
 import frc.robot.commands.LockIn;
 import frc.robot.commands.SwerveDrive;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class RobotContainer {
     public static RobotContainer robotContainer = new RobotContainer();
+
+    //subsytems
+    public final Climber climber = new Climber();
 
     private final CommandXboxController driverController = new CommandXboxController(0);
     private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -33,6 +38,8 @@ public class RobotContainer {
 
         SmartDashboard.putData("AutonChooser", AutonChooser);
         AutonChooser.setDefaultOption("Test: ", new PathPlannerAuto("test"));
+
+        climber.setDefaultCommand(new Climb(climber, operatorController));
     }
 
     public static RobotContainer getInstance(){

@@ -1,35 +1,46 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Climber;
 
 public class Climb extends Command {
-    // private final Climber climber;
-    // private RobotContainer robotContainer;
+    private final Climber climber;
+    private RobotContainer robotContainer;
 
-    // public Climb(Climber climber){
-    //     this.climber = climber;
-    //     addRequirements(climber);
-    // }
+    private CommandXboxController opController;
 
-    // @Override
-    // public void initialize(){
-    //     robotContainer = RobotContainer.getInstance();
-    // }
+    private double climbValue;
 
-    // @Override
-    // public void execute(){
-    //     climber.climb(robotContainer.getOperatorJoystick());
-    // }
+    public Climb(Climber climber, CommandXboxController op){
+        this.climber = climber;
+        this.opController = op;
+        addRequirements(climber);
+    }
 
-    // // Called once the command ends or is interrupted.
-    // @Override
-    // public void end(boolean interrupted) {}
+    @Override
+    public void initialize(){
+        robotContainer = RobotContainer.getInstance();
+        climber.resetClimberPosition();
+    }
 
-    // // Returns true when the command should end.
-    // @Override
-    // public boolean isFinished() {
-    //     return false;
-    // }
+    @Override
+    public void execute(){
+
+        climbValue = MathUtil.applyDeadband(opController.getLeftY(), 0.1);
+
+        climber.setClimberSpeed(climbValue);
+    }
+
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {}
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }
