@@ -9,12 +9,6 @@
           "data": {
             "pathName": "test"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Align to Right HPS"
-          }
         }
       ]
     }
