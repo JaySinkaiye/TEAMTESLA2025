@@ -12,6 +12,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.LimelightHelpers;
+import frc.robot.commands.AprilTagPositions.LockInLeftHPS;
+import frc.robot.commands.AprilTagPositions.LockInProcessor;
+import frc.robot.commands.AprilTagPositions.LockInReef;
+import frc.robot.commands.AprilTagPositions.LockInRightHPS;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
@@ -82,8 +86,47 @@ public class SwerveDrive extends Command {
         SmartDashboard.putNumber("Distance to limelight: ", getDistance());
 
         //april tag detection
-        //LimelightHelpers.
-        
+        double aprilTagID = LimelightHelpers.getFiducialID("limelight-front");
+
+        if (aprilTagID == 13 || aprilTagID == 1){
+            //left HPS
+            driverController.x().onTrue(new LockInLeftHPS(swerve, 50));
+        } else if(aprilTagID == 12 || aprilTagID == 2 ){
+            //right HPS
+            driverController.x().onTrue(new LockInRightHPS(swerve, 50));
+        }  else if (aprilTagID == 16 || aprilTagID == 3 ){
+            // processor
+            driverController.x().onTrue(new LockInProcessor(swerve, 50));
+        } else{
+            // reef
+            driverController.x().onTrue(new LockInReef(swerve, 50));
+        }
+
+            // switch (aprilTagID) {
+        //     // left HPS
+        //     case 13:
+        //         driverController.x().onTrue(new LockInLeftHPS(swerve, 50));
+        //         break;
+        //     case 1:
+        //         driverController.x().onTrue(new LockInLeftHPS(swerve, 50));
+        //         break;
+        //     // right HPS
+        //     case 12: 
+        //         driverController.x().onTrue(new LockInRightHPS(swerve, 50));
+        //         break;
+        //     case 2:
+        //         driverController.x().onTrue(new LockInRightHPS(swerve, 50));
+        //         break;
+        //     // processor
+        //     case 16:
+        //         driverController.x().onTrue(new LockInRightHPS(swerve, 50));
+        //         break;
+        //     case 3:
+        //         driverController.x().onTrue(new LockInRightHPS(swerve, 50));
+        //         break;
+        //     default:
+        //         break;
+        // }
     }
 
     @Override
