@@ -12,8 +12,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Climb;
-import frc.robot.commands.LockIn;
 import frc.robot.commands.SwerveDrive;
+import frc.robot.commands.AprilTagPositions.LockInLeftHPS;
+import frc.robot.commands.AprilTagPositions.LockInRightHPS;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -33,7 +34,8 @@ public class RobotContainer {
 
     public RobotContainer() {
 
-        NamedCommands.registerCommand("Align to April Tag 12", new LockIn(drivetrain, 50));
+        NamedCommands.registerCommand("Align to Right HPS", new LockInRightHPS(drivetrain, 50));
+        NamedCommands.registerCommand("Align to Left HPS", new LockInLeftHPS(drivetrain, 50));
         configureBindings();
 
         SmartDashboard.putData("AutonChooser", AutonChooser);
@@ -48,7 +50,7 @@ public class RobotContainer {
 
     private void configureBindings() {
         drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController));
-        driverController.x().onTrue(new LockIn(drivetrain, 50));
+        driverController.x().onTrue(new LockInRightHPS(drivetrain, 50));
     }
 
     public CommandXboxController getOperatorJoystick(){

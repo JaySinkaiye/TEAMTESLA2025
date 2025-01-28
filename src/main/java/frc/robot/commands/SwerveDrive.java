@@ -19,7 +19,7 @@ public class SwerveDrive extends Command {
 
     private CommandSwerveDrivetrain swerve;
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    //private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     
     private SendableChooser<Double> m_speedChooser;
 
@@ -75,11 +75,14 @@ public class SwerveDrive extends Command {
         
         m_Request = drive.withVelocityX(yVal * MaxSpeed)
         .withVelocityY(xVal * MaxSpeed)
-        .withRotationalRate(rotationVal * MaxSpeed);
+        .withRotationalRate(rotationVal * MaxAngularRate);
 
         swerve.setControl(m_Request);
 
         SmartDashboard.putNumber("Distance to limelight: ", getDistance());
+
+        //april tag detection
+        //LimelightHelpers.
         
     }
 

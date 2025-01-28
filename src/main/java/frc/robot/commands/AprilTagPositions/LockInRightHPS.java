@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.AprilTagPositions;
 
 import static edu.wpi.first.units.Units.*;
 
@@ -11,7 +11,7 @@ import frc.robot.LimelightHelpers;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
-public class LockIn extends Command {
+public class LockInRightHPS extends Command {
 
     private CommandSwerveDrivetrain swerve;
     private SwerveRequest m_Request;
@@ -21,10 +21,13 @@ public class LockIn extends Command {
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     private double desiredDistance;
 
-    public LockIn(CommandSwerveDrivetrain swerve, double desiredDistance){
+    public LockInRightHPS(CommandSwerveDrivetrain swerve, double desiredDistance){
         this.swerve = swerve;
         this.desiredDistance = desiredDistance;
         addRequirements(swerve);
+
+        //works for april tags 12 and 2 
+        LimelightHelpers.setPipelineIndex("limelight-front", 0);
     }
 
     @Override

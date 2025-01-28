@@ -3,12 +3,10 @@ package frc.robot.commands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Climber;
 
 public class Climb extends Command {
     private final Climber climber;
-    private RobotContainer robotContainer;
 
     private CommandXboxController opController;
 
@@ -22,7 +20,6 @@ public class Climb extends Command {
 
     @Override
     public void initialize(){
-        robotContainer = RobotContainer.getInstance();
         climber.resetClimberPosition();
     }
 
