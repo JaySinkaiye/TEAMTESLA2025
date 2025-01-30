@@ -88,6 +88,7 @@ public class SwerveDrive extends Command {
         //april tag detection
         double aprilTagID = LimelightHelpers.getFiducialID("limelight-front");
 
+        //placeholder distances 
         if (aprilTagID == 13 || aprilTagID == 1){
             //left HPS
             driverController.x().onTrue(new LockInLeftHPS(swerve, 50));
@@ -97,37 +98,12 @@ public class SwerveDrive extends Command {
         }  else if (aprilTagID == 16 || aprilTagID == 3 ){
             // processor
             driverController.x().onTrue(new LockInProcessor(swerve, 50));
-        } else if (aprilTagID == 6 ||aprilTagID == 7 || aprilTagID == 8 || aprilTagID == 9 ||aprilTagID == 10 || aprilTagID == 11 || aprilTagID == 17 ||aprilTagID == 18 || aprilTagID == 19 || aprilTagID == 20 ||aprilTagID == 21 || aprilTagID == 22 ){
-            //reef
-            driverController.x().onTrue(new LockInReef(swerve, 50));
         } else {
-            driverController.x().onTrue(null);
+            driverController.x().onTrue(new LockInReef(swerve, 50));
         }
-
-            // switch (aprilTagID) {
-        //     // left HPS
-        //     case 13:
-        //         driverController.x().onTrue(new LockInLeftHPS(swerve, 50));
-        //         break;
-        //     case 1:
-        //         driverController.x().onTrue(new LockInLeftHPS(swerve, 50));
-        //         break;
-        //     // right HPS
-        //     case 12: 
-        //         driverController.x().onTrue(new LockInRightHPS(swerve, 50));
-        //         break;
-        //     case 2:
-        //         driverController.x().onTrue(new LockInRightHPS(swerve, 50));
-        //         break;
-        //     // processor
-        //     case 16:
-        //         driverController.x().onTrue(new LockInRightHPS(swerve, 50));
-        //         break;
-        //     case 3:
-        //         driverController.x().onTrue(new LockInRightHPS(swerve, 50));
-        //         break;
-        //     default:
-        //         break;
+        // } else if (aprilTagID == 6 ||aprilTagID == 7 || aprilTagID == 8 || aprilTagID == 9 ||aprilTagID == 10 || aprilTagID == 11 || aprilTagID == 17 ||aprilTagID == 18 || aprilTagID == 19 || aprilTagID == 20 ||aprilTagID == 21 || aprilTagID == 22 ){
+        //     //reef
+        //     driverController.x().onTrue(new LockInReef(swerve, 50));
         // }
     }
 

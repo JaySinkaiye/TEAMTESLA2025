@@ -39,7 +39,8 @@ public class RobotContainer {
         configureBindings();
 
         SmartDashboard.putData("AutonChooser", AutonChooser);
-        AutonChooser.setDefaultOption("Test: ", new PathPlannerAuto("test"));
+        AutonChooser.setDefaultOption("Test: ", new PathPlannerAuto("pidcontrol"));
+        AutonChooser.addOption("new Tests", new PathPlannerAuto("New Auto"));
 
         climber.setDefaultCommand(new Climb(climber, operatorController));
     }
@@ -50,7 +51,6 @@ public class RobotContainer {
 
     private void configureBindings() {
         drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController));
-        driverController.x().onTrue(new LockInRightHPS(drivetrain, 50));
     }
 
     public CommandXboxController getOperatorJoystick(){

@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-// import com.ctre.phoenix6.hardware.CANcoder;
 // import com.ctre.phoenix6.hardware.TalonFX;
 
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -10,10 +9,9 @@ public class Elevator extends SubsystemBase {
     // private TalonFX leftElevatorMotor = new TalonFX(51);
     // private TalonFX rightElevatorMotor = new TalonFX(52);
 
-    // private CANcoder elevatorEncoder = new CANcoder(1);
-
     // public Elevator(){
-
+    //     leftElevatorMotor.setPosition(0);
+    //     rightElevatorMotor.setPosition(0);
     // }
 
     // @Override
@@ -32,11 +30,11 @@ public class Elevator extends SubsystemBase {
     // }
 
     // public double getElevatorPosition(){
-    //     return elevatorEncoder.getAbsolutePosition().getValueAsDouble();
+    //     return leftElevatorMotor.getPosition().getValueAsDouble();
     // }
 
-    // public void ElevateHer(double yVal){
-    //     leftElevatorMotor.set(0.8 * yVal);
-    //     rightElevatorMotor.set(0.8 * yVal);
+    // public void resetElevatorPosition(){
+    //     leftElevatorMotor.setPosition(0);
+    //     rightElevatorMotor.setPosition(0);
     // }
 }

@@ -17,10 +17,6 @@ public class Climber extends SubsystemBase {
         SmartDashboard.putNumber("Climber Position", getClimberPosition());
     }
 
-    // public void climb(CommandXboxController operator){
-    //     climbMotor.set(0.8 * operator.getLeftY());
-    // }
-
     public void setClimberSpeed(double speed){
         climbMotor.set(speed);
     }
