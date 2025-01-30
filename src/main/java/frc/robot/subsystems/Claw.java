@@ -8,23 +8,26 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Intake extends SubsystemBase {
-  // /** Creates a new Intake. */
+public class Claw extends SubsystemBase {
+  /** Creates a new Intake. */
   // private TalonFX intakeMotor = new TalonFX(0);
   // private TalonFX wristMotor = new TalonFX(1);
 
-  // public Intake() {}
+  // public Claw() {
+  //   resetIntakePosition();
+  //   resetWristPosition();
+  // }
 
   // @Override
   // public void periodic() {
   //   // This method will be called once per scheduler run
   // }
 
-  // public void setIntakeMotor(double ispeed){
+  // public void setIntakeSpeed(double ispeed){
   //   intakeMotor.set(ispeed);
   // }
 
-  // public void setWristMotor(double wspeed){
+  // public void setWristSpeed(double wspeed){
   //   wristMotor.set(wspeed);
   // }
 

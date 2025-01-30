@@ -6,6 +6,7 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,12 +38,17 @@ public class SwerveDrive extends Command {
     private CommandXboxController driverController;
 
     private double rotationVal, xVal, yVal;
+    private SlewRateLimiter slewR, slewX, slewY;
 
     public SwerveDrive(CommandSwerveDrivetrain swerve, CommandXboxController driver){
 
         this.swerve = swerve;
         this.driverController = driver;
         addRequirements(swerve);
+
+        slewR = new SlewRateLimiter(0.2);
+        slewX = new SlewRateLimiter(0.2);
+        slewY = new SlewRateLimiter(0.2);
 
         m_speedChooser = new SendableChooser<Double>();
         m_speedChooser.addOption("100%", 1.0);
@@ -77,9 +83,9 @@ public class SwerveDrive extends Command {
         ));  
         driverController.leftBumper().onTrue(swerve.runOnce(() -> swerve.seedFieldCentric()));
         
-        m_Request = drive.withVelocityX(yVal * MaxSpeed)
-        .withVelocityY(xVal * MaxSpeed)
-        .withRotationalRate(rotationVal * MaxAngularRate);
+        m_Request = drive.withVelocityX(slewY.calculate(yVal * MaxSpeed))
+        .withVelocityY(slewX.calculate(xVal * MaxSpeed))
+        .withRotationalRate(slewR.calculate(rotationVal * MaxAngularRate));
 
         swerve.setControl(m_Request);
 

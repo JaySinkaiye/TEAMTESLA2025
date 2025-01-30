@@ -43,6 +43,7 @@ public class RobotContainer {
         AutonChooser.addOption("new Tests", new PathPlannerAuto("New Auto"));
 
         climber.setDefaultCommand(new Climb(climber, operatorController));
+        
     }
 
     public static RobotContainer getInstance(){
