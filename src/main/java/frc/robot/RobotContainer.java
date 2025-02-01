@@ -36,7 +36,7 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("Align to Right HPS", new LockInRightHPS(drivetrain, 50));
         NamedCommands.registerCommand("Align to Left HPS", new LockInLeftHPS(drivetrain, 50));
-        NamedCommands.registerCommand("Align to Reed", new LockInReef(drivetrain, 20));
+        NamedCommands.registerCommand("Align to Reef", new LockInReef(drivetrain, 20));
         NamedCommands.registerCommand("Align to Processor", new LockInProcessor(drivetrain, 50));
         configureBindings();
 
