@@ -67,7 +67,7 @@ public class LockInProcessor extends Command {
         double limelightLensHeightInches = 6;
 
         // distance from april tag to floor
-        double goalHeightInches = 58.5;
+        double goalHeightInches = 47.88;
 
         double angleToGoalDegrees = limilightMountAngleDegrees + targetOffsetAngle_Vertical;
         double angleToGoalRadians = angleToGoalDegrees * (Math.PI/180);

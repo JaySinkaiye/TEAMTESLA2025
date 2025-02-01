@@ -67,7 +67,7 @@ public class LockInLeftHPS extends Command {
         double limelightLensHeightInches = 6;
 
         // distance from april tag to floor
-        double goalHeightInches = 58.5;
+        double goalHeightInches = 55.25;
 
         double angleToGoalDegrees = limilightMountAngleDegrees + targetOffsetAngle_Vertical;
         double angleToGoalRadians = angleToGoalDegrees * (Math.PI/180);

@@ -67,7 +67,7 @@ public class LockInReef extends Command {
         double limelightLensHeightInches = 6;
 
         // distance from april tag to floor
-        double goalHeightInches = 58.5;
+        double goalHeightInches = 8.75;
 
         double angleToGoalDegrees = limilightMountAngleDegrees + targetOffsetAngle_Vertical;
         double angleToGoalRadians = angleToGoalDegrees * (Math.PI/180);
