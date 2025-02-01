@@ -61,7 +61,7 @@ public class LockInLeftHPS extends Command {
         double targetOffsetAngle_Vertical = LimelightHelpers.getTY("limelight-front");
 
         //how many degrees back the limelight is from being vertical
-        double limilightMountAngleDegrees = 30;
+        double limilightMountAngleDegrees = 0;
 
         //distance from the center of the limelight lens to the floor
         double limelightLensHeightInches = 6;

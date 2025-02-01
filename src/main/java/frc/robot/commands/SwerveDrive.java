@@ -98,14 +98,18 @@ public class SwerveDrive extends Command {
         if (aprilTagID == 13 || aprilTagID == 1){
             //left HPS
             driverController.x().onTrue(new LockInLeftHPS(swerve, 50));
+            System.out.println("left HPS");
         } else if(aprilTagID == 12 || aprilTagID == 2 ){
             //right HPS
             driverController.x().onTrue(new LockInRightHPS(swerve, 50));
+            System.out.println("right HPS");
         }  else if (aprilTagID == 16 || aprilTagID == 3 ){
             // processor
             driverController.x().onTrue(new LockInProcessor(swerve, 50));
+            System.out.println("processor");
         } else {
             driverController.x().onTrue(new LockInReef(swerve, 50));
+            System.out.println("reef");
         }
         
     }
@@ -122,7 +126,7 @@ public class SwerveDrive extends Command {
         double targetOffsetAngle_Vertical = LimelightHelpers.getTY("limelight-front");
 
         //how many degrees back the limelight is from being vertical
-        double limilightMountAngleDegrees = 30;
+        double limilightMountAngleDegrees = 0;
 
         //distance from the center of the limelight lens to the floor
         double limelightLensHeightInches = 6;
