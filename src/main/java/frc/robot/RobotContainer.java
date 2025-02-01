@@ -14,14 +14,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Climb;
 import frc.robot.commands.SwerveDrive;
 import frc.robot.commands.AprilTagPositions.LockInLeftHPS;
+import frc.robot.commands.AprilTagPositions.LockInProcessor;
+import frc.robot.commands.AprilTagPositions.LockInReef;
 import frc.robot.commands.AprilTagPositions.LockInRightHPS;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class RobotContainer {
-    public static RobotContainer robotContainer = new RobotContainer();
-
     //subsytems
     public final Climber climber = new Climber();
 
@@ -36,18 +36,16 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("Align to Right HPS", new LockInRightHPS(drivetrain, 50));
         NamedCommands.registerCommand("Align to Left HPS", new LockInLeftHPS(drivetrain, 50));
+        NamedCommands.registerCommand("Align to Reed", new LockInReef(drivetrain, 20));
+        NamedCommands.registerCommand("Align to Processor", new LockInProcessor(drivetrain, 50));
         configureBindings();
 
         SmartDashboard.putData("AutonChooser", AutonChooser);
         AutonChooser.setDefaultOption("Test: ", new PathPlannerAuto("pidcontrol"));
         AutonChooser.addOption("new Tests", new PathPlannerAuto("New Auto"));
 
-        climber.setDefaultCommand(new Climb(climber, operatorController));
+        climber.setDefaultCommand(new Climb(climber, driverController));
         
-    }
-
-    public static RobotContainer getInstance(){
-        return robotContainer;
     }
 
     private void configureBindings() {

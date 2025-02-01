@@ -5,6 +5,7 @@
 package frc.robot.commands.Auton;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.LimelightHelpers;
 import frc.robot.commands.AprilTagPositions.LockInRightHPS;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
@@ -21,12 +22,16 @@ public class TestAuton extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    new LockInRightHPS(swerve, 50);
+    double num = LimelightHelpers.getFiducialID("limelight-front");
+    if(num < 20){
+      new LockInRightHPS(swerve, 50);
+    }
   }
 
   // Called once the command ends or is interrupted.

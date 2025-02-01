@@ -5,9 +5,15 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "New New Path"
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "Align to Right HPS"
+            "name": null
           }
         }
       ]

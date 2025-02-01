@@ -46,9 +46,9 @@ public class SwerveDrive extends Command {
         this.driverController = driver;
         addRequirements(swerve);
 
-        slewR = new SlewRateLimiter(0.2);
-        slewX = new SlewRateLimiter(0.2);
-        slewY = new SlewRateLimiter(0.2);
+        slewR = new SlewRateLimiter(7);
+        slewX = new SlewRateLimiter(7);
+        slewY = new SlewRateLimiter(7);
 
         m_speedChooser = new SendableChooser<Double>();
         m_speedChooser.addOption("100%", 1.0);
@@ -90,6 +90,7 @@ public class SwerveDrive extends Command {
         swerve.setControl(m_Request);
 
         SmartDashboard.putNumber("Distance to limelight: ", getDistance());
+        SmartDashboard.putNumber("x speed", slewY.calculate(yVal * MaxSpeed));
 
         //april tag detection
         double aprilTagID = LimelightHelpers.getFiducialID("limelight-front");
@@ -107,10 +108,7 @@ public class SwerveDrive extends Command {
         } else {
             driverController.x().onTrue(new LockInReef(swerve, 50));
         }
-        // } else if (aprilTagID == 6 ||aprilTagID == 7 || aprilTagID == 8 || aprilTagID == 9 ||aprilTagID == 10 || aprilTagID == 11 || aprilTagID == 17 ||aprilTagID == 18 || aprilTagID == 19 || aprilTagID == 20 ||aprilTagID == 21 || aprilTagID == 22 ){
-        //     //reef
-        //     driverController.x().onTrue(new LockInReef(swerve, 50));
-        // }
+        
     }
 
     @Override

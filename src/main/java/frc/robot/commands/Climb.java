@@ -8,13 +8,13 @@ import frc.robot.subsystems.Climber;
 public class Climb extends Command {
     private final Climber climber;
 
-    private CommandXboxController opController;
+    private CommandXboxController dController;
 
     private double climbValue;
 
-    public Climb(Climber climber, CommandXboxController op){
+    public Climb(Climber climber, CommandXboxController d){
         this.climber = climber;
-        this.opController = op;
+        this.dController = d;
         addRequirements(climber);
     }
 
@@ -26,7 +26,7 @@ public class Climb extends Command {
     @Override
     public void execute(){
 
-        climbValue = MathUtil.applyDeadband(opController.getLeftY(), 0.1);
+        climbValue = MathUtil.applyDeadband(dController.getLeftTriggerAxis(), 0.1);
 
         climber.setClimberSpeed(climbValue);
     }
