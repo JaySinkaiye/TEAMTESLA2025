@@ -36,12 +36,12 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("Align to Right HPS", new LockInRightHPS(drivetrain, 50));
         NamedCommands.registerCommand("Align to Left HPS", new LockInLeftHPS(drivetrain, 50));
-        NamedCommands.registerCommand("Align to Reef", new LockInReef(drivetrain, 20));
+        NamedCommands.registerCommand("Align to Reef", new LockInReef(drivetrain, 18));
         NamedCommands.registerCommand("Align to Processor", new LockInProcessor(drivetrain, 50));
         configureBindings();
 
         SmartDashboard.putData("AutonChooser", AutonChooser);
-        AutonChooser.setDefaultOption("Test: ", new PathPlannerAuto("pidcontrol"));
+        AutonChooser.setDefaultOption("PID Test: ", new PathPlannerAuto("pidcontrols"));
         AutonChooser.addOption("new Tests", new PathPlannerAuto("New Auto"));
 
         climber.setDefaultCommand(new Climb(climber, driverController));

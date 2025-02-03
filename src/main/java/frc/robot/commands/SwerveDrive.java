@@ -46,9 +46,9 @@ public class SwerveDrive extends Command {
         this.driverController = driver;
         addRequirements(swerve);
 
-        slewR = new SlewRateLimiter(7);
-        slewX = new SlewRateLimiter(7);
-        slewY = new SlewRateLimiter(7);
+        slewR = new SlewRateLimiter(8);
+        slewX = new SlewRateLimiter(8);
+        slewY = new SlewRateLimiter(8);
 
         m_speedChooser = new SendableChooser<Double>();
         m_speedChooser.addOption("100%", 1.0);
@@ -99,6 +99,7 @@ public class SwerveDrive extends Command {
             //left HPS
             driverController.x().onTrue(new LockInLeftHPS(swerve, 50));
             System.out.println("left HPS");
+            
         } else if(aprilTagID == 12 || aprilTagID == 2 ){
             //right HPS
             driverController.x().onTrue(new LockInRightHPS(swerve, 50));
