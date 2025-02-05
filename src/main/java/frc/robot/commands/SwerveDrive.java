@@ -62,7 +62,6 @@ public class SwerveDrive extends Command {
         m_speedChooser.addOption("30%", 0.3);
         m_speedChooser.addOption("20%", 0.2);
         SmartDashboard.putData("Speed Percent", m_speedChooser);
-
     }
 
     @Override
@@ -88,9 +87,6 @@ public class SwerveDrive extends Command {
 
         swerve.setControl(m_Request);
 
-        SmartDashboard.putNumber("Distance to limelight: ", getDistance());
-        SmartDashboard.putNumber("x speed", slewY.calculate(yVal * MaxSpeed));
-
         //april tag detection
         double aprilTagID = LimelightHelpers.getFiducialID("limelight-front");
 
@@ -109,10 +105,9 @@ public class SwerveDrive extends Command {
             driverController.x().onTrue(new LockInProcessor(swerve, 50));
             System.out.println("processor");
         } else {
-            driverController.x().onTrue(new LockInReef(swerve, 50));
+            driverController.x().onTrue(new LockInReef(swerve, 18));
             System.out.println("reef");
         }
-        
     }
 
     @Override
@@ -121,26 +116,5 @@ public class SwerveDrive extends Command {
     @Override
     public boolean isFinished() {
         return false;
-    }
-
-        public static double getDistance(){
-        double targetOffsetAngle_Vertical = LimelightHelpers.getTY("limelight-front");
-
-        //how many degrees back the limelight is from being vertical
-        double limilightMountAngleDegrees = 0;
-
-        //distance from the center of the limelight lens to the floor
-        double limelightLensHeightInches = 6;
-
-        // distance from april tag to floor
-        double goalHeightInches = 58.5;
-
-        double angleToGoalDegrees = limilightMountAngleDegrees + targetOffsetAngle_Vertical;
-        double angleToGoalRadians = angleToGoalDegrees * (Math.PI/180);
-
-        //calculate distance
-        double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches)/ Math.tan(angleToGoalRadians);
-
-        return distanceFromLimelightToGoalInches;
     }
 }
