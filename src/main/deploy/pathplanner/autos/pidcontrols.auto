@@ -7,7 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "test"
+            "pathName": "t1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "t2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "t3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "t4"
           }
         }
       ]
