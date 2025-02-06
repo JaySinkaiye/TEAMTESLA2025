@@ -17,6 +17,8 @@ public class Limelight {
 
     PIDController pid = new PIDController(0.01, 0, 0);
     PIDController dPid = new PIDController(0.01, 0.01, 0);
+    PIDController spid = new PIDController(0.01, 0, 0);
+    double aprilTagID = LimelightHelpers.getFiducialID("limelight-front");
 
     public Limelight(double goalHeightInches, double desiredDistance){
         this.targetHeight = goalHeightInches;
@@ -53,13 +55,13 @@ public class Limelight {
 
     // does the same thing as above but using inches
     public double lockIn(){
-        // double kP = 0.01;
-        // double targetingForwardSpeed = (getDistance() - desiredDistance) * kP;
-        // targetingForwardSpeed *= MaxSpeed;
-        // return targetingForwardSpeed;
-
         dPid.setTolerance(1);
         return (dPid.calculate(getDistance(), desiredDistance)) * -MaxSpeed;
+    }
+
+    public double slide(){
+        spid.setTolerance(1);
+        return spid.calculate(LimelightHelpers.getTXNC("limelight-front"), 0.1) * MaxSpeed;
     }
 
     public double limelight_aim_proportional()
@@ -70,8 +72,7 @@ public class Limelight {
     }
 
     public Boolean isDone(){
-        return (dPid.atSetpoint()&& pid.atSetpoint());
-        //ad code to stop if not reading limelight
+        return (dPid.atSetpoint() && pid.atSetpoint()) || !LimelightHelpers.getTV("limelight-front");
     }
 
     public void printDeets(){

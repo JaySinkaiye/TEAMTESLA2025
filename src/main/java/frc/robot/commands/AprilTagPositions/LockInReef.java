@@ -36,9 +36,10 @@ public class LockInReef extends Command {
     public void execute(){
         double forwardSpeed = LL.lockIn();
         double turnSpeed = LL.limelight_aim_proportional();
+        double cupidShuffle = LL.slide();
 
         m_Request = Drive.withVelocityX(forwardSpeed)
-            .withVelocityY(0)
+            .withVelocityY(cupidShuffle)
             .withRotationalRate(turnSpeed);
 
         swerve.setControl(m_Request);
