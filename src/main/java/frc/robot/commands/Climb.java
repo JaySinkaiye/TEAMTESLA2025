@@ -26,10 +26,12 @@ public class Climb extends Command {
     @Override
     public void execute(){
 
-        if (dController.leftTrigger() != null){
+        if (dController.getLeftTriggerAxis() >= 0.1){
             climbValue = MathUtil.applyDeadband(dController.getLeftTriggerAxis(), 0.1);
-        } else if (dController.rightTrigger() != null){
-            climbValue = MathUtil.applyDeadband(dController.getLeftTriggerAxis(), 0.1) * -1;
+        } else if (dController.getRightTriggerAxis() >= 0.1){
+            climbValue = MathUtil.applyDeadband(dController.getRightTriggerAxis(), 0.1) * -1;
+        } else {
+            climbValue = 0;
         }
 
         climber.setClimberSpeed(climbValue);
