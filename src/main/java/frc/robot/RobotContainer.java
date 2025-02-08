@@ -13,10 +13,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Climb;
 import frc.robot.commands.SwerveDrive;
-import frc.robot.commands.AprilTagPositions.LockInLeftHPS;
+import frc.robot.commands.AprilTagPositions.LockInHPS;
 import frc.robot.commands.AprilTagPositions.LockInProcessor;
 import frc.robot.commands.AprilTagPositions.LockInReef;
-import frc.robot.commands.AprilTagPositions.LockInRightHPS;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -33,9 +32,7 @@ public class RobotContainer {
     private final SendableChooser<Command> AutonChooser = new SendableChooser<>();
 
     public RobotContainer() {
-
-        NamedCommands.registerCommand("Align to Right HPS", new LockInRightHPS(drivetrain, 50));
-        NamedCommands.registerCommand("Align to Left HPS", new LockInLeftHPS(drivetrain, 50));
+        NamedCommands.registerCommand("Align to HPS", new LockInHPS(drivetrain, 50));
         NamedCommands.registerCommand("Align to Reef", new LockInReef(drivetrain, 18));
         NamedCommands.registerCommand("Align to Processor", new LockInProcessor(drivetrain, 50));
         configureBindings();

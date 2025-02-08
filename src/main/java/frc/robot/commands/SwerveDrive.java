@@ -13,10 +13,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.LimelightHelpers;
-import frc.robot.commands.AprilTagPositions.LockInLeftHPS;
+import frc.robot.commands.AprilTagPositions.LockInHPS;
 import frc.robot.commands.AprilTagPositions.LockInProcessor;
 import frc.robot.commands.AprilTagPositions.LockInReef;
-import frc.robot.commands.AprilTagPositions.LockInRightHPS;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
@@ -39,6 +38,10 @@ public class SwerveDrive extends Command {
 
     private double rotationVal, xVal, yVal;
     private SlewRateLimiter slewR, slewX, slewY;
+
+    private LockInHPS lihps50 = new LockInHPS(swerve, 50);
+    private LockInReef lir18 = new LockInReef(swerve, 18);
+    private LockInProcessor lip20 = new LockInProcessor(swerve, 20);
 
     public SwerveDrive(CommandSwerveDrivetrain swerve, CommandXboxController driver){
 
@@ -91,21 +94,19 @@ public class SwerveDrive extends Command {
         double aprilTagID = LimelightHelpers.getFiducialID("limelight-front");
 
         //placeholder distances 
-        if (aprilTagID == 13 || aprilTagID == 1){
+        if (aprilTagID == 13 || aprilTagID == 1 || aprilTagID == 12 || aprilTagID == 2){
             //left HPS
-            driverController.x().onTrue(new LockInLeftHPS(swerve, 50));
-            System.out.println("left HPS");
-            
-        } else if(aprilTagID == 12 || aprilTagID == 2 ){
-            //right HPS
-            driverController.x().onTrue(new LockInRightHPS(swerve, 50));
-            System.out.println("right HPS");
-        }  else if (aprilTagID == 16 || aprilTagID == 3 ){
+            driverController.x().onTrue(lihps50);
+            lihps50.tea();
+            System.out.println("HPS");        
+        } else if (aprilTagID == 16 || aprilTagID == 3 ){
             // processor
-            driverController.x().onTrue(new LockInProcessor(swerve, 50));
+            driverController.x().onTrue(lip20);
+            lip20.tea();
             System.out.println("processor");
         } else {
-            driverController.x().onTrue(new LockInReef(swerve, 18));
+            driverController.x().onTrue(lir18);
+            lir18.tea();
             System.out.println("reef");
         }
     }

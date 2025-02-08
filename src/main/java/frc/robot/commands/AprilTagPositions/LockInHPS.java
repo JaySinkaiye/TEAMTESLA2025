@@ -8,17 +8,16 @@ import frc.robot.Limelight;
 import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
-public class LockInLeftHPS extends Command {
+public class LockInHPS extends Command {
 
     private CommandSwerveDrivetrain swerve;
     private SwerveRequest m_Request;
     private final SwerveRequest.RobotCentric Drive = new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.Velocity);
 
     private double desiredDistance;
-
     private Limelight LL;
 
-    public LockInLeftHPS(CommandSwerveDrivetrain swerve, double desiredDistance){
+    public LockInHPS(CommandSwerveDrivetrain swerve, double desiredDistance){
         this.swerve = swerve;
         this.desiredDistance = desiredDistance;
         addRequirements(swerve);
