@@ -14,13 +14,10 @@ public class LockInReef extends Command {
     private SwerveRequest m_Request;
     private final SwerveRequest.RobotCentric Drive = new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.Velocity);
 
-    private double desiredDistance;
-
     private Limelight LL;
 
     public LockInReef(CommandSwerveDrivetrain swerve, double desiredDistance){
         this.swerve = swerve;
-        this.desiredDistance = desiredDistance;
         addRequirements(swerve);
 
         //works for april tags 12 and 2 
@@ -35,12 +32,11 @@ public class LockInReef extends Command {
     @Override
     public void execute(){
         double forwardSpeed = LL.lockIn();
-        double turnSpeed = LL.limelight_aim_proportional();
         double cupidShuffle = LL.slide();
 
         m_Request = Drive.withVelocityX(forwardSpeed)
             .withVelocityY(cupidShuffle)
-            .withRotationalRate(turnSpeed);
+            .withRotationalRate(0);
 
         swerve.setControl(m_Request);
     }

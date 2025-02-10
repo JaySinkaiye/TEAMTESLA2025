@@ -14,24 +14,21 @@ public class LockInProcessor extends Command {
     private SwerveRequest m_Request;
     private final SwerveRequest.RobotCentric Drive = new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.Velocity);
 
-    private double desiredDistance;
-
     private Limelight LL;
 
     public LockInProcessor(CommandSwerveDrivetrain swerve, double desiredDistance){
         this.swerve = swerve;
-        this.desiredDistance = desiredDistance;
         addRequirements(swerve);
 
         //works for april tags 16 and 3 
         LimelightHelpers.setPipelineIndex("limelight-front", 0);
+        LL = new Limelight(47.88, desiredDistance);
     }
 
     @Override
     public void initialize(){
-        LL = new Limelight(47.88, desiredDistance);
-
     }
+    
     @Override
     public void execute(){
         double forwardSpeed = LL.lockIn();

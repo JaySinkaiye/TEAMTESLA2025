@@ -35,9 +35,7 @@ public class Climb extends Command {
         }
         climber.setClimberSpeed(climbValue);
 
-        if(dController.a() != null){
-            climber.gotToPos(30);
-        }
+        dController.b().onTrue(climber.gotToPos(30));
     }
 
     // Called once the command ends or is interrupted.

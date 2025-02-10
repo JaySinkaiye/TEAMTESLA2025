@@ -7,7 +7,6 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,6 +15,7 @@ import frc.robot.LimelightHelpers;
 import frc.robot.commands.AprilTagPositions.LockInHPS;
 import frc.robot.commands.AprilTagPositions.LockInProcessor;
 import frc.robot.commands.AprilTagPositions.LockInReef;
+import frc.robot.commands.AprilTagPositions.TurnInReef;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
@@ -32,16 +32,15 @@ public class SwerveDrive extends Command {
     // Use open-loop control for drive motors
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); 
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
     private CommandXboxController driverController;
 
     private double rotationVal, xVal, yVal;
     private SlewRateLimiter slewR, slewX, slewY;
 
-    private LockInHPS lihps50 = new LockInHPS(swerve, 50);
-    private LockInReef lir18 = new LockInReef(swerve, 18);
-    private LockInProcessor lip20 = new LockInProcessor(swerve, 20);
+    private LockInHPS lihps19;
+    private LockInReef lir4point4;
+    private LockInProcessor lip20;
 
     public SwerveDrive(CommandSwerveDrivetrain swerve, CommandXboxController driver){
 
@@ -65,6 +64,10 @@ public class SwerveDrive extends Command {
         m_speedChooser.addOption("30%", 0.3);
         m_speedChooser.addOption("20%", 0.2);
         SmartDashboard.putData("Speed Percent", m_speedChooser);
+
+        lihps19 = new LockInHPS(swerve, 17);
+        lir4point4 = new LockInReef(swerve, 4.4);
+        lip20 = new LockInProcessor(swerve, 20);
     }
 
     @Override
@@ -78,10 +81,7 @@ public class SwerveDrive extends Command {
         yVal = MathUtil.applyDeadband(-driverController.getLeftY() * m_speedChooser.getSelected(), 0.2);
         rotationVal = MathUtil.applyDeadband(-driverController.getRightX() * m_speedChooser.getSelected(), 0.1);
 
-        driverController.a().whileTrue(swerve.applyRequest(() -> brake));
-        driverController.b().whileTrue(swerve.applyRequest(() ->
-        point.withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))
-        ));  
+        driverController.rightBumper().whileTrue(swerve.applyRequest(() -> brake));
         driverController.leftBumper().onTrue(swerve.runOnce(() -> swerve.seedFieldCentric()));
         
         m_Request = drive.withVelocityX(slewY.calculate(yVal * MaxSpeed))
@@ -96,8 +96,8 @@ public class SwerveDrive extends Command {
         //placeholder distances 
         if (aprilTagID == 13 || aprilTagID == 1 || aprilTagID == 12 || aprilTagID == 2){
             //left HPS
-            driverController.x().onTrue(lihps50);
-            lihps50.tea();
+            driverController.x().onTrue(lihps19);
+            lihps19.tea();
             System.out.println("HPS");        
         } else if (aprilTagID == 16 || aprilTagID == 3 ){
             // processor
@@ -105,8 +105,9 @@ public class SwerveDrive extends Command {
             lip20.tea();
             System.out.println("processor");
         } else {
-            driverController.x().onTrue(lir18);
-            lir18.tea();
+            driverController.x().onTrue(lir4point4);
+            driverController.a().onTrue(new TurnInReef(swerve));
+            lir4point4.tea();
             System.out.println("reef");
         }
     }

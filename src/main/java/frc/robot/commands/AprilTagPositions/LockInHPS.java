@@ -14,22 +14,20 @@ public class LockInHPS extends Command {
     private SwerveRequest m_Request;
     private final SwerveRequest.RobotCentric Drive = new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.Velocity);
 
-    private double desiredDistance;
     private Limelight LL;
 
     public LockInHPS(CommandSwerveDrivetrain swerve, double desiredDistance){
         this.swerve = swerve;
-        this.desiredDistance = desiredDistance;
         addRequirements(swerve);
 
         //works for april tags 13 and 1 
         LimelightHelpers.setPipelineIndex("limelight-front", 0);
+        LL = new Limelight(52.25, desiredDistance);
+
     }
 
     @Override
     public void initialize(){
-        // see if command lags or not
-        LL = new Limelight(52.25, desiredDistance);
     }
 
     @Override
