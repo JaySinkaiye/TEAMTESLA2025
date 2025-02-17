@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicDutyCycle;
@@ -55,8 +56,8 @@ public class Climber extends SubsystemBase {
         var talonConfigs = new TalonFXConfiguration();
 
         // gear ratio
-        // FeedbackConfigs fb = new FeedbackConfigs();
-        // fb.SensorToMechanismRatio = 60;
+        FeedbackConfigs fb = talonConfigs.Feedback;
+        fb.SensorToMechanismRatio = 60;
 
         var slot0Configs = talonConfigs.Slot0;
         slot0Configs.kP = 10;

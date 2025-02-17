@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 // import com.ctre.phoenix6.configs.MotorOutputConfigs;
 // import com.ctre.phoenix6.configs.TalonFXConfiguration;
+// import com.ctre.phoenix6.controls.DutyCycleOut;
+// import com.ctre.phoenix6.controls.Follower;
 // import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC;
 // import com.ctre.phoenix6.hardware.TalonFX;
 // import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
@@ -10,17 +12,17 @@ package frc.robot.subsystems;
 // import com.ctre.phoenix6.signals.NeutralModeValue;
 
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-// import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Elevator extends SubsystemBase {
-//     private TalonFX leftElevatorMotor = new TalonFX(51);
-//     private TalonFX rightElevatorMotor = new TalonFX(52);
+//     private final TalonFX leftElevatorMotor = new TalonFX(51);
+//     private final TalonFX follower = new TalonFX(52);
+//     private final DutyCycleOut duty = new DutyCycleOut(0);
 
 //     public Elevator(){
 //         leftElevatorMotor.setPosition(0);
-//         rightElevatorMotor.setPosition(0);
 //         applyArmMotorConfigs(InvertedValue.Clockwise_Positive);
+//         follower.setControl(new Follower(51, true));
 //     }
 
 //     @Override
@@ -28,14 +30,14 @@ public class Elevator extends SubsystemBase {
 //         SmartDashboard.putNumber("Elevator Encoder: ", getElevatorPosition());
 //     }
     
-//     public void setElevatorMotorSpeed(double lspeed, double rspeed){
-//         leftElevatorMotor.set(lspeed);
-//         rightElevatorMotor.set(rspeed);
+//     public void setElevatorMotorSpeed(double speed){
+//         duty.Output = speed;
+//         duty.EnableFOC = true;
+//         leftElevatorMotor.setControl(duty);
 //     }
 
 //     public void stopElevatorMotors(){
 //         leftElevatorMotor.set(0);
-//         rightElevatorMotor.set(0);
 //     }
 
 //     public double getElevatorPosition(){
@@ -44,18 +46,12 @@ public class Elevator extends SubsystemBase {
 
 //     public void resetElevatorPosition(){
 //         leftElevatorMotor.setPosition(0);
-//         rightElevatorMotor.setPosition(0);
 //     }
 
-//     public Command gotToPos(double pos){
+//     public void GoToPos(double pos){
 //         final MotionMagicTorqueCurrentFOC request = new MotionMagicTorqueCurrentFOC(pos);
-//         return runOnce(
-//         ()->{
-//             rightElevatorMotor.setControl(request);
-//             leftElevatorMotor.setControl(request);
-//         }
-//         );
-//   }
+//         leftElevatorMotor.setControl(request);
+//     }
 
 //     private void applyArmMotorConfigs(InvertedValue inversion){
 //         TalonFXConfiguration talonConfigs = new TalonFXConfiguration();
@@ -68,22 +64,22 @@ public class Elevator extends SubsystemBase {
 //         talonConfigs.Slot0.GravityType = GravityTypeValue.Elevator_Static;
 
 //         var motionMagicConfigs = talonConfigs.MotionMagic;
-//         motionMagicConfigs.MotionMagicCruiseVelocity = 5;
-//         motionMagicConfigs.MotionMagicAcceleration = 10;
-//         motionMagicConfigs.MotionMagicJerk = 30;
+//         motionMagicConfigs.MotionMagicCruiseVelocity = 50;
+//         motionMagicConfigs.MotionMagicAcceleration = 100;
+//         motionMagicConfigs.MotionMagicJerk = 1000;
 
 //         talonConfigs.Feedback.FeedbackRemoteSensorID = leftElevatorMotor.getDeviceID();
 //         talonConfigs.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
 
 //         leftElevatorMotor.getConfigurator().apply(talonConfigs);
-//         rightElevatorMotor.getConfigurator().apply(talonConfigs);
+//         follower.getConfigurator().apply(talonConfigs);
 
 //         MotorOutputConfigs motorOutputConfigsRight = new MotorOutputConfigs();
 //         motorOutputConfigsRight.Inverted = inversion;
 //         motorOutputConfigsRight.NeutralMode = NeutralModeValue.Brake;
 //         MotorOutputConfigs motorOutputConfigsLeft = new MotorOutputConfigs();
 //         motorOutputConfigsLeft.NeutralMode = NeutralModeValue.Brake;
-//         rightElevatorMotor.getConfigurator().apply(motorOutputConfigsRight);
+//         follower.getConfigurator().apply(motorOutputConfigsRight);
 //         leftElevatorMotor.getConfigurator().apply(motorOutputConfigsLeft);
 //   }
 }

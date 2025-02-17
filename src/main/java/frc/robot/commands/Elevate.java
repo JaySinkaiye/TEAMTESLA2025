@@ -1,7 +1,5 @@
 package frc.robot.commands;
 
-// import java.util.function.DoubleSupplier;
-
 // import edu.wpi.first.math.MathUtil;
 // import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,13 +18,13 @@ public class Elevate extends Command {
     //     this.opController = op;
     //     addRequirements(elevator);
 
-    //     ylimit = new SlewRateLimiter(0.1);
+    //     ylimit = new SlewRateLimiter(0.5);
     // }
 
     // @Override
     // public void execute(){
-    //     yVal = MathUtil.applyDeadband(opController.getLeftX(), 0.1);
-    //     elevator.setElevatorMotorSpeed(ylimit.calculate(yVal), ylimit.calculate(yVal));
+    //     yVal = MathUtil.applyDeadband(opController.getLeftTriggerAxis(), 0.1);
+    //     elevator.setElevatorMotorSpeed(ylimit.calculate(yVal));
     // }
 
     // // Called once the command ends or is interrupted.
