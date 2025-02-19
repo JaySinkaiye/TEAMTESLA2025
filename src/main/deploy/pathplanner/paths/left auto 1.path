@@ -45,7 +45,7 @@
     "rotation": -116.91655461695129
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Left Auto",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

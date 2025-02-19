@@ -10,7 +10,6 @@ import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
@@ -42,14 +41,9 @@ public class Climber extends SubsystemBase {
         climbMotor.setPosition(0);
     }
 
-    public Command gotToPos(double pos){
-        //final MotionMagicTorqueCurrentFOC request = new MotionMagicTorqueCurrentFOC(pos);
+    public void gotoPos(double pos){
         final MotionMagicDutyCycle request = new MotionMagicDutyCycle(pos);
-        return runOnce(
-        ()->{
-            climbMotor.setControl(request);
-            }
-        );
+        climbMotor.setControl(request);
     }
     
     private void applyClimbConfigs(){
