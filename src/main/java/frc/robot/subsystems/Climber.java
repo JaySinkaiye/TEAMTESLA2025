@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
@@ -13,7 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
-    private TalonFX climbMotor = new TalonFX(55);
+    private TalonFX climbMotor = new TalonFX(60);
+    private DutyCycleOut duty = new DutyCycleOut(0);
 
     public Climber(){
         climbMotor.setPosition(0);
@@ -26,7 +28,8 @@ public class Climber extends SubsystemBase {
     }
 
     public void setClimberSpeed(double speed){
-        climbMotor.set(speed);
+        duty.Output = speed;
+        climbMotor.setControl(duty);
     }
 
     public void stopClimberMotor(){
