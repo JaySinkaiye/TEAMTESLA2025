@@ -7,11 +7,12 @@ package frc.robot;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.math.MathUtil;
+//import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.Climb;
 import frc.robot.commands.SwerveDrive;
 import frc.robot.commands.AprilTagPositions.LockInHPS;
 import frc.robot.commands.AprilTagPositions.LockInProcessor;
@@ -20,10 +21,14 @@ import frc.robot.commands.AprilTagPositions.TurnInReef;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+// import frc.robot.subsystems.Elevator;
+// import frc.robot.subsystems.Intake;
 
 public class RobotContainer {
     //subsytems
     public final Climber climber = new Climber();
+    // public final Intake intake = new Intake();
+    // public final Elevator elevator = new Elevator();
 
     private final CommandXboxController driverController = new CommandXboxController(0);
     private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -31,6 +36,8 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     private final SendableChooser<Command> AutonChooser = new SendableChooser<>();
+
+    //private SlewRateLimiter elevatorSlewLimit = new SlewRateLimiter(0.5);
 
     public RobotContainer() {
         NamedCommands.registerCommand("Align to HPS", new LockInHPS(drivetrain, 50));
@@ -43,12 +50,26 @@ public class RobotContainer {
         AutonChooser.setDefaultOption("PID Test: ", new PathPlannerAuto("pidcontrols"));
         AutonChooser.addOption("Left Auto", new PathPlannerAuto("Left Auto"));
 
-        climber.setDefaultCommand(new Climb(climber, driverController));
-        
     }
 
     private void configureBindings() {
         drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController));
+
+        //climber
+        driverController.leftTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(MathUtil.applyDeadband(driverController.getLeftTriggerAxis(), 0.1))));
+        driverController.rightTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(-MathUtil.applyDeadband(driverController.getRightTriggerAxis(), 0.1))));
+        driverController.b().onTrue(climber.runOnce(()->climber.gotoPos(-0.6)));
+
+        // picking up and dropping intake
+        // driverController.leftBumper().onTrue(intake.manualRotate(.7));
+        // driverController.rightBumper().onTrue(intake.manualRotate(-.7));
+
+        // //intaking coral and possibly spitting it ou
+        // operatorController.leftBumper().onTrue(intake.manualIntake(.7));
+        // operatorController.rightBumper().onTrue(intake.manualIntake(-.7));
+
+        // //raising and lowering elevator
+        // operatorController.leftStick().onTrue(elevator.elevateManually(elevatorSlewLimit.calculate(MathUtil.applyDeadband(operatorController.getLeftY(), 0.1))));
     }
 
     public CommandXboxController getOperatorJoystick(){

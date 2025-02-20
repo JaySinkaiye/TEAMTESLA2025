@@ -15,6 +15,7 @@ package frc.robot.subsystems;
 // import com.ctre.phoenix6.signals.InvertedValue;
 // import com.ctre.phoenix6.signals.NeutralModeValue;
 
+// import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
@@ -38,9 +39,27 @@ public class Intake extends SubsystemBase {
   //   rotateMotor.setControl(rotate);
   // }
 
+  // public Command manualRotate(double speed){
+  //   rotate.Output = speed;
+  //   return runOnce(
+  //     ()->{
+  //         rotateMotor.setControl(rotate);
+  //         }
+  //     );
+  // }
+
   // public void setIntakeSpeed(double speed){
   //   intake.Velocity = speed;
   //   intakeMotor.setControl(intake);
+  // }
+
+  // public Command manualIntake(double speed){
+  //   intake.Velocity = speed;
+  //   return runOnce(
+  //     ()->{
+  //       intakeMotor.setControl(intake);
+  //     }
+  //   );
   // }
 
   // public void stopRotateMotor(){

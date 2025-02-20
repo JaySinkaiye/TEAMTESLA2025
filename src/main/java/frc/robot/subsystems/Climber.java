@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+    package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
@@ -11,10 +11,11 @@ import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
-    private TalonFX climbMotor = new TalonFX(60);
+    private TalonFX climbMotor = new TalonFX(55 );
     private DutyCycleOut duty = new DutyCycleOut(0);
 
     public Climber(){
@@ -30,6 +31,15 @@ public class Climber extends SubsystemBase {
     public void setClimberSpeed(double speed){
         duty.Output = speed;
         climbMotor.setControl(duty);
+    }
+
+    public Command manualClimb(double speed){
+        duty.Output = speed;
+        return run(
+            ()->{
+                climbMotor.set(speed);
+            }
+        );
     }
 
     public void stopClimberMotor(){
