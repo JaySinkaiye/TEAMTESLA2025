@@ -19,15 +19,17 @@ import frc.robot.commands.AprilTagPositions.LockInProcessor;
 import frc.robot.commands.AprilTagPositions.LockInReef;
 import frc.robot.commands.AprilTagPositions.TurnInReef;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 // import frc.robot.subsystems.Elevator;
-// import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Intake;
 
 public class RobotContainer {
     //subsytems
     public final Climber climber = new Climber();
-    // public final Intake intake = new Intake();
+    public final Intake intake = new Intake();
+    public final Arm arm = new Arm();
     // public final Elevator elevator = new Elevator();
 
     private final CommandXboxController driverController = new CommandXboxController(0);
@@ -53,6 +55,7 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+        //drive
         drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController));
 
         //climber
@@ -61,15 +64,25 @@ public class RobotContainer {
         driverController.b().onTrue(climber.runOnce(()->climber.gotoPos(-0.6)));
 
         // picking up and dropping intake
-        // driverController.leftBumper().onTrue(intake.manualRotate(.7));
-        // driverController.rightBumper().onTrue(intake.manualRotate(-.7));
+        operatorController.leftBumper().onTrue(intake.run(()->intake.setRotateSpeed(0.7)));
+        operatorController.leftBumper().onFalse(intake.run(()->intake.setRotateSpeed(0)));
+        operatorController.rightBumper().onTrue(intake.run(()->intake.setRotateSpeed(-0.7)));
+        operatorController.rightBumper().onFalse(intake.run(()->intake.setRotateSpeed(0)));
+
+
+        //arm intake
+        operatorController.leftTrigger().onTrue(arm.run(()->arm.setIntakeSpeed(MathUtil.applyDeadband(operatorController.getLeftTriggerAxis()*0.3, 0.1))));
+        operatorController.rightTrigger().onTrue(arm.run(()->arm.setIntakeSpeed(-MathUtil.applyDeadband(operatorController.getRightTriggerAxis()*0.3, 0.1))));
+
+        //wrist for intake
+        operatorController.leftStick().onTrue(arm.run(()->arm.setWristSpeed(MathUtil.applyDeadband(operatorController.getLeftX(), 0.1))));
 
         // //intaking coral and possibly spitting it ou
         // operatorController.leftBumper().onTrue(intake.manualIntake(.7));
         // operatorController.rightBumper().onTrue(intake.manualIntake(-.7));
 
         // //raising and lowering elevator
-        // operatorController.leftStick().onTrue(elevator.elevateManually(elevatorSlewLimit.calculate(MathUtil.applyDeadband(operatorController.getLeftY(), 0.1))));
+        // operatorController.rightStick().onTrue(elevator.elevateManually(elevatorSlewLimit.calculate(MathUtil.applyDeadband(operatorController.getRightY(), 0.1))));
     }
 
     public CommandXboxController getOperatorJoystick(){
