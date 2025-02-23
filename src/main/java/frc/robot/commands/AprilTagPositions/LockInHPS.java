@@ -4,8 +4,8 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Limelight;
-import frc.robot.LimelightHelpers;
+import frc.robot.Vision.Limelight;
+import frc.robot.Vision.LimelightHelpers;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class LockInHPS extends Command {
