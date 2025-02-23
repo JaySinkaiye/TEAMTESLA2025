@@ -18,11 +18,15 @@ import frc.robot.commands.AprilTagPositions.LockInHPS;
 import frc.robot.commands.AprilTagPositions.LockInProcessor;
 import frc.robot.commands.AprilTagPositions.LockInReef;
 import frc.robot.commands.AprilTagPositions.TurnInReef;
+import frc.robot.commands.ReefPositions.CoralL1;
+import frc.robot.commands.ReefPositions.CoralL2;
+import frc.robot.commands.ReefPositions.CoralL3;
+import frc.robot.commands.ReefPositions.CoralL4;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-// import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 
 public class RobotContainer {
@@ -30,7 +34,7 @@ public class RobotContainer {
     public final Climber climber = new Climber();
     public final Intake intake = new Intake();
     public final Arm arm = new Arm();
-    // public final Elevator elevator = new Elevator();
+    public final Elevator elevator = new Elevator();
 
     private final CommandXboxController driverController = new CommandXboxController(0);
     private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -59,8 +63,8 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController));
 
         //climber
-        driverController.leftTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(MathUtil.applyDeadband(driverController.getLeftTriggerAxis(), 0.1))));
-        driverController.rightTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(-MathUtil.applyDeadband(driverController.getRightTriggerAxis(), 0.1))));
+        driverController.leftTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(-MathUtil.applyDeadband(driverController.getLeftTriggerAxis(), 0.1))));
+        driverController.rightTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(MathUtil.applyDeadband(driverController.getRightTriggerAxis(), 0.1))));
         driverController.b().onTrue(climber.runOnce(()->climber.gotoPos(-0.6)));
 
         // picking up and dropping intake
@@ -71,11 +75,11 @@ public class RobotContainer {
 
 
         //arm intake
-        operatorController.leftTrigger().onTrue(arm.run(()->arm.setIntakeSpeed(MathUtil.applyDeadband(operatorController.getLeftTriggerAxis()*0.3, 0.1))));
-        operatorController.rightTrigger().onTrue(arm.run(()->arm.setIntakeSpeed(-MathUtil.applyDeadband(operatorController.getRightTriggerAxis()*0.3, 0.1))));
+        operatorController.leftTrigger().onTrue(arm.run(()->arm.setIntakeSpeed(MathUtil.applyDeadband(operatorController.getLeftTriggerAxis(), 0.1))));
+        operatorController.rightTrigger().onTrue(arm.run(()->arm.setIntakeSpeed(-MathUtil.applyDeadband(operatorController.getRightTriggerAxis(), 0.1))));
 
         //wrist for intake
-        operatorController.leftStick().onTrue(arm.run(()->arm.setWristSpeed(MathUtil.applyDeadband(operatorController.getLeftX(), 0.1))));
+        operatorController.leftStick().onTrue(arm.run(()->arm.setWristSpeed(MathUtil.applyDeadband(operatorController.getLeftX()*0.3, 0.1))));
 
         // //intaking coral and possibly spitting it ou
         // operatorController.leftBumper().onTrue(intake.manualIntake(.7));
@@ -83,6 +87,13 @@ public class RobotContainer {
 
         // //raising and lowering elevator
         // operatorController.rightStick().onTrue(elevator.elevateManually(elevatorSlewLimit.calculate(MathUtil.applyDeadband(operatorController.getRightY(), 0.1))));
+
+        //reef positions
+        operatorController.a().onTrue(new CoralL1(elevator, arm));
+        operatorController.b().onTrue(new CoralL2(elevator, arm));
+        operatorController.x().onTrue(new CoralL3(elevator, arm));
+        operatorController.y().onTrue(new CoralL4(elevator, arm));
+
     }
 
     public CommandXboxController getOperatorJoystick(){
