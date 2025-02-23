@@ -5,78 +5,78 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Position;
-import frc.robot.subsystems.Elevator;
+// import frc.robot.Position;
+// import frc.robot.subsystems.Elevator;
 
 public class ElevatorCommand extends Command {
-  private Elevator elevator;
-  private Position position;
+  // private Elevator elevator;
+  // private Position position;
   
-  private double setpoint = 0;
-  private double tolerance = 1;
+  // private double setpoint = 0;
+  // private double tolerance = 1;
 
-  public ElevatorCommand(Elevator elevator, Position position) {
-    this.elevator = elevator;
-    this.position = position;
-    addRequirements(elevator);
-  }
+  // public ElevatorCommand(Elevator elevator, Position position) {
+  //   this.elevator = elevator;
+  //   this.position = position;
+  //   addRequirements(elevator);
+  // }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-  }
+  // // Called when the command is initially scheduled.
+  // @Override
+  // public void initialize() {
+  // }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    switch (position) {
-      case ALGEA_BARGE:
-      setpoint = 0;
-      elevator.GoToPos(setpoint);
-        break;
-      case ALGEA_L2:
-      setpoint = 0;
-      elevator.GoToPos(setpoint);
-        break;
-      case ALGEA_L3:
-      setpoint = 0;
-      elevator.GoToPos(setpoint);
-        break;
-      case ALGEA_PROCESSOR:
-      setpoint = 0;
-      elevator.GoToPos(setpoint);
-        break;
-      case CORAL_L1:
-      setpoint = 0;
-      elevator.GoToPos(setpoint);
-        break;
-      case CORAL_L2:
-      setpoint = 0;
-      elevator.GoToPos(setpoint);
-        break;
-      case CORAL_L3:
-      setpoint = 0;
-      elevator.GoToPos(setpoint);
-        break;
-      case CORAL_L4:
-      setpoint = 0;
-      elevator.GoToPos(setpoint);
-        break;
-      case STOW:
-      setpoint = 0;
-      elevator.GoToPos(setpoint);
-        break;
-    }
-  }
+  // // Called every time the scheduler runs while the command is scheduled.
+  // @Override
+  // public void execute() {
+  //   switch (position) {
+  //     case ALGEA_BARGE:
+  //     setpoint = 0;
+  //     elevator.GoToPos(setpoint);
+  //       break;
+  //     case ALGEA_L2:
+  //     setpoint = 0;
+  //     elevator.GoToPos(setpoint);
+  //       break;
+  //     case ALGEA_L3:
+  //     setpoint = 0;
+  //     elevator.GoToPos(setpoint);
+  //       break;
+  //     case ALGEA_PROCESSOR:
+  //     setpoint = 0;
+  //     elevator.GoToPos(setpoint);
+  //       break;
+  //     case CORAL_L1:
+  //     setpoint = 0;
+  //     elevator.GoToPos(setpoint);
+  //       break;
+  //     case CORAL_L2:
+  //     setpoint = 0;
+  //     elevator.GoToPos(setpoint);
+  //       break;
+  //     case CORAL_L3:
+  //     setpoint = 0;
+  //     elevator.GoToPos(setpoint);
+  //       break;
+  //     case CORAL_L4:
+  //     setpoint = 0;
+  //     elevator.GoToPos(setpoint);
+  //       break;
+  //     case STOW:
+  //     setpoint = 0;
+  //     elevator.GoToPos(setpoint);
+  //       break;
+  //   }
+  // }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
+  // // Called once the command ends or is interrupted.
+  // @Override
+  // public void end(boolean interrupted) {}
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    double error = elevator.getElevatorPosition() - setpoint;
-    return Math.abs(error) < tolerance;
-  }
+  // // Returns true when the command should end.
+  // @Override
+  // public boolean isFinished() {
+  //   double error = elevator.getElevatorPosition() - setpoint;
+  //   return Math.abs(error) < tolerance;
+  // }
 }
