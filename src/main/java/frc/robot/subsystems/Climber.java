@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
-    private TalonFX climbMotor = new TalonFX(55 );
+    private TalonFX climbMotor = new TalonFX(51);
     private DutyCycleOut duty = new DutyCycleOut(0);
 
     public Climber(){

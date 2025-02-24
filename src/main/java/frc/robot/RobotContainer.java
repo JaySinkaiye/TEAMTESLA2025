@@ -18,6 +18,7 @@ import frc.robot.commands.AprilTagPositions.LockInHPS;
 import frc.robot.commands.AprilTagPositions.LockInProcessor;
 import frc.robot.commands.AprilTagPositions.LockInReef;
 import frc.robot.commands.AprilTagPositions.TurnInReef;
+// import frc.robot.commands.ReefPositions.AlgeaBarge;
 // import frc.robot.commands.ReefPositions.CoralL1;
 // import frc.robot.commands.ReefPositions.CoralL2;
 // import frc.robot.commands.ReefPositions.CoralL3;
@@ -74,12 +75,12 @@ public class RobotContainer {
         operatorController.rightBumper().onFalse(intake.run(()->intake.setRotateSpeed(0)));
 
 
-        //arm intake
-        operatorController.leftTrigger().onTrue(arm.run(()->arm.setIntakeSpeed(MathUtil.applyDeadband(operatorController.getLeftTriggerAxis(), 0.1))));
-        operatorController.rightTrigger().onTrue(arm.run(()->arm.setIntakeSpeed(-MathUtil.applyDeadband(operatorController.getRightTriggerAxis(), 0.1))));
+        // //arm intake
+        // operatorController.leftTrigger().onTrue(arm.run(()->arm.setIntakeSpeed(MathUtil.applyDeadband(operatorController.getLeftTriggerAxis(), 0.1))));
+        // operatorController.rightTrigger().onTrue(arm.run(()->arm.setIntakeSpeed(-MathUtil.applyDeadband(operatorController.getRightTriggerAxis(), 0.1))));
 
-        //wrist for intake
-        operatorController.leftStick().onTrue(arm.run(()->arm.setWristSpeed(MathUtil.applyDeadband(operatorController.getLeftX()*0.3, 0.1))));
+        // //wrist for intake
+        // operatorController.leftStick().onTrue(arm.run(()->arm.setWristSpeed(MathUtil.applyDeadband(operatorController.getLeftX()*0.1, 0.1))));
 
         // //intaking coral and possibly spitting it out
         // operatorController.leftBumper().onTrue(intake.manualIntake(.7));
@@ -93,7 +94,10 @@ public class RobotContainer {
         // operatorController.b().onTrue(new CoralL2(elevator, arm));
         // operatorController.x().onTrue(new CoralL3(elevator, arm));
         // operatorController.y().onTrue(new CoralL4(elevator, arm));
-
+        // operatorController.povUp().onTrue(new AlgeaBarge(elevator, arm));
+        // operatorController.povDown().onTrue(new AlgeaProcesor(elevator, arm));
+        // operatorController.povLeft().onTrue(new AlgeaL2(elevator, arm));
+        // operatorController.povRight().onTrue(new AlgeaL3(elevator, arm));
     }
 
     public CommandXboxController getOperatorJoystick(){
