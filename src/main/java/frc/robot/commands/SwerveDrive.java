@@ -131,18 +131,15 @@ public class SwerveDrive extends Command {
         if (aprilTagID == 13 || aprilTagID == 1 || aprilTagID == 12 || aprilTagID == 2){
             //left HPS
             driverController.x().onTrue(lihps19);
-            lihps19.tea();
-            System.out.println("HPS");        
+            lihps19.tea();       
         } else if (aprilTagID == 16 || aprilTagID == 3 ){
             // processor
             driverController.x().onTrue(lip20);
             lip20.tea();
-            System.out.println("processor");
         } else {
             driverController.x().onTrue(lir4point4);
             driverController.a().onTrue(new TurnInReef(swerve));
             lir4point4.tea();
-            System.out.println("reef");
         }
     }
 

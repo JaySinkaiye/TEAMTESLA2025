@@ -26,6 +26,8 @@ public class Arm extends SubsystemBase {
   // // private TalonFX rotateMotor = new TalonFX(2);
 
   // private DutyCycleOut intake = new DutyCycleOut(0);
+  // private DutyCycleOut wrist = new DutyCycleOut(0);
+
   // public Arm() {
   //   resetWristPosition();
   //   // resetRotatePosition();
@@ -47,7 +49,8 @@ public class Arm extends SubsystemBase {
   // }
 
   // public void setWristSpeed(double wspeed){
-  //   wristMotor.set(wspeed);
+  //   wrist.Output = wspeed;
+  //   wristMotor.setControl(wrist);
   // }
 
   // // public void setRotateSpeed(double rspeed){
@@ -99,8 +102,8 @@ public class Arm extends SubsystemBase {
   //   fb.SensorToMechanismRatio = 25;
     
   //   talonConfigs.Slot0.kP = 10;
-  //   talonConfigs.Slot0.kI = 0;
-  //   talonConfigs.Slot0.kD = 0;
+  //   talonConfigs.Slot0.kI = 3;
+  //   talonConfigs.Slot0.kD = 1;
   //   talonConfigs.Slot0.kV = 0;
   //   talonConfigs.Slot0.kG = 0.29;
   //   talonConfigs.Slot0.kS = 0;
@@ -122,29 +125,29 @@ public class Arm extends SubsystemBase {
   //   wristMotor.getConfigurator().apply(motorOutputConfigs);
   // }
 
-  // private void applyRotateMotorConfigs(InvertedValue inversion){
-  //   TalonFXConfiguration talonConfigs = new TalonFXConfiguration();
-  //   talonConfigs.Slot0.kP = 10;
-  //   talonConfigs.Slot0.kI = 0;
-  //   talonConfigs.Slot0.kD = 0;
-  //   talonConfigs.Slot0.kV = 0;
-  //   talonConfigs.Slot0.kG = 0.29;
-  //   talonConfigs.Slot0.kS = 0;
-  //   talonConfigs.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
+  // // private void applyRotateMotorConfigs(InvertedValue inversion){
+  // //   TalonFXConfiguration talonConfigs = new TalonFXConfiguration();
+  // //   talonConfigs.Slot0.kP = 10;
+  // //   talonConfigs.Slot0.kI = 0;
+  // //   talonConfigs.Slot0.kD = 0;
+  // //   talonConfigs.Slot0.kV = 0;
+  // //   talonConfigs.Slot0.kG = 0.29;
+  // //   talonConfigs.Slot0.kS = 0;
+  // //   talonConfigs.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
 
-  //   var motionMagicConfigs = talonConfigs.MotionMagic;
-  //   motionMagicConfigs.MotionMagicCruiseVelocity = 50;
-  //   motionMagicConfigs.MotionMagicAcceleration = 100;
-  //   motionMagicConfigs.MotionMagicJerk = 1000;
+  // //   var motionMagicConfigs = talonConfigs.MotionMagic;
+  // //   motionMagicConfigs.MotionMagicCruiseVelocity = 50;
+  // //   motionMagicConfigs.MotionMagicAcceleration = 100;
+  // //   motionMagicConfigs.MotionMagicJerk = 1000;
 
-  //   talonConfigs.Feedback.FeedbackRemoteSensorID = rotateMotor.getDeviceID();
-  //   talonConfigs.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+  // //   talonConfigs.Feedback.FeedbackRemoteSensorID = rotateMotor.getDeviceID();
+  // //   talonConfigs.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
 
-  //   rotateMotor.getConfigurator().apply(talonConfigs);
+  // //   rotateMotor.getConfigurator().apply(talonConfigs);
 
-  //   MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs();
-  //   motorOutputConfigs.Inverted = inversion;
-  //   motorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
-  //   rotateMotor.getConfigurator().apply(motorOutputConfigs);
-  // }
+  // //   MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs();
+  // //   motorOutputConfigs.Inverted = inversion;
+  // //   motorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
+  // //   rotateMotor.getConfigurator().apply(motorOutputConfigs);
+  // // }
 }
