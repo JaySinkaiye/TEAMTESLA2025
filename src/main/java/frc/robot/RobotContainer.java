@@ -8,7 +8,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.MathUtil;
-//import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -44,8 +43,6 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     private final SendableChooser<Command> AutonChooser = new SendableChooser<>();
-
-    //private SlewRateLimiter elevatorSlewLimit = new SlewRateLimiter(0.5);
 
     public RobotContainer() {
         NamedCommands.registerCommand("Align to HPS", new LockInHPS(drivetrain, 50));
@@ -91,7 +88,7 @@ public class RobotContainer {
         operatorController.leftTrigger().onTrue(elevator.run(()->elevator.setElevatorMotorSpeed(0.7 * operatorController.getLeftTriggerAxis())));
         operatorController.rightTrigger().onTrue(elevator.run(()->elevator.setElevatorMotorSpeed(-0.7 * operatorController.getRightTriggerAxis())));
 
-        //reef positions
+        //arm positions
         // operatorController.a().onTrue(new CoralL1(elevator, arm));
         // operatorController.b().onTrue(new CoralL2(elevator, arm));
         // operatorController.x().onTrue(new CoralL3(elevator, arm));
