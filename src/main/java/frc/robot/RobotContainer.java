@@ -61,8 +61,8 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController));
 
         //climber
-        // driverController.leftTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(-MathUtil.applyDeadband(driverController.getLeftTriggerAxis(), 0.1))));
-        // driverController.rightTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(MathUtil.applyDeadband(driverController.getRightTriggerAxis(), 0.1))));
+        //driverController.leftTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(-MathUtil.applyDeadband(driverController.getLeftTriggerAxis(), 0.1))));
+        //driverController.rightTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(MathUtil.applyDeadband(driverController.getRightTriggerAxis(), 0.1))));
         // driverController.b().onTrue(climber.runOnce(()->climber.gotoPos(-0.6)));
 
         // picking up and dropping intake
@@ -80,8 +80,8 @@ public class RobotContainer {
         // operatorController.a().onTrue(new WristCommand(arm, Position.STOW));
 
         // //intaking coral and possibly spitting it out
-        // operatorController.leftBumper().onTrue(intake.run(()->intake.setIntakeSpeed(0.7)));
-        // operatorController.rightBumper().onTrue(intake.run(()->intake.setIntakeSpeed(0.7)));
+        //operatorController.leftTrigger().onTrue(intake.run(()->intake.setIntakeSpeed(0.7*operatorController.getLeftTriggerAxis())));
+        //operatorController.rightTrigger().onTrue(intake.run(()->intake.setIntakeSpeed(-0.7*operatorController.getRightTriggerAxis())));
 
 
         //raising and lowering elevator

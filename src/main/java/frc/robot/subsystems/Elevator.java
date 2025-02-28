@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
@@ -20,10 +21,9 @@ public class Elevator extends SubsystemBase {
     private final TalonFX follower = new TalonFX(58);
     private final DutyCycleOut duty = new DutyCycleOut(0);
 
-
     public Elevator(){
         leftElevatorMotor.setPosition(0);
-        applyArmMotorConfigs(InvertedValue.Clockwise_Positive);
+        applyElevatorMotorConfigs(InvertedValue.Clockwise_Positive);
         follower.setControl(new Follower(57, true));
     }
 
@@ -65,8 +65,12 @@ public class Elevator extends SubsystemBase {
         leftElevatorMotor.setControl(request);
     }
 
-    private void applyArmMotorConfigs(InvertedValue inversion){
+    private void applyElevatorMotorConfigs(InvertedValue inversion){
         TalonFXConfiguration talonConfigs = new TalonFXConfiguration();
+
+        FeedbackConfigs fb = talonConfigs.Feedback;
+        fb.SensorToMechanismRatio = 60;
+
         talonConfigs.Slot0.kP = 10;
         talonConfigs.Slot0.kI = 0;
         talonConfigs.Slot0.kD = 0;

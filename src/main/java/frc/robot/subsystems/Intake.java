@@ -4,24 +4,24 @@
 
 package frc.robot.subsystems;
 
-// import com.ctre.phoenix6.configs.MotorOutputConfigs;
-// import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
-//import com.ctre.phoenix6.controls.Follower;
-//import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC;
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.TalonFX;
-// import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
-// import com.ctre.phoenix6.signals.GravityTypeValue;
-// import com.ctre.phoenix6.signals.InvertedValue;
-// import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
-// import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
   // private final TalonFX rotateMotor = new TalonFX(60);
-  private final TalonFX intakeMotor = new TalonFX(53);
-  //private final TalonFX secondIntakeMotor = new TalonFX(2);
+  private final TalonFX intakeMotor = new TalonFX(52);
+  private final TalonFX secondIntakeMotor = new TalonFX(53);
 
   // private DutyCycleOut rotate = new DutyCycleOut(0);
   private DutyCycleOut intake = new DutyCycleOut(0);
@@ -52,15 +52,16 @@ public class Intake extends SubsystemBase {
   public void setIntakeSpeed(double speed){
     intake.Output = speed;
     intakeMotor.setControl(intake);
+    //secondIntakeMotor.setControl(intake);
   }
 
   // public void stopRotateMotor(){
   //   rotateMotor.set(0);
   // }
 
-  // // public void stopIntakeMotor(){
-  // //   intakeMotor.set(0);
-  // // }
+  // public void stopIntakeMotor(){
+  //   intakeMotor.set(0);
+  // }
 
   // public double getRotatePosition(){
   //   return rotateMotor.getPosition().getValueAsDouble();
