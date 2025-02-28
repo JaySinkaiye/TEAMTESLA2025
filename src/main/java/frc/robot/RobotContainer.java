@@ -61,9 +61,9 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController));
 
         //climber
-        //driverController.leftTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(-MathUtil.applyDeadband(driverController.getLeftTriggerAxis(), 0.1))));
-        //driverController.rightTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(MathUtil.applyDeadband(driverController.getRightTriggerAxis(), 0.1))));
-        // driverController.b().onTrue(climber.runOnce(()->climber.gotoPos(-0.6)));
+        driverController.leftTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(-MathUtil.applyDeadband(driverController.getLeftTriggerAxis(), 0.1))));
+        driverController.rightTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(MathUtil.applyDeadband(driverController.getRightTriggerAxis(), 0.1))));
+        driverController.b().onTrue(climber.runOnce(()->climber.gotoPos(-0.6)));
 
         // picking up and dropping intake
         // operatorController.leftBumper().onTrue(intake.run(()->intake.setRotateSpeed(0.7)));

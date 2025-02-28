@@ -16,9 +16,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 public class AlgeaL3 extends SequentialCommandGroup {
   // public AlgeaL3(Elevator elevator, Arm arm) {
   //   addCommands(
-  //           new ParallelCommandGroup(
-  //       new ElevatorCommand(elevator, Position.ALGEA_L2),
-  //       new rotateArmCommand(arm, Position.ALGEA_L2)
+  //       new ParallelCommandGroup(
+    //       new ElevatorCommand(elevator, Position.ALGEA_L2),
+    //       new rotateArmCommand(arm, Position.ALGEA_L2)
   //     ),
   //     new WristCommand(arm, Position.ALGEA_L2)
   //   );

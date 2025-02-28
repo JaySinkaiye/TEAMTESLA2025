@@ -16,9 +16,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 public class AlgaeProccesor extends SequentialCommandGroup {
   // public AlgaeProccesor(Elevator elevator, Arm arm) {
   //   addCommands(
-  //           new ParallelCommandGroup(
-  //       new ElevatorCommand(elevator, Position.ALGEA_PROCESSOR),
-  //       new rotateArmCommand(arm, Position.ALGEA_PROCESSOR)
+  //       new ParallelCommandGroup(
+  //         new ElevatorCommand(elevator, Position.ALGEA_PROCESSOR),
+  //         new rotateArmCommand(arm, Position.ALGEA_PROCESSOR)
   //     ),
   //     new WristCommand(arm, Position.ALGEA_PROCESSOR)
   //   );

@@ -13,11 +13,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class CoralL1 extends SequentialCommandGroup {
-  /** Creates a new CoralL1. */
   public CoralL1(Elevator elevator, Arm arm) {
     addCommands(
       // new ParallelCommandGroup(      

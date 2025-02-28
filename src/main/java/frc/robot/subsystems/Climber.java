@@ -64,6 +64,7 @@ public class Climber extends SubsystemBase {
 
         // gear ratio
         FeedbackConfigs fb = talonConfigs.Feedback;
+        fb.SensorToMechanismRatio = 15;
 
         var slot0Configs = talonConfigs.Slot0;
         slot0Configs.kP = 10;

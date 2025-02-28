@@ -39,6 +39,10 @@ public class LockInHPS extends Command {
             .withVelocityY(0)
             .withRotationalRate(turnSpeed);
 
+         //when limelight is on the side of the robot
+        // m_Request = Drive.withVelocityX(-cupidShuffle)
+        //     .withVelocityY(forwardSpeed)
+        //     .withRotationalRate(0);
         swerve.setControl(m_Request);
 
     }

@@ -22,6 +22,7 @@ public class Elevator extends SubsystemBase {
     private final DutyCycleOut duty = new DutyCycleOut(0);
 
     public Elevator(){
+        resetElevatorPosition();
         leftElevatorMotor.setPosition(0);
         applyElevatorMotorConfigs(InvertedValue.Clockwise_Positive);
         follower.setControl(new Follower(57, true));
