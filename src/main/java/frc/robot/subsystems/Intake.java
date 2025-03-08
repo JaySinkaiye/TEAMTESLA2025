@@ -4,56 +4,51 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.MotorOutputConfigs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
-import com.ctre.phoenix6.signals.GravityTypeValue;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
+// import com.ctre.phoenix6.configs.FeedbackConfigs;
+// import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
+// import com.ctre.phoenix6.configs.MotorOutputConfigs;
+// import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
+// import com.ctre.phoenix6.configs.TalonFXConfiguration;
+// import com.ctre.phoenix6.controls.DutyCycleOut;
+// import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC;
+// import com.ctre.phoenix6.hardware.TalonFX;
+// import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+// import com.ctre.phoenix6.signals.GravityTypeValue;
+// import com.ctre.phoenix6.signals.InvertedValue;
+// import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import edu.wpi.first.wpilibj2.command.Command;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
   // private final TalonFX rotateMotor = new TalonFX(60);
-  private final TalonFX intakeMotor = new TalonFX(52);
-  private final TalonFX secondIntakeMotor = new TalonFX(53);
+  // private final TalonFX intakeMotor = new TalonFX(52);
+  // private final TalonFX secondIntakeMotor = new TalonFX(53);
 
   // private DutyCycleOut rotate = new DutyCycleOut(0);
-  private DutyCycleOut intake = new DutyCycleOut(0);
+  // private DutyCycleOut intake = new DutyCycleOut(0);
 
-  public Intake() {
-    // applyRotateMotorConfigs(InvertedValue.Clockwise_Positive);
-  }
+  // public Intake() {
+  //   setRotatePosition(-0.180664);
+  //   applyRotateMotorConfigs(InvertedValue.Clockwise_Positive);
+  // }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+  // @Override
+  // public void periodic() {
+  //   SmartDashboard.putNumber("rotate pos", rotateMotor.getPosition().getValueAsDouble());
+  //   //This method will be called once per scheduler run
+  // }
 
   // public void setRotateSpeed(double speed){
   //   rotate.Output = speed;
   //   rotateMotor.setControl(rotate);
   // }
 
-  // public Command manualRotate(double speed){
-  //   rotate.Output = speed;
-  //   return runOnce(
-  //     ()->{
-  //         rotateMotor.setControl(rotate);
-  //         }
-  //     );
+  // public void setIntakeSpeed(double speed){
+  //   intake.Output = speed;
+  //   intakeMotor.setControl(intake);
+  //   secondIntakeMotor.setControl(intake);
   // }
-
-  public void setIntakeSpeed(double speed){
-    intake.Output = speed;
-    intakeMotor.setControl(intake);
-    //secondIntakeMotor.setControl(intake);
-  }
 
   // public void stopRotateMotor(){
   //   rotateMotor.set(0);
@@ -71,6 +66,10 @@ public class Intake extends SubsystemBase {
   //   rotateMotor.setPosition(0);
   // }
 
+  // public void setRotatePosition(double rPos){
+  //   rotateMotor.setPosition(rPos);
+  // }
+
   // public void gotToPos(double pos){
   //   final MotionMagicTorqueCurrentFOC request = new MotionMagicTorqueCurrentFOC(pos);
   //   rotateMotor.setControl(request);
@@ -78,6 +77,15 @@ public class Intake extends SubsystemBase {
 
   // private void applyRotateMotorConfigs(InvertedValue inversion){
   //   TalonFXConfiguration talonConfigs = new TalonFXConfiguration();
+  //     FeedbackConfigs fb = talonConfigs.Feedback;
+  //     fb.SensorToMechanismRatio = 25;
+      
+  //     SoftwareLimitSwitchConfigs hw = talonConfigs.SoftwareLimitSwitch;
+  //     hw.ForwardSoftLimitEnable = true;
+  //     hw.ForwardSoftLimitThreshold = -0.19;
+  //     hw.ReverseSoftLimitEnable = true;
+  //     hw.ReverseSoftLimitThreshold = -0.180664;
+
   //     talonConfigs.Slot0.kP = 10;
   //     talonConfigs.Slot0.kI = 0;
   //     talonConfigs.Slot0.kD = 0;
