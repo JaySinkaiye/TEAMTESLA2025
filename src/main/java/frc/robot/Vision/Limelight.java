@@ -27,17 +27,18 @@ public class Limelight {
     private final HolonomicDriveController sw;
 
     Pose2d goalPose;
+    double aprilTagID = LimelightHelpers.getFiducialID("limelight-front");
 
-    public Limelight(CommandSwerveDrivetrain swerve, int desiredAprilTag){
+    public Limelight(CommandSwerveDrivetrain swerve){
         this.swerve = swerve;
         drive = new PIDController(0.25, 0.004, 0.003);
         slide = new PIDController(0.005, 0, 0);
         theta = new ProfiledPIDController(0.01, 0.002, 0, new TrapezoidProfile.Constraints(MaxSpeed, MaxAngularRate));
         sw = new HolonomicDriveController(drive, slide, theta);
-        goalPose = aprilTags.aprilTagIDToPose(desiredAprilTag);
+        goalPose = aprilTags.aprilTagIDToPose((int) aprilTagID);
     }
 
-     public ChassisSpeeds lockingIn(double goalAngle){
+    public ChassisSpeeds lockingIn(double goalAngle){
         return sw.calculate(swerve.getPose(), goalPose, MaxSpeed, Rotation2d.fromDegrees(goalAngle));
     }
 
@@ -46,9 +47,8 @@ public class Limelight {
     }
 
     public void printDeets(){
-        SmartDashboard.putNumber("TX: ", LimelightHelpers.getTX("limelight-front"));
-        SmartDashboard.putNumber("TY: ", LimelightHelpers.getTY("limelight-front"));
-        SmartDashboard.putNumber("TXNC", LimelightHelpers.getTXNC("limelight-front"));
+        System.out.println(swerve.getPose());
+        SmartDashboard.putString("pose: ", swerve.getPose().toString());
     }
 
 }

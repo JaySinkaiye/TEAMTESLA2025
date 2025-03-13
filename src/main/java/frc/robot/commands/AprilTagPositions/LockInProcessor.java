@@ -20,7 +20,7 @@ public class LockInProcessor extends Command {
 
         //works for april tags 16 and 3 
         LimelightHelpers.setPipelineIndex("limelight-front", 0);
-        LL = new Limelight(swerve, 16);
+        LL = new Limelight(swerve);
     }
 
     @Override

@@ -127,7 +127,7 @@ public class SwerveDrive extends Command {
         //april tag detection
         double aprilTagID = LimelightHelpers.getFiducialID("limelight-front");
 
-        //placeholder distances 
+        //lock in apriltag
         if (aprilTagID == 13 || aprilTagID == 1 || aprilTagID == 12 || aprilTagID == 2){
             //left HPS
             driverController.x().onTrue(lihps19);

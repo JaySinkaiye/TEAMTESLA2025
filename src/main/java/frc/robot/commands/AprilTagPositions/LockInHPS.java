@@ -21,7 +21,7 @@ public class LockInHPS extends Command {
 
         //works for april tags 13 and 1 
         LimelightHelpers.setPipelineIndex("limelight-front", 0);
-        LL = new Limelight(swerve, 13);
+        LL = new Limelight(swerve);
     }
 
     @Override

@@ -24,7 +24,7 @@ public class TurnInReef extends Command {
 
     //works for april tags 12 and 2 
     LimelightHelpers.setPipelineIndex("limelight-front", 0);
-    LL = new Limelight(swerve, 12);
+    LL = new Limelight(swerve);
   }
 
   @Override
