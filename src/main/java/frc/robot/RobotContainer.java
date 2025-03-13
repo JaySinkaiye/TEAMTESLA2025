@@ -26,7 +26,7 @@ import frc.robot.commands.AprilTagPositions.TurnInReef;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
-//import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 
@@ -39,27 +39,27 @@ public class RobotContainer {
 
     private final CommandXboxController driverController = new CommandXboxController(0);
     private final CommandXboxController operatorController = new CommandXboxController(1);
-
-   // public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    
+    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     private final SendableChooser<Command> AutonChooser = new SendableChooser<>();
-
+    
     public RobotContainer() {
-        // NamedCommands.registerCommand("Align to HPS", new LockInHPS(drivetrain, 50));
-        // NamedCommands.registerCommand("Align to Reef", new LockInReef(drivetrain, 4.4));
-        // NamedCommands.registerCommand("Turn To Reef", new TurnInReef(drivetrain));
-        // NamedCommands.registerCommand("Align to Processor", new LockInProcessor(drivetrain, 50));
+        NamedCommands.registerCommand("Align to HPS", new LockInHPS(drivetrain, 50));
+        NamedCommands.registerCommand("Align to Reef", new LockInReef(drivetrain, 4.4));
+        NamedCommands.registerCommand("Turn To Reef", new TurnInReef(drivetrain));
+        NamedCommands.registerCommand("Align to Processor", new LockInProcessor(drivetrain, 50));
         configureBindings();
 
-        // SmartDashboard.putData("AutonChooser", AutonChooser);
-        // AutonChooser.setDefaultOption("PID Test: ", new PathPlannerAuto("pidcontrols"));
-        // AutonChooser.addOption("Left Auto", new PathPlannerAuto("Left Auto"));
-        // AutonChooser.addOption("Simple Auto", new PathPlannerAuto("Simple R Auton"));
+        SmartDashboard.putData("AutonChooser", AutonChooser);
+        AutonChooser.setDefaultOption("PID Test: ", new PathPlannerAuto("pidcontrols"));
+        AutonChooser.addOption("Left Auto", new PathPlannerAuto("Left Auto"));
+        AutonChooser.addOption("Simple Auto", new PathPlannerAuto("Simple R Auton"));
     }
 
     private void configureBindings() {
         //drive
-        //drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController));
+        drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController));
 
         //climber
         // driverController.leftTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(-MathUtil.applyDeadband(driverController.getLeftTriggerAxis(), 0.1))));
@@ -82,7 +82,8 @@ public class RobotContainer {
         // operatorController.rightTrigger().onTrue(elevator.run(()->elevator.setElevatorMotorSpeed(0.7 * operatorController.getRightTriggerAxis())));
 
         //rotatting arm
-        operatorController.leftTrigger().onTrue(arm.run(()->arm.setRotateSpeed(operatorController.getLeftTriggerAxis())));
+        //operatorController.leftTrigger().onTrue(arm.run(()->arm.setRotateSpeed(operatorController.getLeftTriggerAxis())));
+        
         //wrist pos
         // operatorController.b().onTrue(new WristCommand(arm, Position.ALGEA_L2));
         // operatorController.a().onTrue(new WristCommand(arm, Position.STOW));
