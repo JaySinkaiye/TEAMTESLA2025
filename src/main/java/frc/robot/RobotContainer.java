@@ -6,6 +6,7 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
@@ -60,10 +61,23 @@ public class RobotContainer {
         //drive
         drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController));
 
-        driverController.leftBumper().and(driverController.a()).whileTrue(drivetrain.sysIdDynamic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kForward));
-        driverController.leftBumper().and(driverController.b()).whileTrue(drivetrain.sysIdDynamic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kReverse));
-        driverController.rightBumper().and(driverController.a()).whileTrue(drivetrain.sysIdQuasistatic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kForward));
-        driverController.rightBumper().and(driverController.b()).whileTrue(drivetrain.sysIdQuasistatic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kReverse));
+        SignalLogger.setPath("/media/sda1/ctre-logs/");
+        driverController.leftBumper().and(driverController.a()).whileTrue(drivetrain.sysIdDynamic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kForward)                
+        .beforeStarting(() -> SignalLogger.start()) // Start logging
+        .finallyDo(() -> SignalLogger.stop())
+        );
+        driverController.leftBumper().and(driverController.b()).whileTrue(drivetrain.sysIdDynamic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kReverse)
+        .beforeStarting(() -> SignalLogger.start()) // Start logging
+        .finallyDo(() -> SignalLogger.stop())
+        );
+        driverController.rightBumper().and(driverController.a()).whileTrue(drivetrain.sysIdQuasistatic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kForward)
+        .beforeStarting(() -> SignalLogger.start()) // Start logging
+        .finallyDo(() -> SignalLogger.stop())
+        );
+        driverController.rightBumper().and(driverController.b()).whileTrue(drivetrain.sysIdQuasistatic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kReverse)
+        .beforeStarting(() -> SignalLogger.start()) // Start logging
+        .finallyDo(() -> SignalLogger.stop())
+        );
 
         drivetrain.registerTelemetry(logger::telemeterize);
 

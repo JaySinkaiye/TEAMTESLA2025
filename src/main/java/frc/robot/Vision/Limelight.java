@@ -35,10 +35,10 @@ public class Limelight {
         slide = new PIDController(0.005, 0, 0);
         theta = new ProfiledPIDController(0.01, 0.002, 0, new TrapezoidProfile.Constraints(MaxSpeed, MaxAngularRate));
         sw = new HolonomicDriveController(drive, slide, theta);
-        goalPose = aprilTags.aprilTagIDToPose((int) aprilTagID);
     }
 
     public ChassisSpeeds lockingIn(double goalAngle){
+        goalPose = aprilTags.aprilTagIDToPose((int) aprilTagID);
         return sw.calculate(swerve.getPose(), goalPose, MaxSpeed, Rotation2d.fromDegrees(goalAngle));
     }
 
@@ -47,7 +47,7 @@ public class Limelight {
     }
 
     public void printDeets(){
-        System.out.println(swerve.getPose());
+        System.out.println("x pose: " + swerve.getPose().getX() + "\nY pose: " + swerve.getPose().getY() + "\nrotation: " + swerve.getPose().getRotation());
         SmartDashboard.putString("pose: ", swerve.getPose().toString());
     }
 
