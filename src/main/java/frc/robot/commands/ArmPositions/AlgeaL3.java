@@ -4,23 +4,23 @@
 
 package frc.robot.commands.ArmPositions;
 
-//import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-// import frc.robot.Position;
-// import frc.robot.commands.ElevatorCommand;
-// import frc.robot.commands.WristCommand;
-// import frc.robot.commands.rotateArmCommand;
-// import frc.robot.subsystems.Arm;
-// import frc.robot.subsystems.Elevator;
+import frc.robot.Position;
+import frc.robot.commands.ElevatorCommand;
+import frc.robot.commands.WristCommand;
+import frc.robot.commands.rotateArmCommand;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Elevator;
 
 public class AlgeaL3 extends SequentialCommandGroup {
-  // public AlgeaL3(Elevator elevator, Arm arm) {
-  //   addCommands(
-  //       new ParallelCommandGroup(
-    //       new ElevatorCommand(elevator, Position.ALGEA_L2),
-    //       new rotateArmCommand(arm, Position.ALGEA_L2)
-  //     ),
-  //     new WristCommand(arm, Position.ALGEA_L2)
-  //   );
-  //}
+  public AlgeaL3(Elevator elevator, Arm arm) {
+    addCommands(
+        new ParallelCommandGroup(
+          new ElevatorCommand(elevator, Position.ALGEA_L2),
+          new rotateArmCommand(arm, Position.ALGEA_L2)
+      ),
+      new WristCommand(arm)
+    );
+  }
 }

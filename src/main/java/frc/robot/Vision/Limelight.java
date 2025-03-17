@@ -40,6 +40,7 @@ public class Limelight {
     public ChassisSpeeds lockingIn(double goalAngle){
         goalPose = aprilTags.aprilTagIDToPose((int) aprilTagID);
         return sw.calculate(swerve.getPose(), goalPose, MaxSpeed, Rotation2d.fromDegrees(goalAngle));
+        //sw.calculate(LimelightHelpers.getBotPose2d("limelight-front"), goalPose, MaxSpeed, Rotation2d.fromDegrees(goalAngle));
     }
 
     public boolean isDone(){
@@ -47,8 +48,10 @@ public class Limelight {
     }
 
     public void printDeets(){
-        System.out.println("x pose: " + swerve.getPose().getX() + "\nY pose: " + swerve.getPose().getY() + "\nrotation: " + swerve.getPose().getRotation());
-        SmartDashboard.putString("pose: ", swerve.getPose().toString());
+        SmartDashboard.putNumber("x pose: ", swerve.getPose().getX());
+        SmartDashboard.putNumber("y pose: ", swerve.getPose().getY());
+        SmartDashboard.putNumber("rot pose: ", swerve.getPose().getRotation().getDegrees());
+
     }
 
 }

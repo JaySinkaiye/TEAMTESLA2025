@@ -61,7 +61,7 @@ public class RobotContainer {
         //drive
         drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController));
 
-        SignalLogger.setPath("/media/sda1/ctre-logs/");
+        SignalLogger.setPath("/KINGSTON/ctre-logs/");
         driverController.leftBumper().and(driverController.a()).whileTrue(drivetrain.sysIdDynamic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kForward)                
         .beforeStarting(() -> SignalLogger.start()) // Start logging
         .finallyDo(() -> SignalLogger.stop())
