@@ -76,7 +76,7 @@ public class Elevator extends SubsystemBase {
         sl.ForwardSoftLimitEnable = true;
         sl.ForwardSoftLimitThreshold = 11.56232;
         sl.ReverseSoftLimitEnable = true;
-        sl.ReverseSoftLimitThreshold = 0.45725;
+        sl.ReverseSoftLimitThreshold = 0.4;
 
         talonConfigs.Slot0.kP = 10;
         talonConfigs.Slot0.kI = 0;

@@ -10,6 +10,7 @@ import com.ctre.phoenix6.SignalLogger;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -98,19 +99,23 @@ public class RobotContainer {
 
 
         //raising and lowering elevator
-        // operatorController.leftTrigger().onTrue(elevator.run(()->elevator.setElevatorMotorSpeed(-0.7 * operatorController.getLeftTriggerAxis())));
-        // operatorController.rightTrigger().onTrue(elevator.run(()->elevator.setElevatorMotorSpeed(0.7 * operatorController.getRightTriggerAxis())));
+        operatorController.leftTrigger().onTrue(elevator.run(()->elevator.setElevatorMotorSpeed(-0.7 * operatorController.getLeftTriggerAxis())));
+        operatorController.rightTrigger().onTrue(elevator.run(()->elevator.setElevatorMotorSpeed(0.7 * operatorController.getRightTriggerAxis())));
 
-        //rotatting arm
-        //operatorController.leftTrigger().onTrue(arm.run(()->arm.setRotateSpeed(operatorController.getLeftTriggerAxis())));
-        
-        //wrist pos
-        // operatorController.b().onTrue(new WristCommand(arm, Position.ALGEA_L2));
-        // operatorController.a().onTrue(new WristCommand(arm, Position.STOW));
-        // //arm intake
-        // operatorController.leftTrigger().onTrue(arm.run(()->arm.setIntakeSpeed(MathUtil.applyDeadband(operatorController.getLeftTriggerAxis(), 0.1))));
-        // operatorController.rightTrigger().onTrue(arm.run(()->arm.setIntakeSpeed(-MathUtil.applyDeadband(operatorController.getRightTriggerAxis(), 0.1))));
+        //rotating wrist
+        operatorController.leftBumper().onTrue(arm.run(()->arm.setWristSpeed(0.2)));
+        operatorController.leftBumper().onFalse(arm.run(()->arm.setWristSpeed(0)));
+        operatorController.rightBumper().onTrue(arm.run(()->arm.setWristSpeed(-0.2)));
+        operatorController.rightBumper().onFalse(arm.run(()->arm.setWristSpeed(0)));
 
+        operatorController.a().onTrue(arm.run(()->arm.wristGoToPos(0.2)));
+        operatorController.b().onTrue(arm.run(()->arm.wristGoToPos(0)));
+
+        //arm intake
+        operatorController.button(7).onTrue(arm.run(()->arm.setIntakeSpeed(0.8)));
+        operatorController.button(7).onFalse(arm.run(()->arm.setIntakeSpeed(0)));
+        operatorController.button(8).onTrue(arm.run(()->arm.setIntakeSpeed(-0.8)));
+        operatorController.button(8).onFalse(arm.run(()->arm.setIntakeSpeed(0)));
 
         //arm positions
         // operatorController.a().onTrue(new CoralL1(elevator, arm));

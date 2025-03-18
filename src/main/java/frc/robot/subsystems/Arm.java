@@ -10,13 +10,16 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-
+import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -25,6 +28,8 @@ public class Arm extends SubsystemBase {
   private final TalonFX intakeFollow = new TalonFX(62);
   private final WPI_VictorSPX wristMotor = new WPI_VictorSPX(50);
   private final TalonFX rotateMotor = new TalonFX(60);
+  private final CANcoder wristEncoder = new CANcoder(2);
+  private PIDController wrisController = new PIDController(1, 0, 0);
 
   private DutyCycleOut intake = new DutyCycleOut(0);
   private DutyCycleOut wrist = new DutyCycleOut(0);
@@ -32,7 +37,7 @@ public class Arm extends SubsystemBase {
 
   public Arm() {
     setRotationPosition(0);
-    intakeFollow.setControl(new Follower(61, false));
+    intakeFollow.setControl(new Follower(53, false));
     applyRotateMotorConfigs(InvertedValue.Clockwise_Positive);
   }
 
@@ -72,6 +77,19 @@ public class Arm extends SubsystemBase {
 
   public double getRotatePosition(){
     return rotateMotor.getPosition().getValueAsDouble();
+  }
+
+  public double getWristPosition(){
+    return wristEncoder.getPosition().getValueAsDouble();
+  }
+
+  public void resetWristPosition(){
+    wristEncoder.setPosition(0);
+  }
+
+  public void wristGoToPos(double desWPos){
+    double wristNew = wrisController.calculate(getRotatePosition(), desWPos);
+    wristMotor.set(wristNew);
   }
 
   public void resetRotatePosition(){
@@ -116,4 +134,5 @@ public class Arm extends SubsystemBase {
     motorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
     rotateMotor.getConfigurator().apply(motorOutputConfigs);
   }
+
 }
