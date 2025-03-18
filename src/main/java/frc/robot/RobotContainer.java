@@ -6,11 +6,9 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
-import com.ctre.phoenix6.SignalLogger;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,6 +18,15 @@ import frc.robot.commands.AprilTagPositions.LockInHPS;
 import frc.robot.commands.AprilTagPositions.LockInProcessor;
 import frc.robot.commands.AprilTagPositions.LockInReef;
 import frc.robot.commands.AprilTagPositions.TurnInReef;
+import frc.robot.commands.ArmPositions.AlgaeProccesor;
+import frc.robot.commands.ArmPositions.AlgeaBarge;
+import frc.robot.commands.ArmPositions.AlgeaL2;
+import frc.robot.commands.ArmPositions.AlgeaL3;
+import frc.robot.commands.ArmPositions.CoralL1;
+import frc.robot.commands.ArmPositions.CoralL2;
+import frc.robot.commands.ArmPositions.CoralL3;
+import frc.robot.commands.ArmPositions.CoralL4;
+import frc.robot.commands.ArmPositions.Stow;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
@@ -46,10 +53,26 @@ public class RobotContainer {
     private final SendableChooser<Command> AutonChooser = new SendableChooser<>();
     
     public RobotContainer() {
+        //auto align
         NamedCommands.registerCommand("Align to HPS", new LockInHPS(drivetrain, 50));
         NamedCommands.registerCommand("Align to Reef", new LockInReef(drivetrain, 4.4));
         NamedCommands.registerCommand("Turn To Reef", new TurnInReef(drivetrain));
         NamedCommands.registerCommand("Align to Processor", new LockInProcessor(drivetrain, 50));
+
+        // arm positions
+        NamedCommands.registerCommand("Algae Processor", new AlgaeProccesor(elevator, arm));
+        NamedCommands.registerCommand("Algae Barge", new AlgeaBarge(elevator, arm));
+        NamedCommands.registerCommand("Algae L2", new AlgeaL2(elevator, arm));
+        NamedCommands.registerCommand("Algae L3", new AlgeaL3(elevator, arm));
+        NamedCommands.registerCommand("Coral L1", new CoralL1(elevator, arm));
+        NamedCommands.registerCommand("Coral L2", new CoralL2(elevator, arm));
+        NamedCommands.registerCommand("Coral L2", new CoralL3(elevator, arm));
+        NamedCommands.registerCommand("Coral L4", new CoralL4(elevator, arm));
+        NamedCommands.registerCommand("Stow", new Stow(elevator, arm));
+
+        NamedCommands.registerCommand("Outtake Coral", arm.run(()->arm.setIntakeSpeed(-0.8)));
+        NamedCommands.registerCommand("Intake Coral", arm.run(()->arm.setIntakeSpeed(0.8)));
+
         configureBindings();
 
         SmartDashboard.putData("AutonChooser", AutonChooser);
@@ -62,23 +85,29 @@ public class RobotContainer {
         //drive
         drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController));
 
-        SignalLogger.setPath("/KINGSTON/ctre-logs/");
-        driverController.leftBumper().and(driverController.a()).whileTrue(drivetrain.sysIdDynamic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kForward)                
-        .beforeStarting(() -> SignalLogger.start()) // Start logging
-        .finallyDo(() -> SignalLogger.stop())
-        );
-        driverController.leftBumper().and(driverController.b()).whileTrue(drivetrain.sysIdDynamic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kReverse)
-        .beforeStarting(() -> SignalLogger.start()) // Start logging
-        .finallyDo(() -> SignalLogger.stop())
-        );
-        driverController.rightBumper().and(driverController.a()).whileTrue(drivetrain.sysIdQuasistatic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kForward)
-        .beforeStarting(() -> SignalLogger.start()) // Start logging
-        .finallyDo(() -> SignalLogger.stop())
-        );
-        driverController.rightBumper().and(driverController.b()).whileTrue(drivetrain.sysIdQuasistatic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kReverse)
-        .beforeStarting(() -> SignalLogger.start()) // Start logging
-        .finallyDo(() -> SignalLogger.stop())
-        );
+        //rotate arm
+        arm.setDefaultCommand(arm.run(()->arm.setRotateSpeed(operatorController.getLeftX())));
+
+        //rotate wrist
+        arm.setDefaultCommand(arm.run(()->arm.setWristSpeed(operatorController.getRightX())));
+
+        // SignalLogger.setPath("/KINGSTON/ctre-logs/");
+        // driverController.leftBumper().and(driverController.a()).whileTrue(drivetrain.sysIdDynamic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kForward)                
+        // .beforeStarting(() -> SignalLogger.start()) // Start logging
+        // .finallyDo(() -> SignalLogger.stop())
+        // );
+        // driverController.leftBumper().and(driverController.b()).whileTrue(drivetrain.sysIdDynamic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kReverse)
+        // .beforeStarting(() -> SignalLogger.start()) // Start logging
+        // .finallyDo(() -> SignalLogger.stop())
+        // );
+        // driverController.rightBumper().and(driverController.a()).whileTrue(drivetrain.sysIdQuasistatic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kForward)
+        // .beforeStarting(() -> SignalLogger.start()) // Start logging
+        // .finallyDo(() -> SignalLogger.stop())
+        // );
+        // driverController.rightBumper().and(driverController.b()).whileTrue(drivetrain.sysIdQuasistatic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kReverse)
+        // .beforeStarting(() -> SignalLogger.start()) // Start logging
+        // .finallyDo(() -> SignalLogger.stop())
+        // );
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
@@ -93,7 +122,7 @@ public class RobotContainer {
         // operatorController.rightBumper().onTrue(intake.run(()->intake.setRotateSpeed(-1)));
         // operatorController.rightBumper().onFalse(intake.run(()->intake.setRotateSpeed(0)));
 
-        //intaking coral and possibly spitting it out
+        //intaking coral and spitting it out
         // operatorController.leftTrigger().onTrue(intake.run(()->intake.setIntakeSpeed(0.7*operatorController.getLeftTriggerAxis())));
         // operatorController.rightTrigger().onTrue(intake.run(()->intake.setIntakeSpeed(-0.7*operatorController.getRightTriggerAxis())));
 
@@ -110,6 +139,7 @@ public class RobotContainer {
 
         operatorController.a().onTrue(arm.run(()->arm.wristGoToPos(0.2)));
         operatorController.b().onTrue(arm.run(()->arm.wristGoToPos(0)));
+
 
         //arm intake
         operatorController.button(7).onTrue(arm.run(()->arm.setIntakeSpeed(0.8)));

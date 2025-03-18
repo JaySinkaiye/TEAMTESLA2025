@@ -66,6 +66,11 @@ public class rotateArmCommand extends Command {
       rSetpoint= 0;
       arm.rotateToPos(rSetpoint);
         break;
+      case HUMAN_PLAYER_STATION:
+      rSetpoint = 0;
+        arm.rotateToPos(rSetpoint);;
+      default:
+        break;
     }
   }
 

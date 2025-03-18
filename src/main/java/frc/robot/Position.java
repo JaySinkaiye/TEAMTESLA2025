@@ -9,6 +9,7 @@ public enum Position {
     ALGEA_L2,
     ALGEA_L3,
     ALGEA_PROCESSOR,
+    HUMAN_PLAYER_STATION,
     ALGEA_BARGE
     
 }

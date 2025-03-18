@@ -13,7 +13,7 @@ public class ElevatorCommand extends Command {
   private Position position;
   
   private double setpoint = 0;
-  private double tolerance = 1;
+  private double tolerance = 0.5;
 
   public ElevatorCommand(Elevator elevator, Position position) {
     this.elevator = elevator;
@@ -65,6 +65,11 @@ public class ElevatorCommand extends Command {
       case STOW:
       setpoint = 0;
       elevator.GoToPos(setpoint);
+        break;
+      case HUMAN_PLAYER_STATION:
+        setpoint = 0;
+        elevator.GoToPos(setpoint);
+      default:
         break;
     }
   }

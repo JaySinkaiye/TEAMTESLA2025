@@ -66,6 +66,11 @@ public class WristCommand extends Command {
       setpoint = 0;
       arm.wristGoToPos(setpoint);
         break;
+      case HUMAN_PLAYER_STATION:
+      setpoint = 0;
+        arm.wristGoToPos(setpoint);;
+      default:
+        break;
     }
 
   }
