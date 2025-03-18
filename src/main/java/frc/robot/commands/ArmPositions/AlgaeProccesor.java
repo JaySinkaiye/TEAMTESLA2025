@@ -20,7 +20,7 @@ public class AlgaeProccesor extends SequentialCommandGroup {
           new ElevatorCommand(elevator, Position.ALGEA_PROCESSOR),
           new rotateArmCommand(arm, Position.ALGEA_PROCESSOR)
       ),
-      new WristCommand(arm)
+      new WristCommand(arm, Position.ALGEA_PROCESSOR)
     );
   }
 }

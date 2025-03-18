@@ -17,10 +17,10 @@ public class AlgeaL3 extends SequentialCommandGroup {
   public AlgeaL3(Elevator elevator, Arm arm) {
     addCommands(
         new ParallelCommandGroup(
-          new ElevatorCommand(elevator, Position.ALGEA_L2),
-          new rotateArmCommand(arm, Position.ALGEA_L2)
+          new ElevatorCommand(elevator, Position.ALGEA_L3),
+          new rotateArmCommand(arm, Position.ALGEA_L3)
       ),
-      new WristCommand(arm)
+      new WristCommand(arm, Position.ALGEA_L3)
     );
   }
 }

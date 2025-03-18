@@ -20,7 +20,7 @@ public class AlgeaL2 extends SequentialCommandGroup {
         new ElevatorCommand(elevator, Position.ALGEA_L2),
         new rotateArmCommand(arm, Position.ALGEA_L2)
       ),
-      new WristCommand(arm)
+      new WristCommand(arm, Position.ALGEA_L2)
     );
   }
 }

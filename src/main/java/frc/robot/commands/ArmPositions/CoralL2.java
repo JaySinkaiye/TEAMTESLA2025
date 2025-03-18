@@ -18,10 +18,10 @@ public class CoralL2 extends SequentialCommandGroup {
   public CoralL2(Elevator elevator, Arm arm) {
     addCommands(      
       new ParallelCommandGroup(      
-        new ElevatorCommand(elevator, Position.CORAL_L1),
-        new rotateArmCommand(arm, Position.CORAL_L1)
+        new ElevatorCommand(elevator, Position.CORAL_L2),
+        new rotateArmCommand(arm, Position.CORAL_L2)
         ),
-      new WristCommand(arm)
+      new WristCommand(arm, Position.CORAL_L2)
       );
   }
 }

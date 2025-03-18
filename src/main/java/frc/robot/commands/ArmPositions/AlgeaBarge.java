@@ -20,6 +20,6 @@ public class AlgeaBarge extends SequentialCommandGroup {
         new ElevatorCommand(elevator, Position.ALGEA_BARGE),
         new rotateArmCommand(arm, Position.ALGEA_BARGE)
       ),
-      new WristCommand(arm));
+      new WristCommand(arm,Position.ALGEA_BARGE));
   }
 }

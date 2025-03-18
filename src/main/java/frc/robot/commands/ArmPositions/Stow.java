@@ -20,7 +20,7 @@ public class Stow extends SequentialCommandGroup {
         new ElevatorCommand(elevator, Position.STOW),
         new rotateArmCommand(arm, Position.STOW)
       ),
-      new WristCommand(arm)
+      new WristCommand(arm, Position.STOW)
     );
   }
 }
