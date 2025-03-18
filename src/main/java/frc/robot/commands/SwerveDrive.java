@@ -18,6 +18,7 @@ import frc.robot.commands.AprilTagPositions.LockInReef;
 import frc.robot.commands.AprilTagPositions.TurnInReef;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Elevator;
 
 public class SwerveDrive extends Command {
 
@@ -42,10 +43,9 @@ public class SwerveDrive extends Command {
     private LockInReef lir4point4;
     private LockInProcessor lip20;
 
-    //private Elevator elevator;
+    private Elevator elevator;
 
     public SwerveDrive(CommandSwerveDrivetrain swerve, CommandXboxController driver){
-
         this.swerve = swerve;
         this.driverController = driver;
         addRequirements(swerve);
@@ -72,35 +72,34 @@ public class SwerveDrive extends Command {
         lip20 = new LockInProcessor(swerve, 20);
     }
 
-    
-    // // public SwerveDrive(CommandSwerveDrivetrain swerve, CommandXboxController driver, Elevator elevator){
+    public SwerveDrive(CommandSwerveDrivetrain swerve, CommandXboxController driver, Elevator elevator){
 
-    // //     this.swerve = swerve;
-    // //     this.driverController = driver;
-    // //     this.elevator = elevator;
-    // //     addRequirements(swerve);
+        this.swerve = swerve;
+        this.driverController = driver;
+        this.elevator = elevator;
+        addRequirements(swerve);
 
-    // //     slewR = new SlewRateLimiter(8);
-    // //     slewX = new SlewRateLimiter(8);
-    // //     slewY = new SlewRateLimiter(8);
+        slewR = new SlewRateLimiter(8);
+        slewX = new SlewRateLimiter(8);
+        slewY = new SlewRateLimiter(8);
 
-    // //     m_speedChooser = new SendableChooser<Double>();
-    // //     m_speedChooser.addOption("100%", 1.0);
-    // //     m_speedChooser.addOption("90%", 0.9);
-    // //     m_speedChooser.setDefaultOption("85%", 0.85);
-    // //     m_speedChooser.addOption("80%", 0.8);
-    // //     m_speedChooser.addOption("70%", 0.7);
-    // //     m_speedChooser.addOption("60%", 0.6);
-    // //     m_speedChooser.addOption("50%", 0.5);
-    // //     m_speedChooser.addOption("40%", 0.4);
-    // //     m_speedChooser.addOption("30%", 0.3);
-    // //     m_speedChooser.addOption("20%", 0.2);
-    // //     SmartDashboard.putData("Speed Percent", m_speedChooser);
+        m_speedChooser = new SendableChooser<Double>();
+        m_speedChooser.addOption("100%", 1.0);
+        m_speedChooser.addOption("90%", 0.9);
+        m_speedChooser.setDefaultOption("85%", 0.85);
+        m_speedChooser.addOption("80%", 0.8);
+        m_speedChooser.addOption("70%", 0.7);
+        m_speedChooser.addOption("60%", 0.6);
+        m_speedChooser.addOption("50%", 0.5);
+        m_speedChooser.addOption("40%", 0.4);
+        m_speedChooser.addOption("30%", 0.3);
+        m_speedChooser.addOption("20%", 0.2);
+        SmartDashboard.putData("Speed Percent", m_speedChooser);
 
-    // //     lihps19 = new LockInHPS(swerve, 17);
-    // //     lir4point4 = new LockInReef(swerve, 4.4);
-    // //     lip20 = new LockInProcessor(swerve, 20);
-    // // }
+        lihps19 = new LockInHPS(swerve, 17);
+        lir4point4 = new LockInReef(swerve, 4.4);
+        lip20 = new LockInProcessor(swerve, 20);
+    }
 
     @Override
     public void initialize(){
@@ -109,6 +108,9 @@ public class SwerveDrive extends Command {
 
     @Override
     public void execute(){
+        //change speed depending on how tall the elevator is to avoid tipping
+        MaxSpeed = (-0.6376 * elevator.getElevatorPosition()) + 9.46;
+
         xVal = MathUtil.applyDeadband(-driverController.getLeftX() * m_speedChooser.getSelected(),0.2);
         yVal = MathUtil.applyDeadband(-driverController.getLeftY() * m_speedChooser.getSelected(), 0.2);
         rotationVal = MathUtil.applyDeadband(-driverController.getRightX() * m_speedChooser.getSelected(), 0.1);

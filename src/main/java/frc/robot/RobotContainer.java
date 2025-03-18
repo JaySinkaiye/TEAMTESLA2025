@@ -85,7 +85,7 @@ public class RobotContainer {
 
     private void configureBindings() {
         //drive
-        drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController));
+        drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController, elevator));
 
         //rotate arm
         arm.setDefaultCommand(arm.run(()->arm.setRotateSpeed(operatorController.getLeftX())));
