@@ -40,7 +40,6 @@ public class Limelight {
     public ChassisSpeeds lockingIn(double goalAngle){
         goalPose = aprilTags.aprilTagIDToPose((int) aprilTagID);
         return sw.calculate(swerve.getPose(), goalPose, MaxSpeed, Rotation2d.fromDegrees(goalAngle));
-        //sw.calculate(LimelightHelpers.getBotPose2d("limelight-front"), goalPose, MaxSpeed, Rotation2d.fromDegrees(goalAngle));
     }
 
     public boolean isDone(){

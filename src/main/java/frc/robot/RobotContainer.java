@@ -26,6 +26,7 @@ import frc.robot.commands.ArmPositions.CoralL1;
 import frc.robot.commands.ArmPositions.CoralL2;
 import frc.robot.commands.ArmPositions.CoralL3;
 import frc.robot.commands.ArmPositions.CoralL4;
+import frc.robot.commands.ArmPositions.HumanPlayerStation;
 import frc.robot.commands.ArmPositions.Stow;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Arm;
@@ -69,6 +70,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Coral L2", new CoralL3(elevator, arm));
         NamedCommands.registerCommand("Coral L4", new CoralL4(elevator, arm));
         NamedCommands.registerCommand("Stow", new Stow(elevator, arm));
+        NamedCommands.registerCommand("Human Player Station", new HumanPlayerStation(elevator, arm));
 
         NamedCommands.registerCommand("Outtake Coral", arm.run(()->arm.setIntakeSpeed(-0.8)));
         NamedCommands.registerCommand("Intake Coral", arm.run(()->arm.setIntakeSpeed(0.8)));
