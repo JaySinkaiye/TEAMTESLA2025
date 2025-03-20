@@ -13,7 +13,7 @@ public class ElevatorCommand extends Command {
   private Position position;
   
   private double setpoint = 0;
-  private double tolerance = 0.5;
+  private double tolerance = 0.1;
 
   public ElevatorCommand(Elevator elevator, Position position) {
     this.elevator = elevator;
@@ -47,7 +47,7 @@ public class ElevatorCommand extends Command {
       elevator.GoToPos(setpoint);
         break;
       case CORAL_L1:
-      setpoint = 0;
+      setpoint = 1;
       elevator.GoToPos(setpoint);
         break;
       case CORAL_L2:
@@ -63,7 +63,7 @@ public class ElevatorCommand extends Command {
       elevator.GoToPos(setpoint);
         break;
       case STOW:
-      setpoint = 0;
+      setpoint = 1;
       elevator.GoToPos(setpoint);
         break;
       case HUMAN_PLAYER_STATION:

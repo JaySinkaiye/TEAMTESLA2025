@@ -9,10 +9,12 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.ElevatorCommand;
 import frc.robot.commands.SwerveDrive;
 import frc.robot.commands.AprilTagPositions.LockInHPS;
 import frc.robot.commands.AprilTagPositions.LockInProcessor;
@@ -88,28 +90,7 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController, elevator));
 
         //rotate arm
-        arm.setDefaultCommand(arm.run(()->arm.setRotateSpeed(operatorController.getLeftX())));
-
-        //rotate wrist
-        arm.setDefaultCommand(arm.run(()->arm.setWristSpeed(operatorController.getRightX())));
-
-        // SignalLogger.setPath("/KINGSTON/ctre-logs/");
-        // driverController.leftBumper().and(driverController.a()).whileTrue(drivetrain.sysIdDynamic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kForward)                
-        // .beforeStarting(() -> SignalLogger.start()) // Start logging
-        // .finallyDo(() -> SignalLogger.stop())
-        // );
-        // driverController.leftBumper().and(driverController.b()).whileTrue(drivetrain.sysIdDynamic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kReverse)
-        // .beforeStarting(() -> SignalLogger.start()) // Start logging
-        // .finallyDo(() -> SignalLogger.stop())
-        // );
-        // driverController.rightBumper().and(driverController.a()).whileTrue(drivetrain.sysIdQuasistatic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kForward)
-        // .beforeStarting(() -> SignalLogger.start()) // Start logging
-        // .finallyDo(() -> SignalLogger.stop())
-        // );
-        // driverController.rightBumper().and(driverController.b()).whileTrue(drivetrain.sysIdQuasistatic(edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction.kReverse)
-        // .beforeStarting(() -> SignalLogger.start()) // Start logging
-        // .finallyDo(() -> SignalLogger.stop())
-        // );
+        arm.setDefaultCommand(arm.run(()->arm.setRotateSpeed(MathUtil.applyDeadband(operatorController.getLeftX(), 0.1))));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
@@ -139,8 +120,8 @@ public class RobotContainer {
         operatorController.rightBumper().onTrue(arm.run(()->arm.setWristSpeed(-0.2)));
         operatorController.rightBumper().onFalse(arm.run(()->arm.setWristSpeed(0)));
 
-        operatorController.a().onTrue(arm.run(()->arm.wristGoToPos(0.2)));
-        operatorController.b().onTrue(arm.run(()->arm.wristGoToPos(0)));
+        // operatorController.a().onTrue(arm.run(()->arm.wristGoToPos(0.2)));
+        // operatorController.b().onTrue(arm.run(()->arm.wristGoToPos(0)));
 
 
         //arm intake
@@ -150,8 +131,8 @@ public class RobotContainer {
         operatorController.button(8).onFalse(arm.run(()->arm.setIntakeSpeed(0)));
 
         //arm positions
-        // operatorController.a().onTrue(new CoralL1(elevator, arm));
-        // operatorController.b().onTrue(new CoralL2(elevator, arm));
+        operatorController.x().onTrue(new ElevatorCommand(elevator, Position.STOW));
+        operatorController.b().onTrue(new ElevatorCommand(elevator, Position.CORAL_L1));
         // operatorController.x().onTrue(new CoralL3(elevator, arm));
         // operatorController.y().onTrue(new CoralL4(elevator, arm));
         // operatorController.povUp().onTrue(new AlgeaBarge(elevator, arm));

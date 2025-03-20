@@ -109,7 +109,7 @@ public class SwerveDrive extends Command {
     @Override
     public void execute(){
         //change speed depending on how tall the elevator is to avoid tipping
-        MaxSpeed = (-0.6376 * elevator.getElevatorPosition()) + 9.46;
+        MaxSpeed = (1.2433 * elevator.getElevatorPosition()) + 9.46;
 
         xVal = MathUtil.applyDeadband(-driverController.getLeftX() * m_speedChooser.getSelected(),0.2);
         yVal = MathUtil.applyDeadband(-driverController.getLeftY() * m_speedChooser.getSelected(), 0.2);

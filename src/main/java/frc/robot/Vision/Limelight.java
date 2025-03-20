@@ -4,14 +4,19 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Vision.LimelightHelpers.PoseEstimate;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
@@ -37,9 +42,26 @@ public class Limelight {
         sw = new HolonomicDriveController(drive, slide, theta);
     }
 
+    public void updateDrivetrainPose(){
+        PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-front");
+
+        if (poseEstimate != null && LimelightHelpers.validPoseEstimate(poseEstimate)) {
+            Pose2d visionPose = poseEstimate.pose;
+
+            Matrix<N3, N1> visionStdDevs = VecBuilder.fill(
+                0.1, // x standard deviation (meters)
+                0.1, // y standard deviation (meters)
+                0.1  // theta standard deviation (radians)
+            );
+            swerve.addVisionMeasurement(visionPose, poseEstimate.timestampSeconds, visionStdDevs);
+        }
+    }
+
     public ChassisSpeeds lockingIn(double goalAngle){
+        PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-front");
+        Pose2d currentPose = poseEstimate.pose;
         goalPose = aprilTags.aprilTagIDToPose((int) aprilTagID);
-        return sw.calculate(swerve.getPose(), goalPose, MaxSpeed, Rotation2d.fromDegrees(goalAngle));
+        return sw.calculate(currentPose, goalPose, MaxSpeed, Rotation2d.fromDegrees(goalAngle));
     }
 
     public boolean isDone(){
