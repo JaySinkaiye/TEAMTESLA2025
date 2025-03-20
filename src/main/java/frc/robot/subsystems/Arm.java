@@ -8,7 +8,6 @@ import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
@@ -21,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
   private final TalonFX intakeMotor = new TalonFX(53);
-  private final TalonFX intakeFollow = new TalonFX(62);
+  private final TalonFX intakeMotor2 = new TalonFX(62);
   private final TalonFX wristMotor = new TalonFX(0);
   private final TalonFX rotateMotor = new TalonFX(60);
 
@@ -31,7 +30,6 @@ public class Arm extends SubsystemBase {
 
   public Arm() {
     setRotationPosition(0);
-    intakeFollow.setControl(new Follower(53, false));
     applyRotateMotorConfigs(InvertedValue.Clockwise_Positive);
     applyWristMotorConfigs(InvertedValue.Clockwise_Positive);
   }
@@ -45,6 +43,7 @@ public class Arm extends SubsystemBase {
   public void setIntakeSpeed(double ispeed){
     intake.Output = ispeed;
     intakeMotor.setControl(intake);
+    intakeMotor2.setControl(intake);
   }
 
   public void setWristSpeed(double wspeed){
@@ -60,6 +59,7 @@ public class Arm extends SubsystemBase {
 
   public void stopIntakeMotor(){
     intakeMotor.set(0);
+    intakeMotor2.set(0);
   }
 
   public void stopWristMotor(){

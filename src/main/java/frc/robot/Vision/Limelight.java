@@ -15,6 +15,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Vision.LimelightHelpers.PoseEstimate;
 import frc.robot.generated.TunerConstants;
@@ -33,6 +35,7 @@ public class Limelight {
 
     Pose2d goalPose;
     double aprilTagID = LimelightHelpers.getFiducialID("limelight-front");
+    PoseEstimate poseEstimate;
 
     public Limelight(CommandSwerveDrivetrain swerve){
         this.swerve = swerve;
@@ -43,7 +46,15 @@ public class Limelight {
     }
 
     public void updateDrivetrainPose(){
-        PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-front");
+
+        //checking our alliance color
+        DriverStation.getAlliance().ifPresent(allianceColor -> {
+        if (allianceColor == Alliance.Red) {
+            poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-front");
+        } else {
+            poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiRed_MegaTag2("limelight-front");
+        }
+        });
 
         if (poseEstimate != null && LimelightHelpers.validPoseEstimate(poseEstimate)) {
             Pose2d visionPose = poseEstimate.pose;
@@ -54,14 +65,13 @@ public class Limelight {
                 0.1  // theta standard deviation (radians)
             );
             swerve.addVisionMeasurement(visionPose, poseEstimate.timestampSeconds, visionStdDevs);
+        
         }
     }
 
     public ChassisSpeeds lockingIn(double goalAngle){
-        PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-front");
-        Pose2d currentPose = poseEstimate.pose;
         goalPose = aprilTags.aprilTagIDToPose((int) aprilTagID);
-        return sw.calculate(currentPose, goalPose, MaxSpeed, Rotation2d.fromDegrees(goalAngle));
+        return sw.calculate(swerve.getPose(), goalPose, MaxSpeed, Rotation2d.fromDegrees(goalAngle));
     }
 
     public boolean isDone(){
