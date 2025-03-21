@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands.AprilTagPositions;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -12,13 +8,13 @@ import frc.robot.Vision.Limelight;
 import frc.robot.Vision.LimelightHelpers;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
-public class TurnInReef extends Command {
+public class autoReefAlign extends Command {
   private CommandSwerveDrivetrain swerve;
   private final SwerveRequest.ApplyRobotSpeeds ApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
 
-  private Limelight LL;
-
-  public TurnInReef(CommandSwerveDrivetrain swerve) {
+  private Limelight LL;  
+  
+  public autoReefAlign(CommandSwerveDrivetrain swerve) {
     this.swerve = swerve;
     addRequirements(swerve);
 
@@ -32,12 +28,9 @@ public class TurnInReef extends Command {
 
   @Override
   public void execute() {
-      ChassisSpeeds speeds = LL.lockingIn(0);
-      swerve.setControl(ApplyRobotSpeeds.withSpeeds(speeds));
+    ChassisSpeeds speeds = LL.lockingIn(0);
+    swerve.setControl(ApplyRobotSpeeds.withSpeeds(speeds));
   }
-
-  @Override
-  public void end(boolean interrupted) {}
 
   @Override
   public boolean isFinished() {

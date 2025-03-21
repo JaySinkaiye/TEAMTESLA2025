@@ -40,7 +40,17 @@ public class Limelight {
     private PoseEstimate poseEstimate;
 
     private Transform2d LeftReefOffset = new Transform2d(
-        new Translation2d(0.43,0.1778),
+        new Translation2d(-0.0508,0.3048),
+        new Rotation2d(Math.toRadians(0))
+    );
+
+    private Transform2d RightReefOffset = new Transform2d(
+        new Translation2d(0.0508,0.3048),
+        new Rotation2d(Math.toRadians(0))
+    );
+
+    private Transform2d BotOffset =  new Transform2d(
+        new Translation2d(0,0.3048),
         new Rotation2d(Math.toRadians(0))
     );
 
@@ -75,10 +85,22 @@ public class Limelight {
         
         }
     }
-
     public ChassisSpeeds lockingIn(double goalAngle){
         goalPose = aprilTags.aprilTagIDToPose((int) aprilTagID);
-        return sw.calculate(swerve.getPose(), goalPose, MaxSpeed, Rotation2d.fromDegrees(goalAngle));
+        return sw.calculate(swerve.getPose(), goalPose.transformBy(BotOffset), MaxSpeed, Rotation2d.fromDegrees(goalAngle));
+    }
+
+    public ChassisSpeeds lockingIn(double goalAngle, Boolean leftAlignSupplier, Boolean rightAlignSupplier){
+        boolean leftAlign = false;
+        boolean rightAlign = false;
+        goalPose = aprilTags.aprilTagIDToPose((int) aprilTagID);
+        if(leftAlign == true){
+            return sw.calculate(swerve.getPose(), goalPose.transformBy(LeftReefOffset), MaxSpeed, Rotation2d.fromDegrees(goalAngle));
+        } else if (rightAlign == true){
+            return sw.calculate(swerve.getPose(), goalPose.transformBy(RightReefOffset), MaxSpeed, Rotation2d.fromDegrees(goalAngle));
+        } else {
+            return sw.calculate(swerve.getPose(), goalPose.transformBy(BotOffset), MaxSpeed, Rotation2d.fromDegrees(goalAngle));
+        }
     }
 
     public boolean isDone(){

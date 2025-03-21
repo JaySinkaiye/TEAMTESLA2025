@@ -19,12 +19,6 @@
         {
           "type": "named",
           "data": {
-            "name": "Turn To Reef"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "Coral L4"
           }
         },

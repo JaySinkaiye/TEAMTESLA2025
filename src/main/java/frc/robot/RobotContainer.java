@@ -17,8 +17,7 @@ import frc.robot.commands.ElevatorCommand;
 import frc.robot.commands.SwerveDrive;
 import frc.robot.commands.AprilTagPositions.LockInHPS;
 import frc.robot.commands.AprilTagPositions.LockInProcessor;
-import frc.robot.commands.AprilTagPositions.LockInReef;
-import frc.robot.commands.AprilTagPositions.TurnInReef;
+import frc.robot.commands.AprilTagPositions.autoReefAlign;
 import frc.robot.commands.ArmPositions.AlgaeProccesor;
 import frc.robot.commands.ArmPositions.AlgeaBarge;
 import frc.robot.commands.ArmPositions.AlgeaL2;
@@ -55,8 +54,7 @@ public class RobotContainer {
     public RobotContainer() {
         //auto align
         NamedCommands.registerCommand("Align to HPS", new LockInHPS(drivetrain, 50));
-        NamedCommands.registerCommand("Align to Reef", new LockInReef(drivetrain, 4.4));
-        NamedCommands.registerCommand("Turn To Reef", new TurnInReef(drivetrain));
+        NamedCommands.registerCommand("Align to Reef", new autoReefAlign(drivetrain));
         NamedCommands.registerCommand("Align to Processor", new LockInProcessor(drivetrain, 50));
 
         // arm positions
