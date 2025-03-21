@@ -4,12 +4,11 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.MetersPerSecond;
-
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -47,10 +46,8 @@ public class RobotContainer {
 
     private final CommandXboxController driverController = new CommandXboxController(0);
     private final CommandXboxController operatorController = new CommandXboxController(1);
+    private final SlewRateLimiter eLimiter = new SlewRateLimiter(0.6);
     
-    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
-    private final Telemetry logger = new Telemetry(MaxSpeed);
-
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     private final SendableChooser<Command> AutonChooser = new SendableChooser<>();
@@ -86,18 +83,30 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+        //////DRIVER CONTROLS
         //drive
         drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController, elevator));
 
-        //rotate arm
-        arm.setDefaultCommand(arm.run(()->arm.setRotateSpeed(MathUtil.applyDeadband(operatorController.getLeftX(), 0.1))));
-
-        drivetrain.registerTelemetry(logger::telemeterize);
-
         //climber
-        // driverController.leftTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(-MathUtil.applyDeadband(driverController.getLeftTriggerAxis(), 0.1))));
-        // driverController.rightTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(MathUtil.applyDeadband(driverController.getRightTriggerAxis(), 0.1))));
-        // driverController.b().onTrue(climber.runOnce(()->climber.gotoPos(-0.6)));
+        driverController.leftTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(-MathUtil.applyDeadband(driverController.getLeftTriggerAxis(), 0.1))));
+        driverController.rightTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(MathUtil.applyDeadband(driverController.getRightTriggerAxis(), 0.1))));
+        driverController.b().onTrue(climber.runOnce(()->climber.gotoPos(-0.6)));
+
+        ///// END OF DRIVER CONTROLS
+        
+        
+    
+        /// OPERATOR CONTROLS
+
+        //rotate arm
+        arm.setDefaultCommand(arm.run(()->arm.setRotateSpeed(MathUtil.applyDeadband(operatorController.getRightX(), 0.1))));
+        
+        //raising and lowering elevator
+        elevator.setDefaultCommand(elevator.run(()->elevator.setElevatorMotorSpeed(eLimiter.calculate(MathUtil.applyDeadband(operatorController.getLeftY(), 0.1)))));
+        
+        //rotating wrist
+        operatorController.leftTrigger().onTrue(arm.run(()->arm.setWristSpeed(0.2)));
+        operatorController.rightTrigger().onTrue(arm.run(()->arm.setWristSpeed(-0.2)));
 
         // picking up and dropping intake
         // operatorController.leftBumper().onTrue(intake.run(()->intake.setRotateSpeed(1)));
@@ -108,17 +117,6 @@ public class RobotContainer {
         //intaking coral and spitting it out
         // operatorController.leftTrigger().onTrue(intake.run(()->intake.setIntakeSpeed(0.7*operatorController.getLeftTriggerAxis())));
         // operatorController.rightTrigger().onTrue(intake.run(()->intake.setIntakeSpeed(-0.7*operatorController.getRightTriggerAxis())));
-
-
-        //raising and lowering elevator
-        operatorController.leftTrigger().onTrue(elevator.run(()->elevator.setElevatorMotorSpeed(-0.7 * operatorController.getLeftTriggerAxis())));
-        operatorController.rightTrigger().onTrue(elevator.run(()->elevator.setElevatorMotorSpeed(0.7 * operatorController.getRightTriggerAxis())));
-
-        //rotating wrist
-        operatorController.leftBumper().onTrue(arm.run(()->arm.setWristSpeed(0.2)));
-        operatorController.leftBumper().onFalse(arm.run(()->arm.setWristSpeed(0)));
-        operatorController.rightBumper().onTrue(arm.run(()->arm.setWristSpeed(-0.2)));
-        operatorController.rightBumper().onFalse(arm.run(()->arm.setWristSpeed(0)));
 
         // operatorController.a().onTrue(arm.run(()->arm.wristGoToPos(0.2)));
         // operatorController.b().onTrue(arm.run(()->arm.wristGoToPos(0)));

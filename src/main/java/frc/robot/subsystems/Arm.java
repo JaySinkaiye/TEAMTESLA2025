@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Arm extends SubsystemBase {
   private final TalonFX intakeMotor = new TalonFX(53);
   private final TalonFX intakeMotor2 = new TalonFX(62);
-  private final TalonFX wristMotor = new TalonFX(0);
+  private final TalonFX wristMotor = new TalonFX(2);
   private final TalonFX rotateMotor = new TalonFX(60);
 
   private DutyCycleOut intake = new DutyCycleOut(0);
@@ -38,6 +38,7 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     //This method will be called once per scheduler run
     SmartDashboard.putNumber("Rotate pos", getRotatePosition());
+    SmartDashboard.putNumber("Wrist pos", getWristPosition());
   }
 
   public void setIntakeSpeed(double ispeed){

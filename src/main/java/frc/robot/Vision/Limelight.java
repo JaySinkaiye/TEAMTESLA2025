@@ -38,6 +38,7 @@ public class Limelight {
     PoseEstimate poseEstimate;
 
     public Limelight(CommandSwerveDrivetrain swerve){
+        LimelightHelpers.SetRobotOrientation("limelight-front", swerve.getPose().getRotation().getDegrees(), 0, 0,0, 0, 0);
         this.swerve = swerve;
         drive = new PIDController(0.25, 0.004, 0.003);
         slide = new PIDController(0.005, 0, 0);

@@ -6,15 +6,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Position;
+import frc.robot.positionConstants;
 import frc.robot.subsystems.Arm;
 
 public class rotateArmCommand extends Command {
   private Arm arm;
   private Position position;
 
-  private double rSetpoint = 0;
+  private double rSetpoint;
 
-  private double rTolerance = 1;
+  private double rTolerance = positionConstants.armRotationConstants.ARM_TOLERANCE;
 
   public rotateArmCommand(Arm arm, Position position) {
     this.arm = arm;
@@ -31,43 +32,43 @@ public class rotateArmCommand extends Command {
   public void execute() {
     switch (position) {
       case ALGEA_BARGE:
-      rSetpoint= 0;
+      rSetpoint= positionConstants.armRotationConstants.ALGAE_BARGE_POSITION;
       arm.rotateToPos(rSetpoint);
         break;
       case ALGEA_L2:
-      rSetpoint= 0;
+      rSetpoint= positionConstants.armRotationConstants.ALGAE_L2_POSITION;
       arm.rotateToPos(rSetpoint);
         break;
       case ALGEA_L3:
-      rSetpoint= 0;
+      rSetpoint= positionConstants.armRotationConstants.ALGAE_L3_POSITION;
       arm.rotateToPos(rSetpoint);
         break;
       case ALGEA_PROCESSOR:
-      rSetpoint= 0;
+      rSetpoint= positionConstants.armRotationConstants.ALGAE_PROCESSOR_POSITION;
       arm.rotateToPos(rSetpoint);
         break;
       case CORAL_L1:
-      rSetpoint= 0;
+      rSetpoint= positionConstants.armRotationConstants.CORAL_L1_POSITION;
       arm.rotateToPos(rSetpoint);
         break;
       case CORAL_L2:
-      rSetpoint= 0;
+      rSetpoint= positionConstants.armRotationConstants.CORAL_L2_POSITION;
       arm.rotateToPos(rSetpoint);
         break;
       case CORAL_L3:
-      rSetpoint= 0;
+      rSetpoint= positionConstants.armRotationConstants.CORAL_L3_POSITION;
       arm.rotateToPos(rSetpoint);
         break;
       case CORAL_L4:
-      rSetpoint= 0;
+      rSetpoint= positionConstants.armRotationConstants.CORAL_L4_POSITION;
       arm.rotateToPos(rSetpoint);
         break;
       case STOW:
-      rSetpoint= 0;
+      rSetpoint= positionConstants.armRotationConstants.STOW_POSITION;
       arm.rotateToPos(rSetpoint);
         break;
       case HUMAN_PLAYER_STATION:
-      rSetpoint = 0;
+      rSetpoint = positionConstants.armRotationConstants.HUMAN_PLAYER_STATION_POSITION;
         arm.rotateToPos(rSetpoint);;
       default:
         break;

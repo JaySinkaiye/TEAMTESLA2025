@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Position;
+import frc.robot.positionConstants;
 import frc.robot.subsystems.Arm;
 
 public class WristCommand extends Command {
@@ -13,7 +14,7 @@ public class WristCommand extends Command {
   private Position position;
 
   private double setpoint;
-  private double wTolerance = 0.005;
+  private double wTolerance = positionConstants.wristConstants.WRIST_TOLERANCE;
 
   public WristCommand(Arm arm, Position position) {
     this.arm = arm;
@@ -31,43 +32,43 @@ public class WristCommand extends Command {
   public void execute() {
     switch (position) {
       case ALGEA_BARGE:
-      setpoint = 0.2;
+      setpoint = positionConstants.wristConstants.ALGAE_BARGE_POSITION;
       arm.wristGoToPos(setpoint);
         break;
       case ALGEA_L2:
-      setpoint = 0.2;
+      setpoint = positionConstants.wristConstants.ALGAE_L2_POSITION;
       arm.wristGoToPos(setpoint);
         break;
       case ALGEA_L3:
-      setpoint = 0.2;
+      setpoint = positionConstants.wristConstants.ALGAE_L3_POSITION;
       arm.wristGoToPos(setpoint);
         break;
       case ALGEA_PROCESSOR:
-      setpoint = 0.2;
+      setpoint = positionConstants.wristConstants.ALGAE_PROCESSOR_POSITION;
       arm.wristGoToPos(setpoint);
         break;
       case CORAL_L1:
-      setpoint = 0.2;
+      setpoint = positionConstants.wristConstants.CORAL_L1_POSITION;
       arm.wristGoToPos(setpoint);
         break;
       case CORAL_L2:
-      setpoint = 0.2;
+      setpoint = positionConstants.wristConstants.CORAL_L2_POSITION;
       arm.wristGoToPos(setpoint);
         break;
       case CORAL_L3:
-      setpoint = 0.2;
+      setpoint = positionConstants.wristConstants.CORAL_L3_POSITION;
       arm.wristGoToPos(setpoint);
         break;
       case CORAL_L4:
-      setpoint = 0.2;
+      setpoint = positionConstants.wristConstants.CORAL_L4_POSITION;
       arm.wristGoToPos(setpoint);
         break;
       case STOW:
-      setpoint = 0;
+      setpoint = positionConstants.wristConstants.STOW_POSITION;
       arm.wristGoToPos(setpoint);
         break;
       case HUMAN_PLAYER_STATION:
-      setpoint = 0;
+      setpoint = positionConstants.wristConstants.HUMAN_PLAYER_STATION_POSITION;
         arm.wristGoToPos(setpoint);;
       default:
         break;

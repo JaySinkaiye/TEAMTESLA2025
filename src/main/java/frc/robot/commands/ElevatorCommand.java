@@ -6,14 +6,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Position;
+import frc.robot.positionConstants;
 import frc.robot.subsystems.Elevator;
 
 public class ElevatorCommand extends Command {
   private Elevator elevator;
   private Position position;
   
-  private double setpoint = 0;
-  private double tolerance = 0.1;
+  private double setpoint;
+  private double tolerance = positionConstants.elevatorConstants.ELEVATOR_TOLERANCE;
 
   public ElevatorCommand(Elevator elevator, Position position) {
     this.elevator = elevator;
@@ -31,43 +32,43 @@ public class ElevatorCommand extends Command {
   public void execute() {
     switch (position) {
       case ALGEA_BARGE:
-      setpoint = 0;
+      setpoint = positionConstants.elevatorConstants.ALGAE_BARGE_POSITION;
       elevator.GoToPos(setpoint);
         break;
       case ALGEA_L2:
-      setpoint = 0;
+      setpoint = positionConstants.elevatorConstants.ALGAE_L2_POSITION;
       elevator.GoToPos(setpoint);
         break;
       case ALGEA_L3:
-      setpoint = 0;
+      setpoint = positionConstants.elevatorConstants.ALGAE_L3_POSITION;
       elevator.GoToPos(setpoint);
         break;
       case ALGEA_PROCESSOR:
-      setpoint = 0;
+      setpoint = positionConstants.elevatorConstants.ALGAE_PROCESSOR_POSITION;
       elevator.GoToPos(setpoint);
         break;
       case CORAL_L1:
-      setpoint = 1;
+      setpoint = positionConstants.elevatorConstants.CORAL_L1_POSITION;
       elevator.GoToPos(setpoint);
         break;
       case CORAL_L2:
-      setpoint = 0;
+      setpoint = positionConstants.elevatorConstants.CORAL_L2_POSITION;
       elevator.GoToPos(setpoint);
         break;
       case CORAL_L3:
-      setpoint = 0;
+      setpoint = positionConstants.elevatorConstants.CORAL_L3_POSITION;
       elevator.GoToPos(setpoint);
         break;
       case CORAL_L4:
-      setpoint = 0;
+      setpoint = positionConstants.elevatorConstants.CORAL_L4_POSITION;
       elevator.GoToPos(setpoint);
         break;
       case STOW:
-      setpoint = 1;
+      setpoint = positionConstants.elevatorConstants.STOW_POSITION;
       elevator.GoToPos(setpoint);
         break;
       case HUMAN_PLAYER_STATION:
-        setpoint = 0;
+        setpoint = positionConstants.elevatorConstants.HUMAN_PLAYER_STATION_POSITION;
         elevator.GoToPos(setpoint);
       default:
         break;
