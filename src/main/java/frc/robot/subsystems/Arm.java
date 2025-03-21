@@ -30,6 +30,7 @@ public class Arm extends SubsystemBase {
 
   public Arm() {
     setRotationPosition(0);
+    resetWristPosition();
     applyRotateMotorConfigs(InvertedValue.Clockwise_Positive);
     applyWristMotorConfigs(InvertedValue.Clockwise_Positive);
   }
@@ -123,12 +124,11 @@ public class Arm extends SubsystemBase {
     talonConfigs.Feedback.FeedbackRemoteSensorID = wristMotor.getDeviceID();
     talonConfigs.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
 
-    wristMotor.getConfigurator().apply(talonConfigs);
-
-    MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs();
+    MotorOutputConfigs motorOutputConfigs = talonConfigs.MotorOutput;
     motorOutputConfigs.Inverted = inversion;
     motorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
-    wristMotor.getConfigurator().apply(motorOutputConfigs);
+
+    wristMotor.getConfigurator().apply(talonConfigs);
   }
 
   private void applyRotateMotorConfigs(InvertedValue inversion){

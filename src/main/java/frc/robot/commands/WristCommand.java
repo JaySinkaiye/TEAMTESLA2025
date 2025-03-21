@@ -63,7 +63,7 @@ public class WristCommand extends Command {
       setpoint = positionConstants.wristConstants.CORAL_L4_POSITION;
       arm.wristGoToPos(setpoint);
         break;
-      case STOW:
+      case SAFE_ZONE:
       setpoint = positionConstants.wristConstants.STOW_POSITION;
       arm.wristGoToPos(setpoint);
         break;

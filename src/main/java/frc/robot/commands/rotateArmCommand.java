@@ -63,7 +63,7 @@ public class rotateArmCommand extends Command {
       rSetpoint= positionConstants.armRotationConstants.CORAL_L4_POSITION;
       arm.rotateToPos(rSetpoint);
         break;
-      case STOW:
+      case SAFE_ZONE:
       rSetpoint= positionConstants.armRotationConstants.STOW_POSITION;
       arm.rotateToPos(rSetpoint);
         break;

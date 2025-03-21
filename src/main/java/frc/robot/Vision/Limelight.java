@@ -11,6 +11,8 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
@@ -33,9 +35,14 @@ public class Limelight {
     private final ProfiledPIDController theta;
     private final HolonomicDriveController sw;
 
-    Pose2d goalPose;
-    double aprilTagID = LimelightHelpers.getFiducialID("limelight-front");
-    PoseEstimate poseEstimate;
+    private Pose2d goalPose;
+    private double aprilTagID = LimelightHelpers.getFiducialID("limelight-front");
+    private PoseEstimate poseEstimate;
+
+    private Transform2d LeftReefOffset = new Transform2d(
+        new Translation2d(0.43,0.1778),
+        new Rotation2d(Math.toRadians(0))
+    );
 
     public Limelight(CommandSwerveDrivetrain swerve){
         LimelightHelpers.SetRobotOrientation("limelight-front", swerve.getPose().getRotation().getDegrees(), 0, 0,0, 0, 0);
@@ -47,7 +54,6 @@ public class Limelight {
     }
 
     public void updateDrivetrainPose(){
-
         //checking our alliance color
         DriverStation.getAlliance().ifPresent(allianceColor -> {
         if (allianceColor == Alliance.Red) {

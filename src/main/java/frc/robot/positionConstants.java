@@ -8,7 +8,7 @@ public class positionConstants {
         public static final double CORAL_L1_POSITION = 0;
         public static final double CORAL_L2_POSITION = 0;
         public static final double CORAL_L3_POSITION = 0;
-        public static final double CORAL_L4_POSITION = 0;
+        public static final double CORAL_L4_POSITION = 6;
         public static final double ALGAE_L2_POSITION = 0;
         public static final double ALGAE_L3_POSITION = 0;
         public static final double ALGAE_PROCESSOR_POSITION = 0;

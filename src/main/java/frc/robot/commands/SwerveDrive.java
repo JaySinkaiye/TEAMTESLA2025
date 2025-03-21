@@ -118,11 +118,9 @@ public class SwerveDrive extends Command {
         driverController.rightBumper().whileTrue(swerve.applyRequest(() -> brake));
         driverController.leftBumper().onTrue(swerve.runOnce(() -> swerve.seedFieldCentric()));
         
-        // if elevator.getposition is below a certain amount then:
         m_Request = drive.withVelocityX(slewY.calculate(yVal * MaxSpeed))
         .withVelocityY(slewX.calculate(xVal * MaxSpeed))
         .withRotationalRate(slewR.calculate(rotationVal * MaxAngularRate));
-        // else drive at 20 percent speed
 
         swerve.setControl(m_Request);
 

@@ -1,7 +1,8 @@
 package frc.robot;
 
 public enum Position {
-    STOW,
+    SAFE_ZONE,
+    INTAKE,
     CORAL_L1,
     CORAL_L2,
     CORAL_L3,

@@ -73,10 +73,10 @@ public class Elevator extends SubsystemBase {
         fb.SensorToMechanismRatio = 15;
 
         SoftwareLimitSwitchConfigs sl = talonConfigs.SoftwareLimitSwitch;
-        sl.ForwardSoftLimitEnable = true;
+        sl.ForwardSoftLimitEnable = false;
         sl.ForwardSoftLimitThreshold = 0;
-        sl.ReverseSoftLimitEnable = true;
-        sl.ReverseSoftLimitThreshold = -6; //-6.15
+        sl.ReverseSoftLimitEnable = false;
+        sl.ReverseSoftLimitThreshold = 6; //-6.15
 
         talonConfigs.Slot0.kP = 40;
         talonConfigs.Slot0.kI = 5;
@@ -93,12 +93,11 @@ public class Elevator extends SubsystemBase {
 
         talonConfigs.Feedback.FeedbackRemoteSensorID = leftElevatorMotor.getDeviceID();
         talonConfigs.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-
+        
         leftElevatorMotor.getConfigurator().apply(talonConfigs);
         follower.getConfigurator().apply(talonConfigs);
 
         MotorOutputConfigs motorOutputConfigsRight = new MotorOutputConfigs();
-        motorOutputConfigsRight.Inverted = inversion;
         motorOutputConfigsRight.NeutralMode = NeutralModeValue.Brake;
         MotorOutputConfigs motorOutputConfigsLeft = new MotorOutputConfigs();
         motorOutputConfigsLeft.NeutralMode = NeutralModeValue.Brake;

@@ -13,14 +13,14 @@ import frc.robot.commands.rotateArmCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 
-public class Stow extends SequentialCommandGroup {
-  public Stow(Elevator elevator, Arm arm) {
+public class SafeZone extends SequentialCommandGroup {
+  public SafeZone(Elevator elevator, Arm arm) {
     addCommands(
             new ParallelCommandGroup(
-        new ElevatorCommand(elevator, Position.STOW),
-        new rotateArmCommand(arm, Position.STOW)
+        new ElevatorCommand(elevator, Position.SAFE_ZONE),
+        new rotateArmCommand(arm, Position.SAFE_ZONE)
       ),
-      new WristCommand(arm, Position.STOW)
+      new WristCommand(arm, Position.SAFE_ZONE)
     );
   }
 }

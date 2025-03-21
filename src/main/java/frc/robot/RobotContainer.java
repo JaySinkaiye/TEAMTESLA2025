@@ -28,7 +28,7 @@ import frc.robot.commands.ArmPositions.CoralL2;
 import frc.robot.commands.ArmPositions.CoralL3;
 import frc.robot.commands.ArmPositions.CoralL4;
 import frc.robot.commands.ArmPositions.HumanPlayerStation;
-import frc.robot.commands.ArmPositions.Stow;
+import frc.robot.commands.ArmPositions.SafeZone;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
@@ -68,7 +68,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Coral L2", new CoralL2(elevator, arm));
         NamedCommands.registerCommand("Coral L2", new CoralL3(elevator, arm));
         NamedCommands.registerCommand("Coral L4", new CoralL4(elevator, arm));
-        NamedCommands.registerCommand("Stow", new Stow(elevator, arm));
+        NamedCommands.registerCommand("Stow", new SafeZone(elevator, arm));
         NamedCommands.registerCommand("Human Player Station", new HumanPlayerStation(elevator, arm));
 
         NamedCommands.registerCommand("Outtake Coral", arm.run(()->arm.setIntakeSpeed(-0.8)));
@@ -102,11 +102,11 @@ public class RobotContainer {
         arm.setDefaultCommand(arm.run(()->arm.setRotateSpeed(MathUtil.applyDeadband(operatorController.getRightX(), 0.1))));
         
         //raising and lowering elevator
-        elevator.setDefaultCommand(elevator.run(()->elevator.setElevatorMotorSpeed(eLimiter.calculate(MathUtil.applyDeadband(operatorController.getLeftY(), 0.1)))));
+        elevator.setDefaultCommand(elevator.run(()->elevator.setElevatorMotorSpeed(eLimiter.calculate(MathUtil.applyDeadband(operatorController.getLeftY()*-1, 0.1)))));
         
         //rotating wrist
-        operatorController.leftTrigger().onTrue(arm.run(()->arm.setWristSpeed(0.2)));
-        operatorController.rightTrigger().onTrue(arm.run(()->arm.setWristSpeed(-0.2)));
+        operatorController.leftTrigger().onTrue(arm.run(()->arm.setWristSpeed(operatorController.getLeftTriggerAxis())));
+        operatorController.rightTrigger().onTrue(arm.run(()->arm.setWristSpeed(operatorController.getRightTriggerAxis())));
 
         // picking up and dropping intake
         // operatorController.leftBumper().onTrue(intake.run(()->intake.setRotateSpeed(1)));
@@ -129,14 +129,14 @@ public class RobotContainer {
         operatorController.button(8).onFalse(arm.run(()->arm.setIntakeSpeed(0)));
 
         //arm positions
-        operatorController.x().onTrue(new ElevatorCommand(elevator, Position.STOW));
-        operatorController.b().onTrue(new ElevatorCommand(elevator, Position.CORAL_L1));
-        // operatorController.x().onTrue(new CoralL3(elevator, arm));
-        // operatorController.y().onTrue(new CoralL4(elevator, arm));
-        // operatorController.povUp().onTrue(new AlgeaBarge(elevator, arm));
-        // operatorController.povDown().onTrue(new AlgeaProcesor(elevator, arm));
-        // operatorController.povLeft().onTrue(new AlgeaL2(elevator, arm));
-        // operatorController.povRight().onTrue(new AlgeaL3(elevator, arm));
+        // coral l1 - l3 and algea l2 l3 and processor
+        operatorController.a().onTrue(new ElevatorCommand(elevator, Position.CORAL_L1));
+        //coral l4 and algae barge
+        operatorController.x().onTrue(new ElevatorCommand(elevator, Position.CORAL_L4));
+        // raise elevator to intake
+        operatorController.y().onTrue(new ElevatorCommand(elevator, Position.SAFE_ZONE));
+        //collect coral from intake
+        operatorController.b().onTrue(new ElevatorCommand(elevator, Position.INTAKE));
     }
 
     public CommandXboxController getOperatorJoystick(){

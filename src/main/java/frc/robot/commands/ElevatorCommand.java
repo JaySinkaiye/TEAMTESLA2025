@@ -32,44 +32,49 @@ public class ElevatorCommand extends Command {
   public void execute() {
     switch (position) {
       case ALGEA_BARGE:
-      setpoint = positionConstants.elevatorConstants.ALGAE_BARGE_POSITION;
-      elevator.GoToPos(setpoint);
+        setpoint = positionConstants.elevatorConstants.ALGAE_BARGE_POSITION;
+        elevator.GoToPos(setpoint);
         break;
       case ALGEA_L2:
-      setpoint = positionConstants.elevatorConstants.ALGAE_L2_POSITION;
-      elevator.GoToPos(setpoint);
+        setpoint = positionConstants.elevatorConstants.ALGAE_L2_POSITION;
+        elevator.GoToPos(setpoint);
         break;
       case ALGEA_L3:
-      setpoint = positionConstants.elevatorConstants.ALGAE_L3_POSITION;
-      elevator.GoToPos(setpoint);
+        setpoint = positionConstants.elevatorConstants.ALGAE_L3_POSITION;
+        elevator.GoToPos(setpoint);
         break;
       case ALGEA_PROCESSOR:
-      setpoint = positionConstants.elevatorConstants.ALGAE_PROCESSOR_POSITION;
-      elevator.GoToPos(setpoint);
+        setpoint = positionConstants.elevatorConstants.ALGAE_PROCESSOR_POSITION;
+        elevator.GoToPos(setpoint);
         break;
       case CORAL_L1:
-      setpoint = positionConstants.elevatorConstants.CORAL_L1_POSITION;
-      elevator.GoToPos(setpoint);
+        setpoint = positionConstants.elevatorConstants.CORAL_L1_POSITION;
+        elevator.GoToPos(setpoint);
         break;
       case CORAL_L2:
-      setpoint = positionConstants.elevatorConstants.CORAL_L2_POSITION;
-      elevator.GoToPos(setpoint);
+        setpoint = positionConstants.elevatorConstants.CORAL_L2_POSITION;
+        elevator.GoToPos(setpoint);
         break;
       case CORAL_L3:
-      setpoint = positionConstants.elevatorConstants.CORAL_L3_POSITION;
-      elevator.GoToPos(setpoint);
+        setpoint = positionConstants.elevatorConstants.CORAL_L3_POSITION;
+        elevator.GoToPos(setpoint);
         break;
       case CORAL_L4:
-      setpoint = positionConstants.elevatorConstants.CORAL_L4_POSITION;
-      elevator.GoToPos(setpoint);
+        setpoint = positionConstants.elevatorConstants.CORAL_L4_POSITION;
+        elevator.GoToPos(setpoint);
         break;
-      case STOW:
-      setpoint = positionConstants.elevatorConstants.STOW_POSITION;
-      elevator.GoToPos(setpoint);
+      case SAFE_ZONE:
+        setpoint = positionConstants.elevatorConstants.STOW_POSITION;
+        elevator.GoToPos(setpoint);
+        break;
+      case INTAKE:
+        setpoint = positionConstants.elevatorConstants.ELEVATOR_SAFE_TO_MOVE_ZONE;
+        elevator.GoToPos(setpoint);
         break;
       case HUMAN_PLAYER_STATION:
         setpoint = positionConstants.elevatorConstants.HUMAN_PLAYER_STATION_POSITION;
         elevator.GoToPos(setpoint);
+        break;
       default:
         break;
     }
