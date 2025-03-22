@@ -268,7 +268,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         if (!m_hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
             DriverStation.getAlliance().ifPresent(allianceColor -> {
                 setOperatorPerspectiveForward(
-                    allianceColor == Alliance.Red
+                    allianceColor == Alliance.Blue
                         ? kRedAlliancePerspectiveRotation
                         : kBlueAlliancePerspectiveRotation
                 );

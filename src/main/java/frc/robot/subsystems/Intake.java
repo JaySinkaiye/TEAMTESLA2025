@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.FeedbackConfigs;
-import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -34,7 +33,7 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("rotate pos", rotateMotor.getPosition().getValueAsDouble());
+    SmartDashboard.putNumber("intake rotate pos", rotateMotor.getPosition().getValueAsDouble());
     //This method will be called once per scheduler run
   }
 
@@ -80,12 +79,12 @@ public class Intake extends SubsystemBase {
       
       SoftwareLimitSwitchConfigs hw = talonConfigs.SoftwareLimitSwitch;
       hw.ForwardSoftLimitEnable = true;
-      hw.ForwardSoftLimitThreshold = -0.19;
+      hw.ForwardSoftLimitThreshold = -0.18;
       hw.ReverseSoftLimitEnable = true;
-      hw.ReverseSoftLimitThreshold = -0.180664;
+      hw.ReverseSoftLimitThreshold = -0.88;
 
-      talonConfigs.Slot0.kP = 10;
-      talonConfigs.Slot0.kI = 0;
+      talonConfigs.Slot0.kP = 15;
+      talonConfigs.Slot0.kI = 7;
       talonConfigs.Slot0.kD = 0;
       talonConfigs.Slot0.kV = 0;
       talonConfigs.Slot0.kG = 0.29;

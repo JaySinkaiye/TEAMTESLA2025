@@ -82,7 +82,6 @@ public class SwerveDrive extends Command {
     @Override
     public void execute(){
         //change speed depending on how tall the elevator is to avoid tipping
-        MaxSpeed = (1.2433 * elevator.getElevatorPosition()) + 9.46;
 
         xVal = MathUtil.applyDeadband(-driverController.getLeftX() * m_speedChooser.getSelected(),0.2);
         yVal = MathUtil.applyDeadband(-driverController.getLeftY() * m_speedChooser.getSelected(), 0.2);
@@ -100,19 +99,19 @@ public class SwerveDrive extends Command {
         //april tag detection
         double aprilTagID = LimelightHelpers.getFiducialID("limelight-front");
 
-        //lock in apriltag
-        if (aprilTagID == 13 || aprilTagID == 1 || aprilTagID == 12 || aprilTagID == 2){
-            //left HPS
-            driverController.x().onTrue(lihps19);
-            lihps19.tea();       
-        } else if (aprilTagID == 16 || aprilTagID == 3 ){
-            // processor
-            driverController.x().onTrue(lip20);
-            lip20.tea();
-        } else {
-            driverController.x().onTrue(lir4point4);
-            lir4point4.tea();
-        }
+        // //lock in apriltag
+        // if (aprilTagID == 13 || aprilTagID == 1 || aprilTagID == 12 || aprilTagID == 2){
+        //     //left HPS
+        //     driverController.x().onTrue(lihps19);
+        //     lihps19.tea();       
+        // } else if (aprilTagID == 16 || aprilTagID == 3 ){
+        //     // processor
+        //     driverController.x().onTrue(lip20);
+        //     lip20.tea();
+        // } else {
+        //     driverController.x().onTrue(lir4point4);
+        //     lir4point4.tea();
+        // }
     }
 
     @Override

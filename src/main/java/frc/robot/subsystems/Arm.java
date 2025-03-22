@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC;
@@ -107,6 +108,12 @@ public class Arm extends SubsystemBase {
 
     FeedbackConfigs fb = talonConfigs.Feedback;
     fb.SensorToMechanismRatio = 25;
+
+    SoftwareLimitSwitchConfigs ww = talonConfigs.SoftwareLimitSwitch;
+    ww.ForwardSoftLimitEnable = true;
+    ww.ForwardSoftLimitThreshold = 0;
+    ww.ReverseSoftLimitEnable = true;
+    ww.ReverseSoftLimitThreshold = 0.01;
     
     talonConfigs.Slot0.kP = 10;
     talonConfigs.Slot0.kI = 3;
@@ -136,6 +143,12 @@ public class Arm extends SubsystemBase {
     
     FeedbackConfigs fb = talonConfigs.Feedback;
     fb.SensorToMechanismRatio = 15;
+
+    SoftwareLimitSwitchConfigs rw = talonConfigs.SoftwareLimitSwitch;
+    rw.ForwardSoftLimitEnable = true;
+    rw.ForwardSoftLimitThreshold = 38.059814;
+    rw.ReverseSoftLimitEnable = true;
+    rw.ReverseSoftLimitThreshold = 0;
 
     talonConfigs.Slot0.kP = 10;
     talonConfigs.Slot0.kI = 0;

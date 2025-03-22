@@ -12,8 +12,8 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+// import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.ElevatorCommand;
 import frc.robot.commands.SwerveDrive;
 import frc.robot.commands.AprilTagPositions.LockInHPS;
 import frc.robot.commands.AprilTagPositions.LockInProcessor;
@@ -75,8 +75,7 @@ public class RobotContainer {
         configureBindings();
 
         SmartDashboard.putData("AutonChooser", AutonChooser);
-        AutonChooser.setDefaultOption("PID Test: ", new PathPlannerAuto("pidcontrols"));
-        AutonChooser.addOption("Left Auto", new PathPlannerAuto("Left Auto"));
+        AutonChooser.setDefaultOption("Left Auto", new PathPlannerAuto("Left Auto"));
         AutonChooser.addOption("Simple Auto", new PathPlannerAuto("Simple R Auton"));
     }
 
@@ -88,7 +87,7 @@ public class RobotContainer {
         //climber
         driverController.leftTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(-MathUtil.applyDeadband(driverController.getLeftTriggerAxis(), 0.1))));
         driverController.rightTrigger().onTrue(climber.run(()-> climber.setClimberSpeed(MathUtil.applyDeadband(driverController.getRightTriggerAxis(), 0.1))));
-        driverController.b().onTrue(climber.runOnce(()->climber.gotoPos(-0.6)));
+        //driverController.b().onTrue(climber.runOnce(()->climber.gotoPos(-0.6)));
 
         ///// END OF DRIVER CONTROLS
         
@@ -100,41 +99,36 @@ public class RobotContainer {
         arm.setDefaultCommand(arm.run(()->arm.setRotateSpeed(MathUtil.applyDeadband(operatorController.getRightX(), 0.1))));
         
         //raising and lowering elevator
-        elevator.setDefaultCommand(elevator.run(()->elevator.setElevatorMotorSpeed(eLimiter.calculate(MathUtil.applyDeadband(operatorController.getLeftY()*-1, 0.1)))));
+        elevator.setDefaultCommand(elevator.run(()->elevator.setElevatorMotorSpeed(eLimiter.calculate(MathUtil.applyDeadband(operatorController.getLeftY(), 0.1)), driverController, operatorController.a(), operatorController.x(), operatorController.y(), operatorController.b())));
         
         //rotating wrist
         operatorController.leftTrigger().onTrue(arm.run(()->arm.setWristSpeed(operatorController.getLeftTriggerAxis())));
         operatorController.rightTrigger().onTrue(arm.run(()->arm.setWristSpeed(operatorController.getRightTriggerAxis())));
 
         // picking up and dropping intake
-        // operatorController.leftBumper().onTrue(intake.run(()->intake.setRotateSpeed(1)));
-        // operatorController.leftBumper().onFalse(intake.run(()->intake.setRotateSpeed(0)));
-        // operatorController.rightBumper().onTrue(intake.run(()->intake.setRotateSpeed(-1)));
-        // operatorController.rightBumper().onFalse(intake.run(()->intake.setRotateSpeed(0)));
+        //operatorController.leftBumper().onTrue(intake.runOnce(()->intake.gotToPos(positionConstants.intakeConstants.up)).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        //operatorController.rightBumper().onTrue(intake.runOnce(()->intake.gotToPos(positionConstants.intakeConstants.DOWN)).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-        //intaking coral and spitting it out
-        // operatorController.leftTrigger().onTrue(intake.run(()->intake.setIntakeSpeed(0.7*operatorController.getLeftTriggerAxis())));
-        // operatorController.rightTrigger().onTrue(intake.run(()->intake.setIntakeSpeed(-0.7*operatorController.getRightTriggerAxis())));
+        operatorController.leftBumper().onTrue(intake.run(()->intake.setRotateSpeed(0.2)));
+        operatorController.leftBumper().onFalse(intake.run(()->intake.setRotateSpeed(0)));
+        operatorController.rightBumper().onTrue(intake.run(()->intake.setRotateSpeed(-0.2)));
+        operatorController.rightBumper().onFalse(intake.run(()->intake.setRotateSpeed(0)));
+
+        operatorController.povLeft().onTrue(intake.run(()->intake.setIntakeSpeed(0.5)));
+        operatorController.povLeft().onFalse(intake.run(()->intake.setIntakeSpeed(0)));
+        operatorController.povRight().onTrue(intake.run(()->intake.setIntakeSpeed(-0.5)));
+        operatorController.povRight().onFalse(intake.run(()->intake.setIntakeSpeed(0)));
+
 
         // operatorController.a().onTrue(arm.run(()->arm.wristGoToPos(0.2)));
         // operatorController.b().onTrue(arm.run(()->arm.wristGoToPos(0)));
-
 
         //arm intake
         operatorController.button(7).onTrue(arm.run(()->arm.setIntakeSpeed(0.8)));
         operatorController.button(7).onFalse(arm.run(()->arm.setIntakeSpeed(0)));
         operatorController.button(8).onTrue(arm.run(()->arm.setIntakeSpeed(-0.8)));
         operatorController.button(8).onFalse(arm.run(()->arm.setIntakeSpeed(0)));
-
-        //arm positions
-        // coral l1 - l3 and algea l2 l3 and processor
-        operatorController.a().onTrue(new ElevatorCommand(elevator, Position.CORAL_L1));
-        //coral l4 and algae barge
-        operatorController.x().onTrue(new ElevatorCommand(elevator, Position.CORAL_L4));
-        // raise elevator to intake
-        operatorController.y().onTrue(new ElevatorCommand(elevator, Position.SAFE_ZONE));
-        //collect coral from intake
-        operatorController.b().onTrue(new ElevatorCommand(elevator, Position.INTAKE));
+       
     }
 
     public CommandXboxController getOperatorJoystick(){

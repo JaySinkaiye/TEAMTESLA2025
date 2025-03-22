@@ -8,14 +8,14 @@ public class positionConstants {
         public static final double CORAL_L1_POSITION = 0;
         public static final double CORAL_L2_POSITION = 0;
         public static final double CORAL_L3_POSITION = 0;
-        public static final double CORAL_L4_POSITION = 6;
+        public static final double CORAL_L4_POSITION = -5.95;
         public static final double ALGAE_L2_POSITION = 0;
         public static final double ALGAE_L3_POSITION = 0;
         public static final double ALGAE_PROCESSOR_POSITION = 0;
         public static final double ALGAE_BARGE_POSITION = 0;
         public static final double HUMAN_PLAYER_STATION_POSITION = 0;
-        public static final double ELEVATOR_SAFE_TO_MOVE_ZONE = 0;
-        public static final double GROUND_INTAKE_POSITION = 0;
+        public static final double ELEVATOR_SAFE_TO_MOVE_ZONE = -3.654541;
+        public static final double GROUND_INTAKE_POSITION = -2.941162;
     }
 
     public static final class armRotationConstants{
@@ -50,6 +50,11 @@ public class positionConstants {
         public static final double HUMAN_PLAYER_STATION_POSITION = 0;
         public static final double ELEVATOR_SAFE_TO_MOVE_ZONE = 0;
         public static final double GROUND_INTAKE_POSITION = 0;
+    }
+
+    public static final class intakeConstants{
+        public static final double DOWN = -0.82;
+        public static final double up = -0.2;
     }
 
 

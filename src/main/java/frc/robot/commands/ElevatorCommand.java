@@ -16,6 +16,7 @@ public class ElevatorCommand extends Command {
   private double setpoint;
   private double tolerance = positionConstants.elevatorConstants.ELEVATOR_TOLERANCE;
 
+  
   public ElevatorCommand(Elevator elevator, Position position) {
     this.elevator = elevator;
     this.position = position;
