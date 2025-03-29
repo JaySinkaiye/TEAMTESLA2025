@@ -17,6 +17,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,40 +37,40 @@ public class Limelight {
     private final HolonomicDriveController sw;
 
     private Pose2d goalPose;
-    private double aprilTagID = LimelightHelpers.getFiducialID("limelight-front");
     private PoseEstimate poseEstimate;
 
     private Transform2d LeftReefOffset = new Transform2d(
-        new Translation2d(-0.0508,0.3048),
+        new Translation2d(Units.feetToMeters(1),Units.feetToMeters(2)),
         new Rotation2d(Math.toRadians(0))
     );
 
     private Transform2d RightReefOffset = new Transform2d(
-        new Translation2d(0.0508,0.3048),
+        new Translation2d(Units.feetToMeters(1),Units.feetToMeters(-2)),
         new Rotation2d(Math.toRadians(0))
     );
 
     private Transform2d BotOffset =  new Transform2d(
-        new Translation2d(0,0.3048),
+        new Translation2d(Units.feetToMeters(1),Units.feetToMeters(0.5)),
         new Rotation2d(Math.toRadians(0))
     );
 
     public Limelight(CommandSwerveDrivetrain swerve){
-        LimelightHelpers.SetRobotOrientation("limelight-front", swerve.getPose().getRotation().getDegrees(), 0, 0,0, 0, 0);
+        LimelightHelpers.SetRobotOrientation("limelight-left", swerve.getPose().getRotation().getDegrees(), 0, 0,0, 0, 0);
         this.swerve = swerve;
-        drive = new PIDController(0.25, 0.004, 0.003);
+        drive = new PIDController(0.005, 0.004, 0.003);
         slide = new PIDController(0.005, 0, 0);
         theta = new ProfiledPIDController(0.01, 0.002, 0, new TrapezoidProfile.Constraints(MaxSpeed, MaxAngularRate));
         sw = new HolonomicDriveController(drive, slide, theta);
+
     }
 
     public void updateDrivetrainPose(){
         //checking our alliance color
         DriverStation.getAlliance().ifPresent(allianceColor -> {
         if (allianceColor == Alliance.Red) {
-            poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-front");
+            poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-left");
         } else {
-            poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiRed_MegaTag2("limelight-front");
+            poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiRed("limelight-left");
         }
         });
 
@@ -77,20 +78,20 @@ public class Limelight {
             Pose2d visionPose = poseEstimate.pose;
 
             Matrix<N3, N1> visionStdDevs = VecBuilder.fill(
-                0.1, // x standard deviation (meters)
-                0.1, // y standard deviation (meters)
-                0.1  // theta standard deviation (radians)
+                0.0254, // x standard deviation (meters)
+                0.0254, // y standard deviation (meters)
+                0.0254  // theta standard deviation (radians)
             );
             swerve.addVisionMeasurement(visionPose, poseEstimate.timestampSeconds, visionStdDevs);
         
         }
     }
-    public ChassisSpeeds lockingIn(double goalAngle){
+    public ChassisSpeeds lockingIn(double goalAngle, double aprilTagID){
         goalPose = aprilTags.aprilTagIDToPose((int) aprilTagID);
         return sw.calculate(swerve.getPose(), goalPose.transformBy(BotOffset), MaxSpeed, Rotation2d.fromDegrees(goalAngle));
     }
 
-    public ChassisSpeeds lockingIn(double goalAngle, Boolean leftAlignSupplier, Boolean rightAlignSupplier){
+    public ChassisSpeeds lockingIn(double goalAngle, double aprilTagID, Boolean leftAlignSupplier, Boolean rightAlignSupplier){
         boolean leftAlign = false;
         boolean rightAlign = false;
         goalPose = aprilTags.aprilTagIDToPose((int) aprilTagID);
@@ -111,7 +112,6 @@ public class Limelight {
         SmartDashboard.putNumber("x pose: ", swerve.getPose().getX());
         SmartDashboard.putNumber("y pose: ", swerve.getPose().getY());
         SmartDashboard.putNumber("rot pose: ", swerve.getPose().getRotation().getDegrees());
-
     }
 
 }

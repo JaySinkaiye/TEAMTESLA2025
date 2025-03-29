@@ -15,6 +15,7 @@ public class LockInReef extends Command {
 
     private Limelight LL;
     private CommandXboxController dController;
+    private double aprilTagID;
 
     public LockInReef(CommandSwerveDrivetrain swerve, double desiredDistance, CommandXboxController dController){
         this.swerve = swerve;
@@ -22,8 +23,9 @@ public class LockInReef extends Command {
         addRequirements(swerve);
 
         //works for april tags 12 and 2 
-        LimelightHelpers.setPipelineIndex("limelight-front", 0);
+        LimelightHelpers.setPipelineIndex("limelight-left", 0);
         LL = new Limelight(swerve);
+        aprilTagID = LimelightHelpers.getFiducialID("limelight-left");
     }
 
     @Override
@@ -32,7 +34,7 @@ public class LockInReef extends Command {
 
     @Override
     public void execute(){
-        ChassisSpeeds speeds = LL.lockingIn(0,dController.povLeft().getAsBoolean(),dController.povRight().getAsBoolean());
+        ChassisSpeeds speeds = LL.lockingIn(0,aprilTagID, dController.povLeft().getAsBoolean(),dController.povRight().getAsBoolean());
         swerve.setControl(ApplyRobotSpeeds.withSpeeds(speeds));    
     }
 

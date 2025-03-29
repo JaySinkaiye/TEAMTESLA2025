@@ -4,24 +4,16 @@
 
 package frc.robot.commands.ArmPositions;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Position;
-import frc.robot.commands.ElevatorCommand;
-import frc.robot.commands.WristCommand;
-import frc.robot.commands.rotateArmCommand;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Elevator;
 
 public class CoralL4 extends SequentialCommandGroup {
-  public CoralL4(Elevator elevator, Arm arm) {
+  // public CoralL4(Elevator elevator, Arm arm) {
 
-    addCommands(
-      new ParallelCommandGroup(      
-        new ElevatorCommand(elevator, Position.CORAL_L4),
-        new rotateArmCommand(arm, Position.CORAL_L4)
-        ),
-      new WristCommand(arm, Position.CORAL_L4)
-    );
-  }
+  //   addCommands(
+  //     new ParallelCommandGroup(      
+  //       new ElevatorCommand(elevator, Position.CORAL_L4),
+  //       new rotateArmCommand(arm, Position.CORAL_L4)
+  //       )
+  //   );
+  // }
 }

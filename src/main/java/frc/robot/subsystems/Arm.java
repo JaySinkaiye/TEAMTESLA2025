@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
@@ -22,25 +24,21 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Arm extends SubsystemBase {
   private final TalonFX intakeMotor = new TalonFX(53);
   private final TalonFX intakeMotor2 = new TalonFX(62);
-  private final TalonFX wristMotor = new TalonFX(2);
   private final TalonFX rotateMotor = new TalonFX(60);
 
   private DutyCycleOut intake = new DutyCycleOut(0);
-  private DutyCycleOut wrist = new DutyCycleOut(0);
+  private DutyCycleOut intake2 = new DutyCycleOut(0);
   private DutyCycleOut rotate = new DutyCycleOut(0);
 
   public Arm() {
     setRotationPosition(0);
-    resetWristPosition();
     applyRotateMotorConfigs(InvertedValue.Clockwise_Positive);
-    applyWristMotorConfigs(InvertedValue.Clockwise_Positive);
   }
 
   @Override
   public void periodic() {
     //This method will be called once per scheduler run
     SmartDashboard.putNumber("Rotate pos", getRotatePosition());
-    SmartDashboard.putNumber("Wrist pos", getWristPosition());
   }
 
   public void setIntakeSpeed(double ispeed){
@@ -49,24 +47,31 @@ public class Arm extends SubsystemBase {
     intakeMotor2.setControl(intake);
   }
 
-  public void setWristSpeed(double wspeed){
-    wrist.Output = wspeed;
-    wristMotor.set(wspeed);
-  }
-
-  public void setRotateSpeed(double rspeed){
+  public void manualControl(double rspeed, BooleanSupplier left, BooleanSupplier right, double ispeed, double ispeed2){
     rotate.Output = rspeed;
     rotate.EnableFOC = true;
     rotateMotor.setControl(rotate);
+    if (left.getAsBoolean()){
+      rotateMotor.setControl(rotate);
+      intake.Output = ispeed;
+      intakeMotor.setControl(intake);
+      intake2.Output = ispeed;
+      intakeMotor2.setControl(intake2);
+    } else if (right.getAsBoolean()){
+        rotateMotor.setControl(rotate);
+        intake.Output = -ispeed2;
+        intakeMotor.setControl(intake);
+        intake2.Output = -ispeed2;
+        intakeMotor2.setControl(intake2);
+    } else{
+      intakeMotor.set(0);
+      intakeMotor2.set(0);
+    }
   }
 
   public void stopIntakeMotor(){
     intakeMotor.set(0);
     intakeMotor2.set(0);
-  }
-
-  public void stopWristMotor(){
-    wristMotor.set(0);
   }
 
   public void stopRotateMotor(){
@@ -75,19 +80,6 @@ public class Arm extends SubsystemBase {
 
   public double getRotatePosition(){
     return rotateMotor.getPosition().getValueAsDouble();
-  }
-
-  public double getWristPosition(){
-    return wristMotor.getPosition().getValueAsDouble();
-  }
-
-  public void resetWristPosition(){
-    wristMotor.setPosition(0);
-  }
-
-  public void wristGoToPos(double desWPos){
-    final MotionMagicTorqueCurrentFOC request = new MotionMagicTorqueCurrentFOC(desWPos);
-    wristMotor.setControl(request);
   }
 
   public void resetRotatePosition(){
@@ -101,41 +93,6 @@ public class Arm extends SubsystemBase {
   public void rotateToPos(double pos){
     final MotionMagicTorqueCurrentFOC request = new MotionMagicTorqueCurrentFOC(pos);
     rotateMotor.setControl(request);
-  }
-
-  private void applyWristMotorConfigs(InvertedValue inversion){
-    TalonFXConfiguration talonConfigs = new TalonFXConfiguration();
-
-    FeedbackConfigs fb = talonConfigs.Feedback;
-    fb.SensorToMechanismRatio = 25;
-
-    SoftwareLimitSwitchConfigs ww = talonConfigs.SoftwareLimitSwitch;
-    ww.ForwardSoftLimitEnable = true;
-    ww.ForwardSoftLimitThreshold = 0;
-    ww.ReverseSoftLimitEnable = true;
-    ww.ReverseSoftLimitThreshold = 0.01;
-    
-    talonConfigs.Slot0.kP = 10;
-    talonConfigs.Slot0.kI = 3;
-    talonConfigs.Slot0.kD = 1;
-    talonConfigs.Slot0.kV = 0;
-    talonConfigs.Slot0.kG = 0.29;
-    talonConfigs.Slot0.kS = 0;
-    talonConfigs.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
-
-    var motionMagicConfigs = talonConfigs.MotionMagic;
-    motionMagicConfigs.MotionMagicCruiseVelocity = 50;
-    motionMagicConfigs.MotionMagicAcceleration = 100;
-    motionMagicConfigs.MotionMagicJerk = 1000;
-
-    talonConfigs.Feedback.FeedbackRemoteSensorID = wristMotor.getDeviceID();
-    talonConfigs.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-
-    MotorOutputConfigs motorOutputConfigs = talonConfigs.MotorOutput;
-    motorOutputConfigs.Inverted = inversion;
-    motorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
-
-    wristMotor.getConfigurator().apply(talonConfigs);
   }
 
   private void applyRotateMotorConfigs(InvertedValue inversion){

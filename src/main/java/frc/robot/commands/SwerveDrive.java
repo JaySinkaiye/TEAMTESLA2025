@@ -11,10 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Vision.Limelight;
 import frc.robot.Vision.LimelightHelpers;
-import frc.robot.commands.AprilTagPositions.LockInHPS;
-import frc.robot.commands.AprilTagPositions.LockInProcessor;
-import frc.robot.commands.AprilTagPositions.LockInReef;
+import frc.robot.commands.AprilTagPositions.autoReefAlign;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
@@ -38,23 +37,22 @@ public class SwerveDrive extends Command {
     private double rotationVal, xVal, yVal;
     private SlewRateLimiter slewR, slewX, slewY;
 
-    private LockInHPS lihps19;
-    private LockInReef lir4point4;
-    private LockInProcessor lip20;
+    private autoReefAlign align;
 
     private Elevator elevator;
-
+    private Limelight ll;
 
     public SwerveDrive(CommandSwerveDrivetrain swerve, CommandXboxController driver, Elevator elevator){
-
         this.swerve = swerve;
         this.driverController = driver;
         this.elevator = elevator;
         addRequirements(swerve);
 
-        slewR = new SlewRateLimiter(8);
-        slewX = new SlewRateLimiter(8);
-        slewY = new SlewRateLimiter(8);
+        slewR = new SlewRateLimiter(MaxSpeed*0.85);
+        slewX = new SlewRateLimiter(MaxSpeed*0.85);
+        slewY = new SlewRateLimiter(MaxSpeed*0.85);
+
+        ll = new Limelight(swerve);
 
         m_speedChooser = new SendableChooser<Double>();
         m_speedChooser.addOption("100%", 1.0);
@@ -69,9 +67,8 @@ public class SwerveDrive extends Command {
         m_speedChooser.addOption("20%", 0.2);
         SmartDashboard.putData("Speed Percent", m_speedChooser);
 
-        lihps19 = new LockInHPS(swerve, 17);
-        lir4point4 = new LockInReef(swerve, 4.4, driverController);
-        lip20 = new LockInProcessor(swerve, 20);
+        align = new autoReefAlign(swerve);
+
     }
 
     @Override
@@ -82,6 +79,9 @@ public class SwerveDrive extends Command {
     @Override
     public void execute(){
         //change speed depending on how tall the elevator is to avoid tipping
+        MaxSpeed = (1.2433 * elevator.getElevatorPosition() + 9.46);
+        
+        ll.updateDrivetrainPose();
 
         xVal = MathUtil.applyDeadband(-driverController.getLeftX() * m_speedChooser.getSelected(),0.2);
         yVal = MathUtil.applyDeadband(-driverController.getLeftY() * m_speedChooser.getSelected(), 0.2);
@@ -97,21 +97,11 @@ public class SwerveDrive extends Command {
         swerve.setControl(m_Request);
 
         //april tag detection
-        double aprilTagID = LimelightHelpers.getFiducialID("limelight-front");
+        double aprilTagID = LimelightHelpers.getFiducialID("limelight-left");
 
-        // //lock in apriltag
-        // if (aprilTagID == 13 || aprilTagID == 1 || aprilTagID == 12 || aprilTagID == 2){
-        //     //left HPS
-        //     driverController.x().onTrue(lihps19);
-        //     lihps19.tea();       
-        // } else if (aprilTagID == 16 || aprilTagID == 3 ){
-        //     // processor
-        //     driverController.x().onTrue(lip20);
-        //     lip20.tea();
-        // } else {
-        //     driverController.x().onTrue(lir4point4);
-        //     lir4point4.tea();
-        // }
+        if (aprilTagID != 0){
+            driverController.a().onTrue(align);
+        }
     }
 
     @Override

@@ -45,11 +45,12 @@ public class RobotContainer {
 
     private final CommandXboxController driverController = new CommandXboxController(0);
     private final CommandXboxController operatorController = new CommandXboxController(1);
-    private final SlewRateLimiter eLimiter = new SlewRateLimiter(0.6);
     
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     private final SendableChooser<Command> AutonChooser = new SendableChooser<>();
+    private final SlewRateLimiter eLimiter = new SlewRateLimiter(0.6);
+
     
     public RobotContainer() {
         //auto align
@@ -58,25 +59,26 @@ public class RobotContainer {
         NamedCommands.registerCommand("Align to Processor", new LockInProcessor(drivetrain, 50));
 
         // arm positions
-        NamedCommands.registerCommand("Algae Processor", new AlgaeProccesor(elevator, arm));
-        NamedCommands.registerCommand("Algae Barge", new AlgeaBarge(elevator, arm));
-        NamedCommands.registerCommand("Algae L2", new AlgeaL2(elevator, arm));
-        NamedCommands.registerCommand("Algae L3", new AlgeaL3(elevator, arm));
-        NamedCommands.registerCommand("Coral L1", new CoralL1(elevator, arm));
-        NamedCommands.registerCommand("Coral L2", new CoralL2(elevator, arm));
-        NamedCommands.registerCommand("Coral L2", new CoralL3(elevator, arm));
-        NamedCommands.registerCommand("Coral L4", new CoralL4(elevator, arm));
-        NamedCommands.registerCommand("Stow", new SafeZone(elevator, arm));
-        NamedCommands.registerCommand("Human Player Station", new HumanPlayerStation(elevator, arm));
+        // NamedCommands.registerCommand("Algae Processor", new AlgaeProccesor(elevator, arm));
+        // NamedCommands.registerCommand("Algae Barge", new AlgeaBarge(elevator, arm));
+        // NamedCommands.registerCommand("Algae L2", new AlgeaL2(elevator, arm));
+        // NamedCommands.registerCommand("Algae L3", new AlgeaL3(elevator, arm));
+        // NamedCommands.registerCommand("Coral L1", new CoralL1(elevator, arm));
+        // NamedCommands.registerCommand("Coral L2", new CoralL2(elevator, arm));
+        // NamedCommands.registerCommand("Coral L2", new CoralL3(elevator, arm));
+        // NamedCommands.registerCommand("Coral L4", new CoralL4(elevator, arm));
+        // NamedCommands.registerCommand("Stow", new SafeZone(elevator, arm));
+        // NamedCommands.registerCommand("Human Player Station", new HumanPlayerStation(elevator, arm));
 
-        NamedCommands.registerCommand("Outtake Coral", arm.run(()->arm.setIntakeSpeed(-0.8)));
-        NamedCommands.registerCommand("Intake Coral", arm.run(()->arm.setIntakeSpeed(0.8)));
+        // NamedCommands.registerCommand("Outtake Coral", arm.run(()->arm.setIntakeSpeed(-0.8)));
+        // NamedCommands.registerCommand("Intake Coral", arm.run(()->arm.setIntakeSpeed(0.8)));
 
         configureBindings();
 
         SmartDashboard.putData("AutonChooser", AutonChooser);
-        AutonChooser.setDefaultOption("Left Auto", new PathPlannerAuto("Left Auto"));
-        AutonChooser.addOption("Simple Auto", new PathPlannerAuto("Simple R Auton"));
+        AutonChooser.addOption("Left Auto", new PathPlannerAuto("left"));
+        AutonChooser.addOption("Right Auto", new PathPlannerAuto("right"));
+        AutonChooser.addOption("Center Auto", new PathPlannerAuto("center"));
     }
 
     private void configureBindings() {
@@ -95,39 +97,30 @@ public class RobotContainer {
     
         /// OPERATOR CONTROLS
 
-        //rotate arm
-        arm.setDefaultCommand(arm.run(()->arm.setRotateSpeed(MathUtil.applyDeadband(operatorController.getRightX(), 0.1))));
+        // rotate arm, left trigger == intake, right trigger == outake
+        arm.setDefaultCommand(arm.run(()->arm.manualControl(MathUtil.applyDeadband(operatorController.getRightX(), 0.1), operatorController.leftTrigger(), operatorController.rightTrigger(), operatorController.getLeftTriggerAxis()*0.6, operatorController.getRightTriggerAxis()*0.6)));
         
-        //raising and lowering elevator
+        // rotate intake, left trigger == intake, right trigger == outake;
+        intake.setDefaultCommand(intake.run(()->intake.manualControl(operatorController.leftBumper(), operatorController.rightBumper(), 0.3, operatorController.leftTrigger(), operatorController.rightTrigger(), operatorController.getLeftTriggerAxis()*0.2, operatorController.getRightTriggerAxis()*0.2)));
+
+        // //raising and lowering elevator
         elevator.setDefaultCommand(elevator.run(()->elevator.setElevatorMotorSpeed(eLimiter.calculate(MathUtil.applyDeadband(operatorController.getLeftY(), 0.1)), driverController, operatorController.a(), operatorController.x(), operatorController.y(), operatorController.b())));
-        
-        //rotating wrist
-        operatorController.leftTrigger().onTrue(arm.run(()->arm.setWristSpeed(operatorController.getLeftTriggerAxis())));
-        operatorController.rightTrigger().onTrue(arm.run(()->arm.setWristSpeed(operatorController.getRightTriggerAxis())));
 
-        // picking up and dropping intake
-        //operatorController.leftBumper().onTrue(intake.runOnce(()->intake.gotToPos(positionConstants.intakeConstants.up)).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-        //operatorController.rightBumper().onTrue(intake.runOnce(()->intake.gotToPos(positionConstants.intakeConstants.DOWN)).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        // //rotate intake up and down
+        // operatorController.leftBumper().onTrue(intake.run(()->intake.setRotateSpeed(0.2)));
+        // operatorController.leftBumper().onFalse(intake.run(()->intake.setRotateSpeed(0)));
+        // operatorController.rightBumper().onTrue(intake.run(()->intake.setRotateSpeed(-0.2)));
+        // operatorController.rightBumper().onFalse(intake.run(()->intake.setRotateSpeed(0)));
 
-        operatorController.leftBumper().onTrue(intake.run(()->intake.setRotateSpeed(0.2)));
-        operatorController.leftBumper().onFalse(intake.run(()->intake.setRotateSpeed(0)));
-        operatorController.rightBumper().onTrue(intake.run(()->intake.setRotateSpeed(-0.2)));
-        operatorController.rightBumper().onFalse(intake.run(()->intake.setRotateSpeed(0)));
-
-        operatorController.povLeft().onTrue(intake.run(()->intake.setIntakeSpeed(0.5)));
-        operatorController.povLeft().onFalse(intake.run(()->intake.setIntakeSpeed(0)));
-        operatorController.povRight().onTrue(intake.run(()->intake.setIntakeSpeed(-0.5)));
-        operatorController.povRight().onFalse(intake.run(()->intake.setIntakeSpeed(0)));
+        // //intake from intake
+        // operatorController.povLeft().onTrue(intake.run(()->intake.setIntakeSpeed(0.3)));
+        // operatorController.povLeft().onFalse(intake.run(()->intake.setIntakeSpeed(0)));
+        // operatorController.povRight().onTrue(intake.run(()->intake.setIntakeSpeed(-0.3)));
+        // operatorController.povRight().onFalse(intake.run(()->intake.setIntakeSpeed(0)));
 
 
-        // operatorController.a().onTrue(arm.run(()->arm.wristGoToPos(0.2)));
-        // operatorController.b().onTrue(arm.run(()->arm.wristGoToPos(0)));
+        // operatorController.button(7).onTrue(new intakeToArm(arm, intake));
 
-        //arm intake
-        operatorController.button(7).onTrue(arm.run(()->arm.setIntakeSpeed(0.8)));
-        operatorController.button(7).onFalse(arm.run(()->arm.setIntakeSpeed(0)));
-        operatorController.button(8).onTrue(arm.run(()->arm.setIntakeSpeed(-0.8)));
-        operatorController.button(8).onFalse(arm.run(()->arm.setIntakeSpeed(0)));
        
     }
 

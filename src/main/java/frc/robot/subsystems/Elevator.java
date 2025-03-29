@@ -26,8 +26,6 @@ public class Elevator extends SubsystemBase {
     private final TalonFX follower = new TalonFX(58);
     private final DutyCycleOut duty = new DutyCycleOut(0);
 
-    private CommandXboxController opController;
-
     public Elevator(){
         resetElevatorPosition();
         applyElevatorMotorConfigs(InvertedValue.Clockwise_Positive);
@@ -44,7 +42,6 @@ public class Elevator extends SubsystemBase {
     }
     
     public void setElevatorMotorSpeed(double speed, CommandXboxController opController, BooleanSupplier a, BooleanSupplier x, BooleanSupplier y, BooleanSupplier b){
-        this.opController = opController;
 
         if (a.getAsBoolean()){
             GoToPos(positionConstants.elevatorConstants.CORAL_L1_POSITION);
@@ -95,9 +92,9 @@ public class Elevator extends SubsystemBase {
         fb.SensorToMechanismRatio = 15;
 
         SoftwareLimitSwitchConfigs sl = talonConfigs.SoftwareLimitSwitch;
-        sl.ForwardSoftLimitEnable = true;
+        sl.ForwardSoftLimitEnable = false;
         sl.ForwardSoftLimitThreshold = 0;
-        sl.ReverseSoftLimitEnable = true;
+        sl.ReverseSoftLimitEnable = false;
         sl.ReverseSoftLimitThreshold = -5.95; //-6.15
 
         talonConfigs.Slot0.kP = 30;

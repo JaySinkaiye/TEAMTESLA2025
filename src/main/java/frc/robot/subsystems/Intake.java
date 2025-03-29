@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
@@ -22,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Intake extends SubsystemBase {
   private final TalonFX rotateMotor = new TalonFX(54);
   private final TalonFX intakeMotor = new TalonFX(61);
+  private final TalonFX intakeMotor2 = new TalonFX(2);
 
   private DutyCycleOut rotate = new DutyCycleOut(0);
   private DutyCycleOut intake = new DutyCycleOut(0);
@@ -37,6 +40,36 @@ public class Intake extends SubsystemBase {
     //This method will be called once per scheduler run
   }
 
+  public void manualControl(BooleanSupplier up, BooleanSupplier down, double rspeed, BooleanSupplier left, BooleanSupplier right, double ispeed, double ispeed2){
+    if (up.getAsBoolean() == true){
+      rotate.Output = rspeed;
+      rotate.EnableFOC = true;
+      rotateMotor.setControl(rotate);
+    } else if (down.getAsBoolean() == true){
+      rotate.Output = -rspeed;
+      rotate.EnableFOC = true;
+      rotateMotor.setControl(rotate);
+    } else{
+      rotate.Output = 0;
+      rotateMotor.setControl(rotate);
+    }
+
+    if (left.getAsBoolean()){
+      rotateMotor.setControl(rotate);
+      intake.Output = ispeed;
+      intakeMotor.setControl(intake);
+      intakeMotor2.setControl(intake);
+    } else if (right.getAsBoolean()){
+        rotateMotor.setControl(rotate);
+        intake.Output = -ispeed2;
+        intakeMotor.setControl(intake);
+        intakeMotor2.setControl(intake);
+    } else{
+      intakeMotor.set(0);
+      intakeMotor2.set(0);
+    }
+  }
+
   public void setRotateSpeed(double speed){
     rotate.Output = speed;
     rotateMotor.setControl(rotate);
@@ -45,6 +78,7 @@ public class Intake extends SubsystemBase {
   public void setIntakeSpeed(double speed){
     intake.Output = speed;
     intakeMotor.setControl(intake);
+    intakeMotor2.setControl(intake);
   }
 
   public void stopRotateMotor(){
@@ -53,6 +87,7 @@ public class Intake extends SubsystemBase {
 
   public void stopIntakeMotor(){
     intakeMotor.set(0);
+    intakeMotor2.set(0);
   }
 
   public double getRotatePosition(){

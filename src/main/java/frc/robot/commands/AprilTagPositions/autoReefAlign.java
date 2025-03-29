@@ -3,6 +3,7 @@ package frc.robot.commands.AprilTagPositions;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Vision.Limelight;
 import frc.robot.Vision.LimelightHelpers;
@@ -13,14 +14,16 @@ public class autoReefAlign extends Command {
   private final SwerveRequest.ApplyRobotSpeeds ApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
 
   private Limelight LL;  
+
+  private double aprilTagID;
   
   public autoReefAlign(CommandSwerveDrivetrain swerve) {
     this.swerve = swerve;
     addRequirements(swerve);
 
-    //works for april tags 12 and 2 
-    LimelightHelpers.setPipelineIndex("limelight-front", 0);
+    LimelightHelpers.setPipelineIndex("limelight-left", 0);
     LL = new Limelight(swerve);
+    aprilTagID = LimelightHelpers.getFiducialID("limelight-left");
   }
 
   @Override
@@ -28,7 +31,8 @@ public class autoReefAlign extends Command {
 
   @Override
   public void execute() {
-    ChassisSpeeds speeds = LL.lockingIn(0);
+    SmartDashboard.getNumber("current april tag", aprilTagID);
+    ChassisSpeeds speeds = LL.lockingIn(0, aprilTagID);
     swerve.setControl(ApplyRobotSpeeds.withSpeeds(speeds));
   }
 
