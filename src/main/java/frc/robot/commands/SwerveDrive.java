@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Vision.Limelight;
 import frc.robot.Vision.LimelightHelpers;
 import frc.robot.commands.AprilTagPositions.autoReefAlign;
 import frc.robot.generated.TunerConstants;
@@ -40,7 +39,6 @@ public class SwerveDrive extends Command {
     private autoReefAlign align;
 
     private Elevator elevator;
-    private Limelight ll;
 
     public SwerveDrive(CommandSwerveDrivetrain swerve, CommandXboxController driver, Elevator elevator){
         this.swerve = swerve;
@@ -52,7 +50,6 @@ public class SwerveDrive extends Command {
         slewX = new SlewRateLimiter(MaxSpeed*0.85);
         slewY = new SlewRateLimiter(MaxSpeed*0.85);
 
-        ll = new Limelight(swerve);
 
         m_speedChooser = new SendableChooser<Double>();
         m_speedChooser.addOption("100%", 1.0);
@@ -81,8 +78,6 @@ public class SwerveDrive extends Command {
         //change speed depending on how tall the elevator is to avoid tipping
         MaxSpeed = (1.2433 * elevator.getElevatorPosition() + 9.46);
         
-        ll.updateDrivetrainPose();
-
         xVal = MathUtil.applyDeadband(-driverController.getLeftX() * m_speedChooser.getSelected(),0.2);
         yVal = MathUtil.applyDeadband(-driverController.getLeftY() * m_speedChooser.getSelected(), 0.2);
         rotationVal = MathUtil.applyDeadband(-driverController.getRightX() * m_speedChooser.getSelected(), 0.1);

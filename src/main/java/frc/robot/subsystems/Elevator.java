@@ -92,9 +92,9 @@ public class Elevator extends SubsystemBase {
         fb.SensorToMechanismRatio = 15;
 
         SoftwareLimitSwitchConfigs sl = talonConfigs.SoftwareLimitSwitch;
-        sl.ForwardSoftLimitEnable = false;
+        sl.ForwardSoftLimitEnable = true;
         sl.ForwardSoftLimitThreshold = 0;
-        sl.ReverseSoftLimitEnable = false;
+        sl.ReverseSoftLimitEnable = true;
         sl.ReverseSoftLimitThreshold = -5.95; //-6.15
 
         talonConfigs.Slot0.kP = 30;

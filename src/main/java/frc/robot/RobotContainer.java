@@ -12,12 +12,9 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-// import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.SwerveDrive;
-import frc.robot.commands.AprilTagPositions.LockInHPS;
-import frc.robot.commands.AprilTagPositions.LockInProcessor;
-import frc.robot.commands.AprilTagPositions.autoReefAlign;
+import frc.robot.commands.AprilTagPositions.LockInReef;
 import frc.robot.commands.ArmPositions.AlgaeProccesor;
 import frc.robot.commands.ArmPositions.AlgeaBarge;
 import frc.robot.commands.ArmPositions.AlgeaL2;
@@ -54,9 +51,7 @@ public class RobotContainer {
     
     public RobotContainer() {
         //auto align
-        NamedCommands.registerCommand("Align to HPS", new LockInHPS(drivetrain, 50));
-        NamedCommands.registerCommand("Align to Reef", new autoReefAlign(drivetrain));
-        NamedCommands.registerCommand("Align to Processor", new LockInProcessor(drivetrain, 50));
+        NamedCommands.registerCommand("Align to Reef", new LockInReef(drivetrain, 0));
 
         // arm positions
         // NamedCommands.registerCommand("Algae Processor", new AlgaeProccesor(elevator, arm));
@@ -98,10 +93,10 @@ public class RobotContainer {
         /// OPERATOR CONTROLS
 
         // rotate arm, left trigger == intake, right trigger == outake
-        arm.setDefaultCommand(arm.run(()->arm.manualControl(MathUtil.applyDeadband(operatorController.getRightX(), 0.1), operatorController.leftTrigger(), operatorController.rightTrigger(), operatorController.getLeftTriggerAxis()*0.6, operatorController.getRightTriggerAxis()*0.6)));
+        arm.setDefaultCommand(arm.run(()->arm.manualControl(MathUtil.applyDeadband(operatorController.getRightX(), 0.1), operatorController.leftTrigger(), operatorController.rightTrigger(), operatorController.getLeftTriggerAxis()*0.8, operatorController.getRightTriggerAxis()*0.8)));
         
         // rotate intake, left trigger == intake, right trigger == outake;
-        intake.setDefaultCommand(intake.run(()->intake.manualControl(operatorController.leftBumper(), operatorController.rightBumper(), 0.3, operatorController.leftTrigger(), operatorController.rightTrigger(), operatorController.getLeftTriggerAxis()*0.2, operatorController.getRightTriggerAxis()*0.2)));
+        intake.setDefaultCommand(intake.run(()->intake.manualControl(operatorController.leftBumper(), operatorController.rightBumper(), 0.3, operatorController.leftTrigger(), operatorController.rightTrigger(), operatorController.getLeftTriggerAxis()*0.6, operatorController.getRightTriggerAxis()*0.6)));
 
         // //raising and lowering elevator
         elevator.setDefaultCommand(elevator.run(()->elevator.setElevatorMotorSpeed(eLimiter.calculate(MathUtil.applyDeadband(operatorController.getLeftY(), 0.1)), driverController, operatorController.a(), operatorController.x(), operatorController.y(), operatorController.b())));

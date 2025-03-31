@@ -55,13 +55,13 @@ public class Arm extends SubsystemBase {
       rotateMotor.setControl(rotate);
       intake.Output = ispeed;
       intakeMotor.setControl(intake);
-      intake2.Output = ispeed;
+      intake2.Output = -ispeed;
       intakeMotor2.setControl(intake2);
     } else if (right.getAsBoolean()){
         rotateMotor.setControl(rotate);
         intake.Output = -ispeed2;
         intakeMotor.setControl(intake);
-        intake2.Output = -ispeed2;
+        intake2.Output = ispeed2;
         intakeMotor2.setControl(intake2);
     } else{
       intakeMotor.set(0);
@@ -103,9 +103,9 @@ public class Arm extends SubsystemBase {
 
     SoftwareLimitSwitchConfigs rw = talonConfigs.SoftwareLimitSwitch;
     rw.ForwardSoftLimitEnable = true;
-    rw.ForwardSoftLimitThreshold = 38.059814;
+    rw.ForwardSoftLimitThreshold = 0;
     rw.ReverseSoftLimitEnable = true;
-    rw.ReverseSoftLimitThreshold = 0;
+    rw.ReverseSoftLimitThreshold = -7.6;
 
     talonConfigs.Slot0.kP = 10;
     talonConfigs.Slot0.kI = 0;
