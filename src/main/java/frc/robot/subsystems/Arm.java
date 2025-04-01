@@ -31,7 +31,7 @@ public class Arm extends SubsystemBase {
   private DutyCycleOut rotate = new DutyCycleOut(0);
 
   public Arm() {
-    setRotationPosition(0);
+    setRotationPosition(1.065);
     applyRotateMotorConfigs(InvertedValue.Clockwise_Positive);
   }
 
@@ -50,15 +50,15 @@ public class Arm extends SubsystemBase {
   public void manualControl(double rspeed, BooleanSupplier left, BooleanSupplier right, double ispeed, double ispeed2){
     rotate.Output = rspeed;
     rotate.EnableFOC = true;
+    intake.EnableFOC = true;
+    intake2.EnableFOC = true; 
     rotateMotor.setControl(rotate);
     if (left.getAsBoolean()){
-      rotateMotor.setControl(rotate);
       intake.Output = ispeed;
       intakeMotor.setControl(intake);
       intake2.Output = -ispeed;
       intakeMotor2.setControl(intake2);
     } else if (right.getAsBoolean()){
-        rotateMotor.setControl(rotate);
         intake.Output = -ispeed2;
         intakeMotor.setControl(intake);
         intake2.Output = ispeed2;
@@ -102,9 +102,9 @@ public class Arm extends SubsystemBase {
     fb.SensorToMechanismRatio = 15;
 
     SoftwareLimitSwitchConfigs rw = talonConfigs.SoftwareLimitSwitch;
-    rw.ForwardSoftLimitEnable = true;
+    rw.ForwardSoftLimitEnable = false;
     rw.ForwardSoftLimitThreshold = 0;
-    rw.ReverseSoftLimitEnable = true;
+    rw.ReverseSoftLimitEnable = false;
     rw.ReverseSoftLimitThreshold = -7.6;
 
     talonConfigs.Slot0.kP = 10;

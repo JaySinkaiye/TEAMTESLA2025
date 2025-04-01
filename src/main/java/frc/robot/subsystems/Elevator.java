@@ -27,7 +27,7 @@ public class Elevator extends SubsystemBase {
     private final DutyCycleOut duty = new DutyCycleOut(0);
 
     public Elevator(){
-        resetElevatorPosition();
+        setElevatorPosition(0.12);
         applyElevatorMotorConfigs(InvertedValue.Clockwise_Positive);
         follower.setControl(new Follower(57, true));
     }
@@ -50,7 +50,7 @@ public class Elevator extends SubsystemBase {
         } else if ( y.getAsBoolean()){
             GoToPos(positionConstants.elevatorConstants.ELEVATOR_SAFE_TO_MOVE_ZONE);
         } else if (b.getAsBoolean()){
-            GoToPos(positionConstants.elevatorConstants.GROUND_INTAKE_POSITION);
+            GoToPos(positionConstants.elevatorConstants.STOW_POSITION);
         } else {
             duty.Output = speed;
             duty.EnableFOC = true;
@@ -76,6 +76,10 @@ public class Elevator extends SubsystemBase {
         return leftElevatorMotor.getPosition().getValueAsDouble();
     }
 
+    public void setElevatorPosition(double pos){
+        leftElevatorMotor.setPosition(pos);
+    }
+
     public void resetElevatorPosition(){
         leftElevatorMotor.setPosition(0);
     }
@@ -95,7 +99,7 @@ public class Elevator extends SubsystemBase {
         sl.ForwardSoftLimitEnable = true;
         sl.ForwardSoftLimitThreshold = 0;
         sl.ReverseSoftLimitEnable = true;
-        sl.ReverseSoftLimitThreshold = -5.95; //-6.15
+        sl.ReverseSoftLimitThreshold = -5.75;
 
         talonConfigs.Slot0.kP = 30;
         talonConfigs.Slot0.kI = 5;

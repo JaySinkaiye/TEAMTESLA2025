@@ -51,7 +51,7 @@ public class RobotContainer {
     
     public RobotContainer() {
         //auto align
-        NamedCommands.registerCommand("Align to Reef", new LockInReef(drivetrain, 0));
+        NamedCommands.registerCommand("Align to Reef", new LockInReef(drivetrain));
 
         // arm positions
         // NamedCommands.registerCommand("Algae Processor", new AlgaeProccesor(elevator, arm));
@@ -93,10 +93,11 @@ public class RobotContainer {
         /// OPERATOR CONTROLS
 
         // rotate arm, left trigger == intake, right trigger == outake
-        arm.setDefaultCommand(arm.run(()->arm.manualControl(MathUtil.applyDeadband(operatorController.getRightX(), 0.1), operatorController.leftTrigger(), operatorController.rightTrigger(), operatorController.getLeftTriggerAxis()*0.8, operatorController.getRightTriggerAxis()*0.8)));
+        arm.setDefaultCommand(arm.run(()->arm.manualControl(MathUtil.applyDeadband(operatorController.getRightX(), 0.15), operatorController.leftTrigger(), operatorController.rightTrigger(), operatorController.getLeftTriggerAxis(), operatorController.getRightTriggerAxis())));
         
         // rotate intake, left trigger == intake, right trigger == outake;
-        intake.setDefaultCommand(intake.run(()->intake.manualControl(operatorController.leftBumper(), operatorController.rightBumper(), 0.3, operatorController.leftTrigger(), operatorController.rightTrigger(), operatorController.getLeftTriggerAxis()*0.6, operatorController.getRightTriggerAxis()*0.6)));
+        intake.setDefaultCommand(intake.run(()->intake.manualControl(
+            operatorController.leftBumper(), operatorController.rightBumper(), 0.1, operatorController.leftTrigger(), operatorController.rightTrigger(), operatorController.getLeftTriggerAxis(), operatorController.getRightTriggerAxis())));
 
         // //raising and lowering elevator
         elevator.setDefaultCommand(elevator.run(()->elevator.setElevatorMotorSpeed(eLimiter.calculate(MathUtil.applyDeadband(operatorController.getLeftY(), 0.1)), driverController, operatorController.a(), operatorController.x(), operatorController.y(), operatorController.b())));

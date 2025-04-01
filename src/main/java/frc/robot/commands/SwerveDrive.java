@@ -11,8 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Vision.Limelight;
 import frc.robot.Vision.LimelightHelpers;
-import frc.robot.commands.AprilTagPositions.autoReefAlign;
+import frc.robot.commands.AprilTagPositions.LockInReef;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
@@ -36,9 +37,9 @@ public class SwerveDrive extends Command {
     private double rotationVal, xVal, yVal;
     private SlewRateLimiter slewR, slewX, slewY;
 
-    private autoReefAlign align;
-
     private Elevator elevator;
+    private LockInReef lockInReef;
+    private Limelight ll;
 
     public SwerveDrive(CommandSwerveDrivetrain swerve, CommandXboxController driver, Elevator elevator){
         this.swerve = swerve;
@@ -50,6 +51,8 @@ public class SwerveDrive extends Command {
         slewX = new SlewRateLimiter(MaxSpeed*0.85);
         slewY = new SlewRateLimiter(MaxSpeed*0.85);
 
+        lockInReef = new LockInReef(swerve);
+        ll = new Limelight();
 
         m_speedChooser = new SendableChooser<Double>();
         m_speedChooser.addOption("100%", 1.0);
@@ -64,8 +67,6 @@ public class SwerveDrive extends Command {
         m_speedChooser.addOption("20%", 0.2);
         SmartDashboard.putData("Speed Percent", m_speedChooser);
 
-        align = new autoReefAlign(swerve);
-
     }
 
     @Override
@@ -76,7 +77,7 @@ public class SwerveDrive extends Command {
     @Override
     public void execute(){
         //change speed depending on how tall the elevator is to avoid tipping
-        MaxSpeed = (1.2433 * elevator.getElevatorPosition() + 9.46);
+        MaxSpeed = (1.3 * elevator.getElevatorPosition() + 9.46);
         
         xVal = MathUtil.applyDeadband(-driverController.getLeftX() * m_speedChooser.getSelected(),0.2);
         yVal = MathUtil.applyDeadband(-driverController.getLeftY() * m_speedChooser.getSelected(), 0.2);
@@ -94,8 +95,8 @@ public class SwerveDrive extends Command {
         //april tag detection
         double aprilTagID = LimelightHelpers.getFiducialID("limelight-left");
 
-        if (aprilTagID != 0){
-            driverController.a().onTrue(align);
+        if (ll.blueSideReef((int) aprilTagID)){
+            driverController.a().onTrue(lockInReef);
         }
     }
 
